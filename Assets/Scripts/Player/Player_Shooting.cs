@@ -9,27 +9,27 @@ public class Player_Shooting : MonoBehaviour
     #region - Variables
     [Header("Player Stats")]
     [SerializeField] private float baseReloadTime;
-    private float _reloadTimer;
+    private float reloadTimer;
     private bool isShooting = false;
     [Space(10)]
 
     [Header("Bullet Stats")]
-    private Vector2 bVector;
-    private Color bColor;
-    [SerializeField] private float baseBulletSpeed;
-    [SerializeField] private float baseBulletDamage;
-    [SerializeField] private bool enemy;
+    private Vector2 bullletVector;
+    private Color bullletColor;
+    [SerializeField] private float baseSpeed;
+    [SerializeField] private float baseDamage;
+    [SerializeField] private bool isEnemy;
     [SerializeField, Range(-1, 1)] private int direction;
     [Space(10)]
 
     [Header("Player Modificators")]
-    private float mReload;
-    private float mDamage;
+    private float multiplicatorReload;
+    private float multiplicatorDamage;
     [Space(10)]
 
     [Header("Bullet Modificators")]
-    private float mBSpeed;
-    private float mBScale;
+    private float multiplicatorBulletSpeed;
+    private float multiplicatorBulletScale;
     [Space(10)]
 
     [Header("Bullets GameObject")]
@@ -78,7 +78,7 @@ public class Player_Shooting : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _reloadTimer = 0;
+        reloadTimer = 0;
     }
     #endregion
 
@@ -93,21 +93,22 @@ public class Player_Shooting : MonoBehaviour
     {
         Player_Manager PlayerManager;
         PlayerManager = gameObject.GetComponent<Player_Manager>();
-        mReload = PlayerManager.multiplicatorReload;
-        mDamage = PlayerManager.multiplicatorPlayerDamage;
-        bVector = PlayerManager.playerBulletVector;
-        mBScale = PlayerManager.multiplicatorPlayerBulletScale;
-        mBSpeed = PlayerManager.multiplicatorPlayerBulletSpeed;
-        bColor = PlayerManager.playerBulletColor;
-        enemy = PlayerManager.bEnemy;
+        multiplicatorReload = PlayerManager.multiplicatorReload;
+        multiplicatorDamage
+ = PlayerManager.multiplicatorDamage;
+        bullletVector = PlayerManager.bulletVector;
+        multiplicatorBulletScale = PlayerManager.multiplicatorBulletScale;
+        multiplicatorBulletSpeed = PlayerManager.multiplicatorBulletSpeed;
+        bullletColor = PlayerManager.bulletColor;
+        isEnemy = PlayerManager.bulletEnemy;
     }
     private void Shoot()
     {
-        _reloadTimer += -(Time.deltaTime);
+        reloadTimer += -(Time.deltaTime);
 
         if (Reload() == true)
         {
-            _reloadTimer = baseReloadTime;
+            reloadTimer = baseReloadTime;
             Select();
         }
 
@@ -115,7 +116,7 @@ public class Player_Shooting : MonoBehaviour
 
     private bool Reload()
     {
-        if (_reloadTimer <= 0 && isShooting == true)
+        if (reloadTimer <= 0 && isShooting == true)
         {            
             return true;
         }
@@ -132,14 +133,15 @@ public class Player_Shooting : MonoBehaviour
         GameObject inst=Instantiate(SimpleBullet,transform.position,Quaternion.identity);
         Bullet_Script BulletScript= inst.GetComponent<Bullet_Script>();
 
-        BulletScript.bulletVector = bVector;
-        BulletScript.bulletColor = bColor;
-        BulletScript.bulletSpeed = baseBulletSpeed * mBSpeed;
-        BulletScript.multiplicatorBulletScale = mBScale;
-        BulletScript.bulletDamage = baseBulletDamage * mDamage;
+        BulletScript.bulletVector = bullletVector;
+        BulletScript.bulletColor = bullletColor;
+        BulletScript.bulletSpeed = baseSpeed * multiplicatorBulletSpeed;
+        BulletScript.multiplicatorBulletScale = multiplicatorBulletScale;
+        BulletScript.bulletDamage = baseDamage * multiplicatorDamage
+;
         if (direction != 0) { BulletScript.bulletDirection = direction; } else { BulletScript.bulletDirection = 1; }
-        BulletScript.bulletEnemy=enemy;
-        BulletScript.multiplicatorBulletScale=mBScale;
+        BulletScript.bulletEnemy=isEnemy;
+        BulletScript.multiplicatorBulletScale=multiplicatorBulletScale;
 
     }
 }

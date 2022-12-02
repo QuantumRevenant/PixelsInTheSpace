@@ -18,18 +18,18 @@ public class Player_Manager : MonoBehaviour
     [Space(10)]
 
     [Header("Player Multiplicators")]
-    public float multiplicatorPlayerSpeed;
-    public float multiplicatorPlayerScale;
-    public float multiplicatorPlayerDamage;
+    public float multiplicatorSpeed;
+    public float multiplicatorScale;
+    public float multiplicatorDamage;
     public float multiplicatorReload;
     [Space(10)]
 
     [Header("Bullet Multiplicators")]
-    public float multiplicatorPlayerBulletSpeed;
-    public float multiplicatorPlayerBulletScale;
-    public Color playerBulletColor;
-    public Vector2 playerBulletVector;
-    public bool bEnemy = false;
+    public float multiplicatorBulletSpeed;
+    public float multiplicatorBulletScale;
+    public Color bulletColor;
+    public Vector2 bulletVector;
+    public bool bulletEnemy = false;
     [Space(10)]
 
     [Header("Player Data")]
@@ -138,7 +138,7 @@ public class Player_Manager : MonoBehaviour
     public void changeSize()
     {
         float baseSize = playerSize * 10;
-        float changedSize = baseSize * multiplicatorPlayerScale;
+        float changedSize = baseSize * multiplicatorScale;
         gameObject.transform.localScale = new Vector3(changedSize, changedSize, changedSize);
         finalSize = changedSize/10;
     }

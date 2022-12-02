@@ -9,9 +9,11 @@ public class Enemy_Movement : MonoBehaviour
     [SerializeField] private Vector2 baseEnemyVector;
 
     [Header("Modificators")]
-    [SerializeField] private float multiplicatorSpeed;
+    [SerializeField] private float multiplicatorSpeed
+;
     [SerializeField] private float size;
-    [SerializeField] private float multiplicatorScale;
+    [SerializeField] private float multiplicatorScale
+;
     [SerializeField] private Vector2 boundaries;
     [SerializeField] private Vector2 boundOffset;
 
@@ -52,8 +54,10 @@ public class Enemy_Movement : MonoBehaviour
             boundDirection.y = 1;
         }
 
-        float xResultado = baseEnemySpeed * baseEnemyVector.x * multiplicatorSpeed * boundDirection.x;
-        float yResultado = baseEnemySpeed * baseEnemyVector.y * multiplicatorSpeed * boundDirection.y;
+        float xResultado = baseEnemySpeed * baseEnemyVector.x * multiplicatorSpeed
+ * boundDirection.x;
+        float yResultado = baseEnemySpeed * baseEnemyVector.y * multiplicatorSpeed
+ * boundDirection.y;
         Vector3 movementResultado = new Vector3(xResultado, yResultado, 0);
         transform.position += movementResultado;
     }

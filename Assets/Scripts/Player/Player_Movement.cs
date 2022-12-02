@@ -8,13 +8,13 @@ public class Player_Movement : MonoBehaviour
     #region - Variables
 
     [Header("Player Stats")]
-    [SerializeField] private float basePlayerSpeed;
-    [SerializeField] private Vector2 basePlayerVector;
+    [SerializeField] private float baseSpeed;
+    [SerializeField] private Vector2 baseVector;
 
     [Header("Modificators")]
     private float multiplicatorSpeed;
-    private float size;
     private float multiplicatorScale;
+    private float size;
     private Vector2 boundaries;
     
     [Header("Functionality")]
@@ -67,14 +67,16 @@ public class Player_Movement : MonoBehaviour
     private void GetVariables()
     {   Player_Manager PlayerManager;
         PlayerManager = gameObject.GetComponent<Player_Manager>();
-        multiplicatorSpeed = PlayerManager.multiplicatorPlayerSpeed;
+        multiplicatorSpeed
+ = PlayerManager.multiplicatorSpeed;
         size = PlayerManager.playerSize;
         boundaries = PlayerManager.playerBoundaries;
     }
     private void Movement()
     {
-        Vector3 vectorInicial = new Vector3(inputVector.x * basePlayerVector.x, inputVector.y * basePlayerVector.y, inputVector.z);
-        Vector3 vectorFinal = vectorInicial * basePlayerSpeed * multiplicatorSpeed * Time.deltaTime;
+        Vector3 vectorInicial = new Vector3(inputVector.x * baseVector.x, inputVector.y * baseVector.y, inputVector.z);
+        Vector3 vectorFinal = vectorInicial * baseSpeed * multiplicatorSpeed
+ * Time.deltaTime;
         transform.position += vectorFinal;
     }
     private void Boundaries()
