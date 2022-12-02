@@ -1,0 +1,1 @@
+I am currently not accepting contributions, I am doing this project to learn, but if you want to advise me or guide me on any topic, contact me by [Twitter](https://twitter.com/QuantumRevenant)
