@@ -9,6 +9,7 @@ TagManager:
   - AllyProjectile
   - EnemyLaser
   - Explosion
+  - AllyLaser
   layers:
   - Default
   - TransparentFX
