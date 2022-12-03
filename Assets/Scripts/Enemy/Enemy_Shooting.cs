@@ -48,6 +48,7 @@ public class Enemy_Shooting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        GetVariables();
         if(ValidateShoot())
             Select();
     }
@@ -55,6 +56,24 @@ public class Enemy_Shooting : MonoBehaviour
     void RecalculateTimer()
     {
         modifiedReloadTime=(baseReloadTime-reloadOffset)*multiplicatorReload;
+    }
+
+    private void GetVariables()
+    {
+        Enemy_Manager EnemyManager;
+        EnemyManager = gameObject.GetComponent<Enemy_Manager>();
+        multiplicatorReload = EnemyManager.multiplicatorReload;
+        multiplicatorDamage = EnemyManager.multiplicatorDamage;
+        bulletVector = EnemyManager.bulletVector;
+        multiplicatorBulletScale = EnemyManager.multiplicatorBulletScale;
+        multiplicatorBulletSpeed = EnemyManager.multiplicatorBulletSpeed;
+        bulletColor = EnemyManager.bulletColor;
+        isEnemy = EnemyManager.bulletEnemy;
+
+        if(isEnemy)
+            direction=-1;
+        else
+            direction=1;
     }
 
     bool ValidateShoot()
@@ -79,6 +98,8 @@ public class Enemy_Shooting : MonoBehaviour
 
     void Generate()
     {
+        Enemy_Manager enemyManager=gameObject.GetComponent<Enemy_Manager>();
+        enemyManager.isShooting=true;
         GameObject inst=Instantiate(SimpleBullet,transform.position,Quaternion.identity);
         Bullet_Script bulletScript= inst.GetComponent<Bullet_Script>();
 
@@ -95,6 +116,7 @@ public class Enemy_Shooting : MonoBehaviour
             
         bulletScript.bulletEnemy=isEnemy;
         bulletScript.multiplicatorBulletScale=multiplicatorBulletScale;
+        enemyManager.isShooting=false;
     }
 
 

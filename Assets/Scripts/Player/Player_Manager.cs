@@ -86,7 +86,7 @@ public class Player_Manager : MonoBehaviour
 
             case "EnemyLaser":
                 {
-                    Damage(0.01f,false);
+                    Damage(1);
                     break;
                 }
         }

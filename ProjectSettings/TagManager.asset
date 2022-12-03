@@ -14,16 +14,16 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Enemy
+  - AllyProjectile
+  - EnemyProjectile
+  - Explosion
+  - AllyLaser
+  - EnemyLaser
+  - InstantedObject
   - 
   - 
   - 

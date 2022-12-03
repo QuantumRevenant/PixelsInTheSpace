@@ -6,11 +6,13 @@ public class Enemy_Manager : MonoBehaviour
 {
     #region - Variables
     [Header("Life")]
-    [Range(0, 10)] public float enemyLife = 100f;
+    public float enemyLife = 100f;
     public Color enemyColor;
     public Color enemyDamagedColor;
     [SerializeField] private float durationDamageColor;
     private bool onLaser=false;
+    public bool isShooting=true;
+    private float damageLaser;
     [SerializeField] private bool invulnerableMelee;
     [SerializeField] private float recievedMeleeDamage = 250f;
     [SerializeField] private bool trigger;
@@ -43,7 +45,7 @@ public class Enemy_Manager : MonoBehaviour
 
     private void Awake()
     {
-        enemyColor = gameObject.GetComponent<SpriteRenderer>().color;
+        enemyColor = gameObject.GetComponent<SpriteRenderer>().material.color;
     }
 
     // Start is called before the first frame update
@@ -61,6 +63,16 @@ public class Enemy_Manager : MonoBehaviour
             Damage(250);
         }
         changeSize();
+
+        if(onLaser)
+        {
+            gameObject.GetComponent<SpriteRenderer>().color=enemyDamagedColor;
+            Damage(damageLaser,false);
+        }
+        else
+        {
+            gameObject.GetComponent<SpriteRenderer>().color=enemyColor;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -76,8 +88,12 @@ public class Enemy_Manager : MonoBehaviour
 
             case "AllyProjectile":
                 {
+                    if(!isShooting)
+                    {
                     Damage(collision.GetComponent<Bullet_Script>().bulletDamage);
-                    break;
+                    Debug.Log("Ouch, No me dispares PF");
+                    }
+                    break;     
                 }
 
             case "Explosion":
@@ -88,9 +104,10 @@ public class Enemy_Manager : MonoBehaviour
 
             case "AllyLaser":
                 {
-
-                    
-                    Damage(0.01f, false);
+                    damageLaser=1f;
+                    // damageLaser=collision.GetComponent<>().laserDamage;
+                    damageLaser=damageLaser*Time.deltaTime;
+                    onLaser=true;
                     break;
                 }
         }
@@ -98,7 +115,7 @@ public class Enemy_Manager : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("Salió");
+        onLaser=false;
     }
 
     #region Damage
@@ -116,10 +133,6 @@ public class Enemy_Manager : MonoBehaviour
             {
                 StartCoroutine("blinking");
             }
-            else
-            {
-
-            }
         }
 
 
@@ -129,15 +142,16 @@ public class Enemy_Manager : MonoBehaviour
     {
         //bool state = true;
         SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        spriteRenderer.color = enemyDamagedColor;
+        spriteRenderer.material.color = enemyDamagedColor;
         yield return new WaitForSeconds(durationDamageColor);
-        spriteRenderer.color = enemyColor;
+        spriteRenderer.material.color = enemyColor;
     }
     #endregion
 
     private void Death()
     {
-        Debug.Log("Me mori :(");
+        Debug.Log("Me mori :( - Enemigo "+ System.DateTime.Now.Year.ToString() );
+        Destroy(this.gameObject);
     }
 
     public void changeSize()

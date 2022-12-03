@@ -32,6 +32,7 @@ public class Bullet_Script : MonoBehaviour
     #region - Awake/Start
     private void Awake()
     {
+        gameObject.layer=LayerMask.NameToLayer("InstantedObject");
         baseScale = transform.localScale;
     }
     // Start is called before the first frame update
@@ -52,18 +53,15 @@ public class Bullet_Script : MonoBehaviour
 
     private void Movement()
     {
-        switch (bulletEnemy)
+        if(bulletEnemy)
         {
-            case true:
-                {
+            
                     gameObject.tag = "EnemyProjectile";
-                    break;
-                }
-            case false:
-                {
+                    gameObject.layer= LayerMask.NameToLayer("EnemyProjectile");
+        }else
+        {
                     gameObject.tag = "AllyProjectile";
-                    break;
-                }
+                    gameObject.layer= LayerMask.NameToLayer("AllyProjectile");
         }
         Vector2 direction = bulletVector.normalized;
         Vector3 VectorInicial =new Vector3(direction.x, direction.y*bulletDirection, 0);
