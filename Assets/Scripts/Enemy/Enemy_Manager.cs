@@ -1,54 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 
-public class Player_Manager : MonoBehaviour
+public class Enemy_Manager : MonoBehaviour
 {
     #region - Variables
     [Header("Life")]
-    [Range(0,10)] public float playerLife = 5f;
-    public Color playerColor;
-    public Color playerDamagedColor;
-    [SerializeField] private bool isInvulnerable;
-    [SerializeField] private float invulnerableTime;
-    [SerializeField] private float blinkTime;
+    [Range(0, 10)] public float enemyLife = 100f;
+    public Color enemyColor;
+    public Color enemyDamagedColor;
+    [SerializeField] private float durationDamageColor;
+    private bool onLaser=false;
+    [SerializeField] private bool invulnerableMelee;
+    [SerializeField] private float recievedMeleeDamage = 250f;
     [SerializeField] private bool trigger;
-    [SerializeField] private float invulnerableTimer;
     [Space(10)]
 
-    [Header("Player Multiplicators")]
+    [Header("Enemy Multiplicators")]
     public float multiplicatorSpeed;
     public float multiplicatorScale;
     public float multiplicatorDamage;
     public float multiplicatorReload;
     [Space(10)]
 
-    [Header("Bullet Multiplicators")]
+    [Header("Enemy Multiplicators")]
     public float multiplicatorBulletSpeed;
     public float multiplicatorBulletScale;
     public Color bulletColor;
     public Vector2 bulletVector;
-    public bool bulletEnemy = false;
+    public bool bulletEnemy = true;
     [Space(10)]
 
-    [Header("Player Data")]
-    public float playerSize;
+    [Header("Enemy Data")]
+    public float enemySize;
+
+    public float meleeDamage;
     [HideInInspector] public float finalSize;
-    public Vector2 playerBoundaries;
+    public Vector2 enemyBoundaries;
     //[Space(10)]
     #endregion
 
 
     private void Awake()
     {
-        playerColor = gameObject.GetComponent<SpriteRenderer>().color;
+        enemyColor = gameObject.GetComponent<SpriteRenderer>().color;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -57,7 +58,7 @@ public class Player_Manager : MonoBehaviour
         if (trigger)
         {
             trigger = false;
-            Damage(1);            
+            Damage(250);
         }
         changeSize();
     }
@@ -66,13 +67,14 @@ public class Player_Manager : MonoBehaviour
     {
         switch (collision.tag)
         {
-            case "Enemy":
+            case "Player":
                 {
-                    Damage(1); // Colocar Variable "Impact Damage"
+                    if (!invulnerableMelee)
+                        Damage(recievedMeleeDamage); // Colocar Variable "Impact Damage"
                     break;
                 }
 
-            case "EnemyProjectile":
+            case "AllyProjectile":
                 {
                     Damage(collision.GetComponent<Bullet_Script>().bulletDamage);
                     break;
@@ -80,54 +82,56 @@ public class Player_Manager : MonoBehaviour
 
             case "Explosion":
                 {
-                    Damage(1);
+                    Damage(recievedMeleeDamage);
                     break;
                 }
 
-            case "EnemyLaser":
+            case "AllyLaser":
                 {
-                    Damage(0.01f,false);
+
+                    
+                    Damage(0.01f, false);
                     break;
                 }
         }
     }
 
-    #region Damage
-    public void Damage(float damage, bool invulnerableCheck=true)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if (!isInvulnerable)
-        {            
-            playerLife += -damage;
-            if (playerLife <= 0)
+        Debug.Log("Salió");
+    }
+
+    #region Damage
+    public void Damage(float damage, bool ticking = true)
+    {
+
+        enemyLife += -damage;
+        if (enemyLife <= 0)
+        {
+            Death();
+        }
+        else
+        {
+            if (ticking)
             {
-                Death();
+                StartCoroutine("blinking");
             }
             else
             {
-                if (invulnerableCheck) 
-                {
-                    isInvulnerable = true;
-                    invulnerableTimer = invulnerableTime;
-                    StartCoroutine("blinking");
-                }
+
             }
         }
-        
+
+
     }
 
     IEnumerator blinking()
     {
         //bool state = true;
         SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        while (invulnerableTimer > 0)
-        {
-            spriteRenderer.color = playerDamagedColor;
-            yield return new WaitForSeconds(blinkTime);
-            spriteRenderer.color = playerColor;
-            yield return new WaitForSeconds(blinkTime);
-            invulnerableTimer += (-blinkTime * 2);            
-        }
-        isInvulnerable = false;
+        spriteRenderer.color = enemyDamagedColor;
+        yield return new WaitForSeconds(durationDamageColor);
+        spriteRenderer.color = enemyColor;
     }
     #endregion
 
@@ -138,9 +142,9 @@ public class Player_Manager : MonoBehaviour
 
     public void changeSize()
     {
-        float baseSize = playerSize * 10;
+        float baseSize = enemySize * 10;
         float changedSize = baseSize * multiplicatorScale;
         gameObject.transform.localScale = new Vector3(changedSize, changedSize, changedSize);
-        finalSize = changedSize/10;
+        finalSize = changedSize / 10;
     }
 }

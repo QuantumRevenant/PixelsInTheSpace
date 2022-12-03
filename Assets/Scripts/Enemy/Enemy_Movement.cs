@@ -5,8 +5,8 @@ using UnityEngine;
 public class Enemy_Movement : MonoBehaviour
 {
     [Header("Enemy Stats")]
-    [SerializeField] private float baseEnemySpeed;
-    [SerializeField] private Vector2 baseEnemyVector;
+    [SerializeField] private float baseSpeed;
+    [SerializeField] private Vector2 baseVector;
 
     [Header("Modificators")]
     [SerializeField] private float multiplicatorSpeed
@@ -18,47 +18,47 @@ public class Enemy_Movement : MonoBehaviour
     [SerializeField] private Vector2 boundOffset;
 
     [Header("Functionality")]
-    [SerializeField] private string test;
+    private Vector2 boundDirection = new Vector2(1,1);
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        boundOffset+=new Vector2(size*multiplicatorScale, size*multiplicatorScale);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        Movement();
     }
 
     private void Movement()
     {
-        Vector3 actualPos = transform.position;
-        Vector2 boundDirection = new Vector2(1,1);
+        Vector3 pos = transform.position;
+        
+        Vector2 resultado=new Vector2(0,0);
 
-        if (actualPos.x >= boundaries.x)
+        if (pos.x >= (boundaries.x-boundOffset.x))
         {
             boundDirection.x = -1;
-        } else if (actualPos.x <= -boundaries.x)
+        } else if (pos.x <= -(boundaries.x-boundOffset.x))
         {
             boundDirection.x = 1;
         }
 
-        if (actualPos.y >= boundaries.y)
+        if (pos.y >= (boundaries.y-boundOffset.y))
         {
             boundDirection.y = -1;
         }
-        else if (actualPos.y <= -boundaries.y)
+        else if (pos.y <= -(boundaries.y-boundOffset.y))
         {
             boundDirection.y = 1;
         }
 
-        float xResultado = baseEnemySpeed * baseEnemyVector.x * multiplicatorSpeed
- * boundDirection.x;
-        float yResultado = baseEnemySpeed * baseEnemyVector.y * multiplicatorSpeed
- * boundDirection.y;
-        Vector3 movementResultado = new Vector3(xResultado, yResultado, 0);
+        resultado.x = baseSpeed * baseVector.x * multiplicatorSpeed * boundDirection.x;
+        resultado.y = baseSpeed * baseVector.y * multiplicatorSpeed * boundDirection.y;
+        resultado=resultado*Time.deltaTime;
+        Vector3 movementResultado = new Vector3(resultado.x, resultado.y, 0);
         transform.position += movementResultado;
     }
 }

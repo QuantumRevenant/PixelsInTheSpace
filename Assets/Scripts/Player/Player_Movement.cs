@@ -30,6 +30,7 @@ public class Player_Movement : MonoBehaviour
     }
     #endregion
 
+
     #region - Enable/Disable
     private void OnEnable()
     {
@@ -42,6 +43,7 @@ public class Player_Movement : MonoBehaviour
     }
 
     #endregion
+
 
     #region - Awake/Start
     private void Awake()
@@ -56,6 +58,7 @@ public class Player_Movement : MonoBehaviour
     }
     #endregion
 
+
     // Update is called once per frame
     void Update()
     {
@@ -67,16 +70,14 @@ public class Player_Movement : MonoBehaviour
     private void GetVariables()
     {   Player_Manager PlayerManager;
         PlayerManager = gameObject.GetComponent<Player_Manager>();
-        multiplicatorSpeed
- = PlayerManager.multiplicatorSpeed;
+        multiplicatorSpeed = PlayerManager.multiplicatorSpeed;
         size = PlayerManager.playerSize;
         boundaries = PlayerManager.playerBoundaries;
     }
     private void Movement()
     {
         Vector3 vectorInicial = new Vector3(inputVector.x * baseVector.x, inputVector.y * baseVector.y, inputVector.z);
-        Vector3 vectorFinal = vectorInicial * baseSpeed * multiplicatorSpeed
- * Time.deltaTime;
+        Vector3 vectorFinal = vectorInicial * baseSpeed * multiplicatorSpeed * Time.deltaTime;
         transform.position += vectorFinal;
     }
     private void Boundaries()
