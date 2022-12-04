@@ -287,11 +287,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8885a48c9e343b34e9d474395d017231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerLife: 5
+  playerLife: 8.94
   playerColor: {r: 1, g: 1, b: 1, a: 1}
   playerDamagedColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5019608}
   isInvulnerable: 0
-  invulnerableTime: 3
+  invulnerableTime: 0.25
   blinkTime: 0.3
   trigger: 0
   invulnerableTimer: 1
@@ -893,7 +893,7 @@ MonoBehaviour:
   enemyLife: 100
   enemyColor: {r: 0, g: 0, b: 0, a: 1}
   enemyDamagedColor: {r: 1, g: 0, b: 0, a: 1}
-  durationDamageColor: 15
+  durationDamageColor: 0.125
   isShooting: 1
   invulnerableMelee: 0
   recievedMeleeDamage: 250
@@ -908,7 +908,7 @@ MonoBehaviour:
   bulletVector: {x: 0, y: 1}
   bulletEnemy: 1
   enemySize: 0.1
-  meleeDamage: 100
+  meleeDamage: 1
   finalSize: 0
   enemyBoundaries: {x: 1.125, y: 1}
 --- !u!50 &1285122924
