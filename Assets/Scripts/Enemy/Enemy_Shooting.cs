@@ -48,6 +48,7 @@ public class Enemy_Shooting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        RecalculateTimer();
         GetVariables();
         if(ValidateShoot())
             Select();

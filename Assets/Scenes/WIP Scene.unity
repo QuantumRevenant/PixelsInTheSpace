@@ -158,9 +158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5712b510dcc0fcb4a8abb0260fe007bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSpeed: 1
-  baseVector: {x: 1.25, y: 0.75}
-  inputVector: {x: 0, y: 0, z: 0}
+  playerData: {fileID: 11400000, guid: a1938200f8a019043aa933fbfe3190c8, type: 2}
 --- !u!212 &381469929
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -270,11 +268,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e38c3f16bbfbe5844add1c535c76922a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseReloadTime: 0.25
-  baseSpeed: 1
-  baseDamage: 25
-  direction: 1
   SimpleBullet: {fileID: 1947319807814442615, guid: 58fd124a85dc0e444876956641d812c2, type: 3}
+  playerData: {fileID: 11400000, guid: a1938200f8a019043aa933fbfe3190c8, type: 2}
 --- !u!114 &381469933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,26 +282,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8885a48c9e343b34e9d474395d017231, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerLife: 8.94
-  playerColor: {r: 1, g: 1, b: 1, a: 1}
-  playerDamagedColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5019608}
-  isInvulnerable: 0
-  invulnerableTime: 0.25
-  blinkTime: 0.3
+  playerLife: 5
   trigger: 0
-  invulnerableTimer: 1
   multiplicatorSpeed: 1
   multiplicatorScale: 1
   multiplicatorDamage: 1
   multiplicatorReload: 1
   multiplicatorBulletSpeed: 1
   multiplicatorBulletScale: 1
-  bulletColor: {r: 0.3, g: 1, b: 0, a: 1}
   bulletVector: {x: 0, y: 1}
-  bulletEnemy: 0
-  playerSize: 0.1
   finalSize: 0
-  playerBoundaries: {x: 1.125, y: 1}
+  playerData: {fileID: 11400000, guid: a1938200f8a019043aa933fbfe3190c8, type: 2}
 --- !u!61 &381469934
 BoxCollider2D:
   m_ObjectHideFlags: 0

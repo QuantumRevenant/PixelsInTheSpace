@@ -7,48 +7,39 @@ public class Player_Manager : MonoBehaviour
 {
     #region - Variables
     [Header("Life")]
-    [Range(0,10)] public float playerLife = 5f;
-    public Color playerColor;
-    public Color playerDamagedColor;
-    [SerializeField] private bool isInvulnerable;
-    [SerializeField] private float invulnerableTime;
-    [SerializeField] private float blinkTime;
+    [Range(0, 10)] public float playerLife = 5f;
+    private bool isInvulnerable;
     [SerializeField] private bool trigger;
-    [SerializeField] private float invulnerableTimer;
+    private float invulnerableTimer;
     [Space(10)]
 
     [Header("Player Multiplicators")]
-    public float multiplicatorSpeed;
-    public float multiplicatorScale;
-    public float multiplicatorDamage;
-    public float multiplicatorReload;
+    [HideInInspector] public float multiplicatorSpeed = 1f;
+    [HideInInspector] public float multiplicatorScale = 1f;
+    [HideInInspector] public float multiplicatorDamage = 1f;
+    [HideInInspector] public float multiplicatorReload = 1f;
     [Space(10)]
 
     [Header("Bullet Multiplicators")]
-    public float multiplicatorBulletSpeed;
-    public float multiplicatorBulletScale;
-    public Color bulletColor;
-    public Vector2 bulletVector;
-    public bool bulletEnemy = false;
+    [HideInInspector] public float multiplicatorBulletSpeed = 1f;
+    [HideInInspector] public float multiplicatorBulletScale = 1f;
+    [HideInInspector]public Vector2 bulletVector = new Vector2(0f, 1f);
     [Space(10)]
 
-    [Header("Player Data")]
-    public float playerSize;
     [HideInInspector] public float finalSize;
-    public Vector2 playerBoundaries;
-    //[Space(10)]
+    [SerializeField] PlayerData playerData;
     #endregion
 
 
     private void Awake()
     {
-        playerColor = gameObject.GetComponent<SpriteRenderer>().color;
+        //playerColor = gameObject.GetComponent<SpriteRenderer>().color;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -57,7 +48,7 @@ public class Player_Manager : MonoBehaviour
         if (trigger)
         {
             trigger = false;
-            Damage(1);            
+            Damage(1);
         }
         changeSize();
     }
@@ -93,10 +84,10 @@ public class Player_Manager : MonoBehaviour
     }
 
     #region Damage
-    public void Damage(float damage, bool invulnerableCheck=true)
+    public void Damage(float damage, bool invulnerableCheck = true)
     {
         if (!isInvulnerable)
-        {            
+        {
             playerLife += -damage;
             if (playerLife <= 0)
             {
@@ -104,15 +95,15 @@ public class Player_Manager : MonoBehaviour
             }
             else
             {
-                if (invulnerableCheck) 
+                if (invulnerableCheck)
                 {
                     isInvulnerable = true;
-                    invulnerableTimer = invulnerableTime;
+                    invulnerableTimer = playerData.InvulnerableTime;
                     StartCoroutine("blinking");
                 }
             }
         }
-        
+
     }
 
     IEnumerator blinking()
@@ -121,11 +112,11 @@ public class Player_Manager : MonoBehaviour
         SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         while (invulnerableTimer > 0)
         {
-            spriteRenderer.color = playerDamagedColor;
-            yield return new WaitForSeconds(blinkTime);
-            spriteRenderer.color = playerColor;
-            yield return new WaitForSeconds(blinkTime);
-            invulnerableTimer += (-blinkTime * 2);            
+            spriteRenderer.color = playerData.PlayerDamagedColor;
+            yield return new WaitForSeconds(playerData.BlinkTime);
+            spriteRenderer.color = playerData.PlayerColor;
+            yield return new WaitForSeconds(playerData.BlinkTime);
+            invulnerableTimer += (-playerData.BlinkTime * 2);
         }
         isInvulnerable = false;
     }
@@ -138,9 +129,9 @@ public class Player_Manager : MonoBehaviour
 
     public void changeSize()
     {
-        float baseSize = playerSize * 10;
+        float baseSize = playerData.PlayerSize * 10;
         float changedSize = baseSize * multiplicatorScale;
         gameObject.transform.localScale = new Vector3(changedSize, changedSize, changedSize);
-        finalSize = changedSize/10;
+        finalSize = changedSize / 10;
     }
 }

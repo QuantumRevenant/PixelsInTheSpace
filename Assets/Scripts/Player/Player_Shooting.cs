@@ -8,28 +8,23 @@ public class Player_Shooting : MonoBehaviour
 {
     #region - Variables
     [Header("Player Stats")]
-    [SerializeField] private float baseReloadTime;
     private float reloadTimer;
     private bool isShooting = false;
     [Space(10)]
 
     [Header("Bullet Stats")]
     private Vector2 bulletVector;
-    private Color bulletColor;
-    [SerializeField] private float baseSpeed;
-    [SerializeField] private float baseDamage;
-    private bool isEnemy;
-    [SerializeField, Range(-1, 1)] private int direction;
+    private int direction;
     [Space(10)]
 
     [Header("Player Modificators")]
-    private float multiplicatorReload;
-    private float multiplicatorDamage;
+    private float multiplicatorReload=1f;
+    private float multiplicatorDamage=1f;
     [Space(10)]
 
     [Header("Bullet Modificators")]
-    private float multiplicatorBulletSpeed;
-    private float multiplicatorBulletScale;
+    private float multiplicatorBulletSpeed=1f;
+    private float multiplicatorBulletScale=1f;
     [Space(10)]
 
     [Header("Bullets GameObject")]
@@ -37,7 +32,7 @@ public class Player_Shooting : MonoBehaviour
 
     //Functionality
     private PlayerController playerController;
-
+    [SerializeField] PlayerData playerData;
     #endregion
 
 
@@ -102,10 +97,8 @@ public class Player_Shooting : MonoBehaviour
         bulletVector = PlayerManager.bulletVector;
         multiplicatorBulletScale = PlayerManager.multiplicatorBulletScale;
         multiplicatorBulletSpeed = PlayerManager.multiplicatorBulletSpeed;
-        bulletColor = PlayerManager.bulletColor;
-        isEnemy = PlayerManager.bulletEnemy;
 
-        if(isEnemy)
+        if(playerData.IsEnemy)
             direction=-1;
         else
             direction=1;
@@ -116,7 +109,7 @@ public class Player_Shooting : MonoBehaviour
 
         if (Reload())
         {
-            reloadTimer = baseReloadTime;
+            reloadTimer = playerData.BaseReloadTime;
             Select();
         }
 
@@ -141,17 +134,17 @@ public class Player_Shooting : MonoBehaviour
         Bullet_Script bulletScript= inst.GetComponent<Bullet_Script>();
 
         bulletScript.bulletVector = bulletVector;
-        bulletScript.bulletColor = bulletColor;
-        bulletScript.bulletSpeed = baseSpeed * multiplicatorBulletSpeed;
+        bulletScript.bulletColor = playerData.BulletColor;
+        bulletScript.bulletSpeed = playerData.BaseBulletSpeed * multiplicatorBulletSpeed;
         bulletScript.multiplicatorBulletScale = multiplicatorBulletScale;
-        bulletScript.bulletDamage = baseDamage * multiplicatorDamage
+        bulletScript.bulletDamage = playerData.BaseDamage * multiplicatorDamage
 ;
         if (direction != 0)
             bulletScript.bulletDirection = direction;
         else
             bulletScript.bulletDirection = 1;
 
-        bulletScript.bulletEnemy=isEnemy;
+        bulletScript.bulletEnemy=playerData.IsEnemy;
         bulletScript.multiplicatorBulletScale=multiplicatorBulletScale;
 
     }

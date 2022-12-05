@@ -6,20 +6,18 @@ using UnityEngine.InputSystem.Controls;
 public class Player_Movement : MonoBehaviour
 {
     #region - Variables
-
-    [Header("Player Stats")]
-    [SerializeField] private float baseSpeed;
-    [SerializeField] private Vector2 baseVector;
-
     [Header("Modificators")]
     private float multiplicatorSpeed;
     private float multiplicatorScale;
-    private float size;
-    private Vector2 boundaries;
-    
+    [Space(10)]
+
     [Header("Functionality")]
-    [SerializeField] private Vector3 inputVector;
+    // [SerializeField] 
+    private Vector3 inputVector;
     private PlayerController playerController;
+    [Space(10)]
+
+    [SerializeField] PlayerData playerData;
     #endregion
 
     #region - Action Voids
@@ -71,23 +69,25 @@ public class Player_Movement : MonoBehaviour
     {   Player_Manager PlayerManager;
         PlayerManager = gameObject.GetComponent<Player_Manager>();
         multiplicatorSpeed = PlayerManager.multiplicatorSpeed;
-        size = PlayerManager.playerSize;
-        boundaries = PlayerManager.playerBoundaries;
     }
     private void Movement()
     {
-        Vector3 vectorInicial = new Vector3(inputVector.x * baseVector.x, inputVector.y * baseVector.y, inputVector.z);
-        Vector3 vectorFinal = vectorInicial * baseSpeed * multiplicatorSpeed * Time.deltaTime;
+        Vector3 vectorInicial = new Vector3(inputVector.x * playerData.BaseVector.x, inputVector.y * playerData.BaseVector.y, inputVector.z);
+        Vector3 vectorFinal = vectorInicial * playerData.BaseSpeed * multiplicatorSpeed * Time.deltaTime;
         transform.position += vectorFinal;
     }
     private void Boundaries()
     {
-        float xActual = transform.position.x;
-        float yActual = transform.position.y;
+        Vector3 PosAndSize;
+        PosAndSize.x = transform.position.x;
+        PosAndSize.y = transform.position.y;
+        PosAndSize.z=playerData.PlayerSize*multiplicatorScale;
 
-        xActual=Mathf.Clamp(xActual, -boundaries.x+(size/ 2), boundaries.x - (size/ 2));
-        yActual=Mathf.Clamp(yActual, -boundaries.y, boundaries.y - (size / 2));
+        PosAndSize.x=Mathf.Clamp(PosAndSize.x, -playerData.PlayerBoundaries.x+(PosAndSize.z/ 2), playerData.PlayerBoundaries.x - (PosAndSize.z/ 2));
+        PosAndSize.y=Mathf.Clamp(PosAndSize.y, -playerData.PlayerBoundaries.y, playerData.PlayerBoundaries.y - (PosAndSize.z/ 2));
 
-        transform.position = new Vector3(xActual, yActual, 0);
+        PosAndSize.z=transform.position.z;
+
+        transform.position = PosAndSize;
     }  
 }
