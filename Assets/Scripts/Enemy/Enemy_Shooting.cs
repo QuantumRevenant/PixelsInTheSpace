@@ -8,7 +8,7 @@ public class Enemy_Shooting : MonoBehaviour
     [Header("Enemy Stats")]
     private float modifiedReloadTime=0.1f;
     private float reloadTimer;
-    [SerializeField, Range(0,1)] private float maxReloadOffsetPercent;
+    [SerializeField, Range(0,1)] private float ReloadOffsetPercent;
     private float reloadOffset;
     [Space(10)]
 
@@ -39,7 +39,7 @@ public class Enemy_Shooting : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        reloadOffset=(float)System.Math.Round(Random.Range(0f,enemyData.BaseReloadTime*0.1f),2);
+        reloadOffset=(float)System.Math.Round(Random.Range(-enemyData.BaseReloadTime*ReloadOffsetPercent,enemyData.BaseReloadTime*ReloadOffsetPercent),2);
         RecalculateTimer();
         reloadTimer=modifiedReloadTime;
     }

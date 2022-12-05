@@ -850,7 +850,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5616ba9b21fd38e47815a449e83e944d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxReloadOffsetPercent: 0.1
+  ReloadOffsetPercent: 0
   SimpleBullet: {fileID: 1947319807814442615, guid: 58fd124a85dc0e444876956641d812c2, type: 3}
   enemyData: {fileID: 0}
 --- !u!114 &1285122923
