@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-
+[RequireComponent(typeof(Rigidbody2D),typeof(BoxCollider2D))]
 public class Player_Manager : MonoBehaviour
 {
     #region - Variables
@@ -27,7 +27,7 @@ public class Player_Manager : MonoBehaviour
     [Space(10)]
 
     [HideInInspector] public float finalSize;
-    [SerializeField] PlayerData playerData;
+    public PlayerData playerData;
     #endregion
 
 

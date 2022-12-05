@@ -7,45 +7,32 @@ public class Enemy_Manager : MonoBehaviour
     #region - Variables
     [Header("Life")]
     public float enemyLife = 100f;
-    public Color enemyColor;
-    public Color enemyDamagedColor;
-    [SerializeField] private float durationDamageColor;
-    private bool onLaser=false;
-    public bool isShooting=true;
+    private bool onLaser = false;
+    [HideInInspector] public bool isShooting = true;
     private float damageLaser;
-    [SerializeField] private bool invulnerableMelee;
-    [SerializeField] private float recievedMeleeDamage = 250f;
     [SerializeField] private bool trigger;
     [Space(10)]
 
     [Header("Enemy Multiplicators")]
-    public float multiplicatorSpeed;
-    public float multiplicatorScale;
-    public float multiplicatorDamage;
-    public float multiplicatorReload;
+    [HideInInspector]public float multiplicatorSpeed=1f;
+    [HideInInspector]public float multiplicatorScale=1f;
+    [HideInInspector]public float multiplicatorDamage=1f;
+    [HideInInspector]public float multiplicatorReload=1f;
     [Space(10)]
 
     [Header("Enemy Multiplicators")]
-    public float multiplicatorBulletSpeed;
-    public float multiplicatorBulletScale;
-    public Color bulletColor;
-    public Vector2 bulletVector;
-    public bool bulletEnemy = true;
+    [HideInInspector]public float multiplicatorBulletSpeed=1f;
+    [HideInInspector]public float multiplicatorBulletScale=1f;
+    [HideInInspector]public Vector2 bulletVector=new Vector2(0,1f);
     [Space(10)]
-
-    [Header("Enemy Data")]
-    public float enemySize;
-
-    public float meleeDamage;
     [HideInInspector] public float finalSize;
-    public Vector2 enemyBoundaries;
-    //[Space(10)]
+    public EnemyData enemyData;
     #endregion
 
 
     private void Awake()
     {
-        enemyColor = gameObject.GetComponent<SpriteRenderer>().material.color;
+        enemyLife = enemyData.EnemyBaseLife;
     }
 
     // Start is called before the first frame update
@@ -64,14 +51,14 @@ public class Enemy_Manager : MonoBehaviour
         }
         changeSize();
 
-        if(onLaser)
+        if (onLaser)
         {
-            gameObject.GetComponent<SpriteRenderer>().color=enemyDamagedColor;
-            Damage(damageLaser,false);
+            gameObject.GetComponent<SpriteRenderer>().color = enemyData.EnemyDamagedColor;
+            Damage(damageLaser, false);
         }
         else
         {
-            gameObject.GetComponent<SpriteRenderer>().color=enemyColor;
+            gameObject.GetComponent<SpriteRenderer>().color = enemyData.EnemyColor;
         }
     }
 
@@ -81,33 +68,33 @@ public class Enemy_Manager : MonoBehaviour
         {
             case "Player":
                 {
-                    if (!invulnerableMelee)
-                        Damage(recievedMeleeDamage); // Colocar Variable "Impact Damage"
+                    if (!enemyData.InvulnerableMelee)
+                        Damage(enemyData.RecievedMeleeDamage); // Colocar Variable "Impact Damage"
                     break;
                 }
 
             case "AllyProjectile":
                 {
-                    if(!isShooting)
+                    if (!isShooting)
                     {
-                    Damage(collision.GetComponent<Bullet_Script>().bulletDamage);
-                    Debug.Log("Ouch, No me dispares PF");
+                        Damage(collision.GetComponent<Bullet_Script>().bulletDamage);
+                        Debug.Log("Ouch, No me dispares PF");
                     }
-                    break;     
+                    break;
                 }
 
             case "Explosion":
                 {
-                    Damage(recievedMeleeDamage);
+                    Damage(enemyData.RecievedMeleeDamage);
                     break;
                 }
 
             case "AllyLaser":
                 {
-                    damageLaser=1f;
+                    damageLaser = 1f;
                     // damageLaser=collision.GetComponent<>().laserDamage;
-                    damageLaser=damageLaser*Time.deltaTime;
-                    onLaser=true;
+                    damageLaser = damageLaser * Time.deltaTime;
+                    onLaser = true;
                     break;
                 }
         }
@@ -115,7 +102,7 @@ public class Enemy_Manager : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        onLaser=false;
+        onLaser = false;
     }
 
     #region Damage
@@ -142,21 +129,21 @@ public class Enemy_Manager : MonoBehaviour
     {
         //bool state = true;
         SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        spriteRenderer.material.color = enemyDamagedColor;
-        yield return new WaitForSeconds(durationDamageColor);
-        spriteRenderer.material.color = enemyColor;
+        spriteRenderer.material.color = enemyData.EnemyDamagedColor;
+        yield return new WaitForSeconds(enemyData.DurationDamageColor);
+        spriteRenderer.material.color = enemyData.EnemyColor;
     }
     #endregion
 
     private void Death()
     {
-        Debug.Log("Me mori :( - Enemigo "+ System.DateTime.Now.Year.ToString() );
+        Debug.Log("Me mori :( - Enemigo " + System.DateTime.Now.Year.ToString());
         Destroy(this.gameObject);
     }
 
     public void changeSize()
     {
-        float baseSize = enemySize * 10;
+        float baseSize = enemyData.EnemySize * 10;
         float changedSize = baseSize * multiplicatorScale;
         gameObject.transform.localScale = new Vector3(changedSize, changedSize, changedSize);
         finalSize = changedSize / 10;

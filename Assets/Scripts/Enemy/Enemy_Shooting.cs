@@ -1,46 +1,45 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[RequireComponent(typeof(Enemy_Manager))]
 public class Enemy_Shooting : MonoBehaviour
 {   
     #region - Variables
     [Header("Enemy Stats")]
-    [SerializeField] private float baseReloadTime;
     private float modifiedReloadTime=0.1f;
-    [SerializeField] private float reloadTimer;
+    private float reloadTimer;
     [SerializeField, Range(0,1)] private float maxReloadOffsetPercent;
-    [SerializeField] private float reloadOffset;
+    private float reloadOffset;
     [Space(10)]
 
     [Header("Bullet Stats")]
     private Vector2 bulletVector;
-    private Color bulletColor;
-    [SerializeField] private float baseSpeed;
-    [SerializeField] private float baseDamage;
-    [SerializeField] private bool isEnemy;
-    [SerializeField, Range(-1, 1)] private int direction;
+    private int direction;
     [Space(10)]
 
     [Header("Player Modificators")]
-    private float multiplicatorReload=1;
-    private float multiplicatorDamage=1;
+    private float multiplicatorReload;
+    private float multiplicatorDamage;
     [Space(10)]
 
     [Header("Bullet Modificators")]
-    private float multiplicatorBulletSpeed=1;
-    private float multiplicatorBulletScale=1;
+    private float multiplicatorBulletSpeed;
+    private float multiplicatorBulletScale;
     [Space(10)]
 
     [Header("Bullets GameObject")]
     [SerializeField] private GameObject SimpleBullet;
-
+    [SerializeField] private EnemyData enemyData;
     #endregion
 
+    void Awake()
+    {
+        enemyData=gameObject.GetComponent<Enemy_Manager>().enemyData;
+    }
     // Start is called before the first frame update
     void Start()
     {
-        reloadOffset=(float)System.Math.Round(Random.Range(0f,baseReloadTime*0.1f),2);
+        reloadOffset=(float)System.Math.Round(Random.Range(0f,enemyData.BaseReloadTime*0.1f),2);
         RecalculateTimer();
         reloadTimer=modifiedReloadTime;
     }
@@ -56,7 +55,7 @@ public class Enemy_Shooting : MonoBehaviour
 
     void RecalculateTimer()
     {
-        modifiedReloadTime=(baseReloadTime-reloadOffset)*multiplicatorReload;
+        modifiedReloadTime=(enemyData.BaseReloadTime-reloadOffset)*multiplicatorReload;
     }
 
     private void GetVariables()
@@ -68,10 +67,8 @@ public class Enemy_Shooting : MonoBehaviour
         bulletVector = EnemyManager.bulletVector;
         multiplicatorBulletScale = EnemyManager.multiplicatorBulletScale;
         multiplicatorBulletSpeed = EnemyManager.multiplicatorBulletSpeed;
-        bulletColor = EnemyManager.bulletColor;
-        isEnemy = EnemyManager.bulletEnemy;
 
-        if(isEnemy)
+        if(enemyData.IsEnemy)
             direction=-1;
         else
             direction=1;
@@ -105,17 +102,17 @@ public class Enemy_Shooting : MonoBehaviour
         Bullet_Script bulletScript= inst.GetComponent<Bullet_Script>();
 
         bulletScript.bulletVector = bulletVector;
-        bulletScript.bulletColor = bulletColor;
-        bulletScript.bulletSpeed = baseSpeed * multiplicatorBulletSpeed;
+        bulletScript.bulletColor = enemyData.BulletColor;
+        bulletScript.bulletSpeed = enemyData.BaseSpeed * multiplicatorBulletSpeed;
         bulletScript.multiplicatorBulletScale = multiplicatorBulletScale;
-        bulletScript.bulletDamage = baseDamage * multiplicatorDamage
+        bulletScript.bulletDamage = enemyData.BaseDamage * multiplicatorDamage
 ;
         if (direction != 0)
             bulletScript.bulletDirection = direction;
         else
             bulletScript.bulletDirection = 1;
             
-        bulletScript.bulletEnemy=isEnemy;
+        bulletScript.bulletEnemy=enemyData.IsEnemy;
         bulletScript.multiplicatorBulletScale=multiplicatorBulletScale;
         enemyManager.isShooting=false;
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
-
+[RequireComponent(typeof(Player_Manager))]
 public class Player_Shooting : MonoBehaviour
 {
     #region - Variables
@@ -32,7 +32,7 @@ public class Player_Shooting : MonoBehaviour
 
     //Functionality
     private PlayerController playerController;
-    [SerializeField] PlayerData playerData;
+    [SerializeField] private PlayerData playerData;
     #endregion
 
 
@@ -72,6 +72,7 @@ public class Player_Shooting : MonoBehaviour
 
         playerController.Player.DispararIn.performed += x => shootPressed();
         playerController.Player.DispararOut.performed += x => shootReleased();
+        playerData=gameObject.GetComponent<Player_Manager>().playerData;
     }
     // Start is called before the first frame update
     void Start()

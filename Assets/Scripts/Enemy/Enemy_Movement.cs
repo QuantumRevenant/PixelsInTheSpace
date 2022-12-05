@@ -1,41 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[RequireComponent(typeof(Enemy_Manager))]
 public class Enemy_Movement : MonoBehaviour
 {
-    [Header("Enemy Stats")]
-    [SerializeField] private float baseSpeed;
-    [SerializeField] private Vector2 baseVector;
-
     [Header("Modificators")]
-    [SerializeField] private float multiplicatorSpeed
-;
-    [SerializeField] private float size;
-    [SerializeField] private float multiplicatorScale;
-    [SerializeField] private Vector2 boundaries;
+    private float multiplicatorSpeed;
+    private float multiplicatorScale;
     [SerializeField] private Vector2 boundOffset;
     private Vector2 finalOffset;
 
     [Header("Functionality")]
     private Vector2 boundDirection = new Vector2(1,1);
-
+    [SerializeField] private EnemyData enemyData;
+    void  Awake()
+    {
+        enemyData=gameObject.GetComponent<Enemy_Manager>().enemyData;
+    }
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        Movement();
+        GetVariables();
         ActualizarOffset();
+        Movement();
     }
-
+    private void GetVariables()
+    {   Enemy_Manager EnemyManager;
+        EnemyManager = gameObject.GetComponent<Enemy_Manager>();
+        multiplicatorScale = EnemyManager.multiplicatorScale;
+        multiplicatorSpeed = EnemyManager.multiplicatorSpeed;
+    }
     private void ActualizarOffset()
     {
-        finalOffset=boundOffset+new Vector2(size*multiplicatorScale, size*multiplicatorScale);
+        finalOffset=boundOffset+new Vector2(enemyData.EnemySize*multiplicatorScale, enemyData.EnemySize*multiplicatorScale);
     }
 
     private void Movement()
@@ -44,25 +47,25 @@ public class Enemy_Movement : MonoBehaviour
         
         Vector2 resultado=new Vector2(0,0);
 
-        if (pos.x >= (boundaries.x-finalOffset.x))
+        if (pos.x >= (enemyData.EnemyBoundaries.x-finalOffset.x))
         {
             boundDirection.x = -1;
-        } else if (pos.x <= -(boundaries.x-finalOffset.x))
+        } else if (pos.x <= -(enemyData.EnemyBoundaries.x-finalOffset.x))
         {
             boundDirection.x = 1;
         }
 
-        if (pos.y >= (boundaries.y-finalOffset.y))
+        if (pos.y >= (enemyData.EnemyBoundaries.y-finalOffset.y))
         {
             boundDirection.y = -1;
         }
-        else if (pos.y <= -(boundaries.y-finalOffset.y))
+        else if (pos.y <= -(enemyData.EnemyBoundaries.y-finalOffset.y))
         {
             boundDirection.y = 1;
         }
 
-        resultado.x = baseSpeed * baseVector.x * multiplicatorSpeed * boundDirection.x;
-        resultado.y = baseSpeed * baseVector.y * multiplicatorSpeed * boundDirection.y;
+        resultado.x = enemyData.BaseSpeed * enemyData.BaseVector.x * multiplicatorSpeed * boundDirection.x;
+        resultado.y = enemyData.BaseSpeed * enemyData.BaseVector.y * multiplicatorSpeed * boundDirection.y;
         resultado=resultado*Time.deltaTime;
         Vector3 movementResultado = new Vector3(resultado.x, resultado.y, 0);
         transform.position += movementResultado;

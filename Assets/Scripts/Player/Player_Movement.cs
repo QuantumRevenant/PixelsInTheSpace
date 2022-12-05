@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+[RequireComponent(typeof(Player_Manager))]
 public class Player_Movement : MonoBehaviour
 {
     #region - Variables
@@ -17,7 +18,7 @@ public class Player_Movement : MonoBehaviour
     private PlayerController playerController;
     [Space(10)]
 
-    [SerializeField] PlayerData playerData;
+    [SerializeField] private PlayerData playerData;
     #endregion
 
     #region - Action Voids
@@ -47,6 +48,7 @@ public class Player_Movement : MonoBehaviour
     private void Awake()
     {
         playerController = new PlayerController();
+        playerData=gameObject.GetComponent<Player_Manager>().playerData;
     }
 
     // Start is called before the first frame update
