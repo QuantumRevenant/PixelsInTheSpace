@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 586936f9515e56c48b58c58de45a2e0e, type: 3}
   m_Name: Enm_Basilicon
   m_EditorClassIdentifier: 
-  enemyName: Enemy
+  enemyName: Basilicon
+  enemyBaseLife: 100
   enemyColor: {r: 1, g: 1, b: 1, a: 1}
   enemyDamagedColor: {r: 1, g: 0, b: 0, a: 1}
   durationDamageColor: 0.125
