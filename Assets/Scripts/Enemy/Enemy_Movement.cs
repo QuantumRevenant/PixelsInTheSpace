@@ -12,10 +12,10 @@ public class Enemy_Movement : MonoBehaviour
     [SerializeField] private float multiplicatorSpeed
 ;
     [SerializeField] private float size;
-    [SerializeField] private float multiplicatorScale
-;
+    [SerializeField] private float multiplicatorScale;
     [SerializeField] private Vector2 boundaries;
     [SerializeField] private Vector2 boundOffset;
+    private Vector2 finalOffset;
 
     [Header("Functionality")]
     private Vector2 boundDirection = new Vector2(1,1);
@@ -23,13 +23,19 @@ public class Enemy_Movement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        boundOffset+=new Vector2(size*multiplicatorScale, size*multiplicatorScale);
+
     }
 
     // Update is called once per frame
     void Update()
     {
         Movement();
+        ActualizarOffset();
+    }
+
+    private void ActualizarOffset()
+    {
+        finalOffset=boundOffset+new Vector2(size*multiplicatorScale, size*multiplicatorScale);
     }
 
     private void Movement()
@@ -38,19 +44,19 @@ public class Enemy_Movement : MonoBehaviour
         
         Vector2 resultado=new Vector2(0,0);
 
-        if (pos.x >= (boundaries.x-boundOffset.x))
+        if (pos.x >= (boundaries.x-finalOffset.x))
         {
             boundDirection.x = -1;
-        } else if (pos.x <= -(boundaries.x-boundOffset.x))
+        } else if (pos.x <= -(boundaries.x-finalOffset.x))
         {
             boundDirection.x = 1;
         }
 
-        if (pos.y >= (boundaries.y-boundOffset.y))
+        if (pos.y >= (boundaries.y-finalOffset.y))
         {
             boundDirection.y = -1;
         }
-        else if (pos.y <= -(boundaries.y-boundOffset.y))
+        else if (pos.y <= -(boundaries.y-finalOffset.y))
         {
             boundDirection.y = 1;
         }

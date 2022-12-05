@@ -68,6 +68,7 @@ public class Player_Movement : MonoBehaviour
     private void GetVariables()
     {   Player_Manager PlayerManager;
         PlayerManager = gameObject.GetComponent<Player_Manager>();
+        multiplicatorScale = PlayerManager.multiplicatorScale;
         multiplicatorSpeed = PlayerManager.multiplicatorSpeed;
     }
     private void Movement()

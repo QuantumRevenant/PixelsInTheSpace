@@ -1,13 +1,13 @@
 using UnityEngine;
-[CreateAssetMenu(fileName = "New Player Data", menuName = "Player Data")]
+[CreateAssetMenu(fileName = "New Player Data", menuName = "Scriptable Objects/Player Data")]
 public class PlayerData : ScriptableObject
 {
     [Header("Player Characteristics")]
-    [SerializeField] private Color playerColor;
-    [SerializeField] private Color playerDamagedColor;
-    [SerializeField] private float invulnerableTime;
-    [SerializeField] private float blinkTime;
-    [SerializeField] private float playerSize;
+    [SerializeField] private Color playerColor=Color.white;
+    [SerializeField] private Color playerDamagedColor=new Color(0.5f,0.5f,0.5f,0.5f);
+    [SerializeField] private float invulnerableTime=0.6f;
+    [SerializeField] private float blinkTime=0.25f;
+    [SerializeField] private float playerSize=0.1f;
     [SerializeField] private Vector2 playerBoundaries;
     [Space(10)]
     /////////////////////////////////////////////////////
