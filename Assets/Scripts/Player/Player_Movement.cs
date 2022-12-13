@@ -14,57 +14,30 @@ public class Player_Movement : MonoBehaviour
 
     [Header("Functionality")]
     // [SerializeField] 
-    private Vector3 inputVector;
-    private PlayerController playerController;
+    //private Vector3 inputVector;
+    public PlayerInput playerInput;
     [Space(10)]
 
     [SerializeField] private PlayerData playerData;
     #endregion
 
-    #region - Action Voids
-    private void OnMovimiento(InputValue valor)
-    {
-        Vector2 inputMovimiento = valor.Get<Vector2>();
-        inputVector = new Vector3(inputMovimiento.x, inputMovimiento.y, 0);
-    }
-    #endregion
-
-
-    #region - Enable/Disable
-    private void OnEnable()
-    {
-        playerController.Enable();
-    }
-
-    private void OnDisable()
-    {
-        playerController.Disable();
-    }
-
-    #endregion
-
-
     #region - Awake/Start
     private void Awake()
     {
-        playerController = new PlayerController();
+        playerInput=GetComponent<PlayerInput>();
         playerData=gameObject.GetComponent<Player_Manager>().playerData;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
 
     }
     #endregion
 
-
-    // Update is called once per frame
     void Update()
     {
         GetVariables();
-        Movement();
-        Boundaries();
+        Movement(playerInput.actions["Move"].ReadValue<Vector2>());
     }
 
     private void GetVariables()
@@ -73,11 +46,12 @@ public class Player_Movement : MonoBehaviour
         multiplicatorScale = PlayerManager.multiplicatorScale;
         multiplicatorSpeed = PlayerManager.multiplicatorSpeed;
     }
-    private void Movement()
+    private void Movement(Vector2 inputVector)
     {
-        Vector3 vectorInicial = new Vector3(inputVector.x * playerData.BaseVector.x, inputVector.y * playerData.BaseVector.y, inputVector.z);
+        Vector3 vectorInicial = new Vector3(inputVector.x * playerData.BaseVector.x, inputVector.y * playerData.BaseVector.y, 0);
         Vector3 vectorFinal = vectorInicial * playerData.BaseSpeed * multiplicatorSpeed * Time.deltaTime;
         transform.position += vectorFinal;
+        Boundaries();
     }
     private void Boundaries()
     {

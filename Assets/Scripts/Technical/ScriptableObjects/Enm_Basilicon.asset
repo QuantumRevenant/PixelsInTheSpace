@@ -21,11 +21,12 @@ MonoBehaviour:
   recievedMeleeDamage: 250
   enemySize: 0.1
   meleeDamage: 1
-  enemyBoundaries: {x: 1.125, y: 1}
+  enemyBoundaries: {x: 1.125, y: 1.125}
   baseSpeed: 0.5
-  baseVector: {x: 1, y: 0.125}
+  baseVector: {x: 1, y: 0}
   baseReloadTime: 1
   baseDamage: 1
   bulletColor: {r: 1, g: 0, b: 0.3, a: 1}
   baseBulletSpeed: 1
+  baseBulletScale: 2.5
   isEnemy: 1

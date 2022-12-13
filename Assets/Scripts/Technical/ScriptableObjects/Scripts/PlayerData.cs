@@ -25,6 +25,9 @@ public class PlayerData : ScriptableObject
     [SerializeField] private Color bulletColor=new Color(0.3f,1f,0,1);
     [SerializeField] private float baseBulletSpeed=1;
     [SerializeField] private bool isEnemy=false;
+    /////////////////////////////////////////////////////
+    [Header("Inventory Characteristics")]
+    [SerializeField] private int inventoryMaxSize;
 
 
     public Color PlayerColor { get { return playerColor; } }

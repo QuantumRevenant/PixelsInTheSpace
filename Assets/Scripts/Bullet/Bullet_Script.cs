@@ -14,7 +14,7 @@ public class Bullet_Script : MonoBehaviour
     [Range(-1, 1)] public int bulletDirection;
     public bool bulletEnemy;
     public float orientation;
-    private Vector3 baseScale;
+    [HideInInspector]public Vector3 baseScale;
     [Space(10)]
 
     [Header("Modificators")]

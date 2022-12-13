@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+
+//Items Enumerator
+enum Items{Nothing,Shield,Laser,Bomb};
+
 [RequireComponent(typeof(Rigidbody2D),typeof(BoxCollider2D))]
 public class Player_Manager : MonoBehaviour
 {
@@ -23,8 +27,10 @@ public class Player_Manager : MonoBehaviour
     [Header("Bullet Multiplicators")]
     [HideInInspector] public float multiplicatorBulletSpeed = 1f;
     [HideInInspector] public float multiplicatorBulletScale = 1f;
-    [HideInInspector]public Vector2 bulletVector = new Vector2(0f, 1f);
+    [HideInInspector] public Vector2 bulletVector = new Vector2(0f, 1f);
     [Space(10)]
+
+    [Header("Inventory")]
 
     [HideInInspector] public float finalSize;
     public PlayerData playerData;
@@ -84,6 +90,12 @@ public class Player_Manager : MonoBehaviour
     }
 
     #region Damage
+    [ContextMenu("Change Invulnerable Status")]
+    public void ToggleInvulnerable()
+    {
+        isInvulnerable=!isInvulnerable;
+        Debug.Log("Cambiamos el valor de Invulnerabilidad a" + isInvulnerable);
+    }
     public void Damage(float damage, bool invulnerableCheck = true)
     {
         if (!isInvulnerable)

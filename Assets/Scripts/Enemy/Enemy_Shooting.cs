@@ -101,12 +101,12 @@ public class Enemy_Shooting : MonoBehaviour
         GameObject inst=Instantiate(SimpleBullet,transform.position,Quaternion.identity);
         Bullet_Script bulletScript= inst.GetComponent<Bullet_Script>();
 
+        bulletScript.baseScale=enemyData.BaseBulletScale;
         bulletScript.bulletVector = bulletVector;
         bulletScript.bulletColor = enemyData.BulletColor;
         bulletScript.bulletSpeed = enemyData.BaseSpeed * multiplicatorBulletSpeed;
         bulletScript.multiplicatorBulletScale = multiplicatorBulletScale;
-        bulletScript.bulletDamage = enemyData.BaseDamage * multiplicatorDamage
-;
+        bulletScript.bulletDamage = enemyData.BaseDamage * multiplicatorDamage;
         if (direction != 0)
             bulletScript.bulletDirection = direction;
         else

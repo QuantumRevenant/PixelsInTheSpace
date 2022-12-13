@@ -28,6 +28,7 @@ public class EnemyData : ScriptableObject
     [Header("Bullet Characteristics")]
     [SerializeField] private Color bulletColor=new Color(1f,0f,0.3f,1);
     [SerializeField] private float baseBulletSpeed=1;
+    [SerializeField] private float baseBulletScale=2.5f;
     [SerializeField] private bool isEnemy=true;
 
     public string EnemyName { get { return enemyName; } }
@@ -45,5 +46,6 @@ public class EnemyData : ScriptableObject
     public float BaseDamage { get { return baseDamage; } }
     public Color BulletColor { get { return bulletColor; } }
     public float BaseBulletSpeed { get { return baseBulletSpeed; } }
+    public Vector3 BaseBulletScale { get { return new Vector3(baseBulletScale,baseBulletScale,baseBulletScale); } }
     public bool IsEnemy { get { return isEnemy; } }
 }
