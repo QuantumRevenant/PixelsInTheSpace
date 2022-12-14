@@ -51,7 +51,7 @@ public class Player_Movement : MonoBehaviour
     {
         Vector3 vectorInicial = new Vector3(inputVector.x * playerData.BaseVector.x, inputVector.y * playerData.BaseVector.y, 0);
         Vector3 vectorFinal = vectorInicial * playerData.BaseSpeed * multiplicatorSpeed * Time.deltaTime;
-        transform.position += vectorFinal;
+        transform.Translate(vectorFinal);
         Boundaries();
     }
     private void Boundaries()

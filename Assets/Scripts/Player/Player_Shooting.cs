@@ -84,6 +84,8 @@ public class Player_Shooting : MonoBehaviour
         GameObject inst = Instantiate(SimpleBullet, transform.position, Quaternion.identity);
         Bullet_Script bulletScript = inst.GetComponent<Bullet_Script>();
 
+        bulletScript.baseScale = playerData.BaseBulletScale;
+        bulletScript.bulletDesviation = playerData.BaseBulletDesviation;
         bulletScript.bulletVector = bulletVector;
         bulletScript.bulletColor = playerData.BulletColor;
         bulletScript.bulletSpeed = playerData.BaseBulletSpeed * multiplicatorBulletSpeed;

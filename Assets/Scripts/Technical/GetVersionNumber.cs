@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class GetVersionNumber : MonoBehaviour
-{   
+{
     [SerializeField]
     private string versionNumber;
     [SerializeField]
@@ -20,6 +20,6 @@ public class GetVersionNumber : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

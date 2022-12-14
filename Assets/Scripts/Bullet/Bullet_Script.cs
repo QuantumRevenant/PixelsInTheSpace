@@ -10,11 +10,14 @@ public class Bullet_Script : MonoBehaviour
     public Vector2 bulletVector;
     public Color bulletColor;
     public float bulletSpeed;
+    [Tooltip("Relation 0.1-1.8 VerticalSpeed-AngularSpeed")]
+    public float bulletDesviation = 0f;
+    [SerializeField] private float bulletTotalDesviation = 0.0f;
     public float bulletDamage;
     [Range(-1, 1)] public int bulletDirection;
     public bool bulletEnemy;
     public float orientation;
-    [HideInInspector]public Vector3 baseScale;
+    [HideInInspector] public Vector3 baseScale;
     [Space(10)]
 
     [Header("Modificators")]
@@ -26,19 +29,19 @@ public class Bullet_Script : MonoBehaviour
     [SerializeField] private float boundariesOffset;
     [SerializeField] private float spriteSize;
 
-    
+
     #endregion
 
     #region - Awake/Start
     private void Awake()
     {
-        gameObject.layer=LayerMask.NameToLayer("InstantedObject");
+        gameObject.layer = LayerMask.NameToLayer("InstantedObject");
         baseScale = transform.localScale;
     }
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
     #endregion
 
@@ -50,27 +53,44 @@ public class Bullet_Script : MonoBehaviour
         ChangeColor();
         Boundaries();
     }
-
     private void Movement()
     {
-        if(bulletEnemy)
+        if (bulletEnemy)
         {
-            
-                    gameObject.tag = "EnemyProjectile";
-                    gameObject.layer= LayerMask.NameToLayer("EnemyProjectile");
-        }else
-        {
-                    gameObject.tag = "AllyProjectile";
-                    gameObject.layer= LayerMask.NameToLayer("AllyProjectile");
-        }
-        Vector2 direction = bulletVector.normalized;
-        Vector3 VectorInicial =new Vector3(direction.x, direction.y*bulletDirection, 0);
-        Vector3 vectorFinal = VectorInicial.normalized * bulletSpeed * Time.deltaTime;
-        transform.position += vectorFinal;
-    }
 
+            gameObject.tag = "EnemyProjectile";
+            gameObject.layer = LayerMask.NameToLayer("EnemyProjectile");
+        }
+        else
+        {
+            gameObject.tag = "AllyProjectile";
+            gameObject.layer = LayerMask.NameToLayer("AllyProjectile");
+        }
+        float bulletAngle = Vector3.Angle(new Vector3(0.0f, 1.0f, 0.0f), new Vector3(bulletVector.x, bulletVector.y, 0.0f));
+        bulletTotalDesviation = ChangeOrientation(bulletTotalDesviation, bulletDesviation);
+        if (bulletVector.x < 0.0f)
+        {
+            bulletAngle = -bulletAngle;
+            bulletAngle = bulletAngle + 360;
+        }
+        bulletAngle += bulletTotalDesviation;
+
+        transform.rotation = Quaternion.Euler(0f, 0f, bulletAngle);
+        Vector3 vectorFinal = transform.up * bulletSpeed * Time.deltaTime;
+        transform.Translate(vectorFinal, Space.Self);
+    }
+    private float ChangeOrientation(float input, float angularSpeed)
+    {
+        float Output;
+        Output = input + (angularSpeed * Time.deltaTime);
+        if (Output >= 360)
+            Output -= 360;
+        else if (Output < 0)
+            Output += 360;
+        return Output;
+    }
     private void ChangeSize()
-    {           
+    {
         transform.localScale = baseScale * multiplicatorBulletScale;
     }
 
@@ -82,11 +102,11 @@ public class Bullet_Script : MonoBehaviour
     private void Boundaries()
     {
         Vector3 actualPosition = transform.position;
-        if (actualPosition.x > boundaries.x + boundariesOffset||actualPosition.x<-(boundaries.x + boundariesOffset))
+        if (actualPosition.x > boundaries.x + boundariesOffset || actualPosition.x < -(boundaries.x + boundariesOffset))
         {
             Destroy(gameObject);
         }
-        if (actualPosition.y> boundaries.y + boundariesOffset||actualPosition.y<-(boundaries.y + boundariesOffset))
+        if (actualPosition.y > boundaries.y + boundariesOffset || actualPosition.y < -(boundaries.y + boundariesOffset))
         {
             Destroy(gameObject);
         }

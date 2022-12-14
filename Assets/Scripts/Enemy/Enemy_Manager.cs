@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(Rigidbody2D),typeof(BoxCollider2D))]
+[RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
 public class Enemy_Manager : MonoBehaviour
 {
     #region - Variables
@@ -14,16 +14,16 @@ public class Enemy_Manager : MonoBehaviour
     [Space(10)]
 
     [Header("Enemy Multiplicators")]
-    [HideInInspector]public float multiplicatorSpeed=1f;
-    [HideInInspector]public float multiplicatorScale=1f;
-    [HideInInspector]public float multiplicatorDamage=1f;
-    [HideInInspector]public float multiplicatorReload=1f;
+    [HideInInspector] public float multiplicatorSpeed = 1f;
+    [HideInInspector] public float multiplicatorScale = 1f;
+    [HideInInspector] public float multiplicatorDamage = 1f;
+    [HideInInspector] public float multiplicatorReload = 1f;
     [Space(10)]
 
     [Header("Enemy Multiplicators")]
-    [HideInInspector]public float multiplicatorBulletSpeed=1f;
-    [HideInInspector]public float multiplicatorBulletScale=1f;
-    [HideInInspector]public Vector2 bulletVector=new Vector2(0,1f);
+    [HideInInspector] public float multiplicatorBulletSpeed = 1f;
+    [HideInInspector] public float multiplicatorBulletScale = 1f;
+    [HideInInspector] public Vector2 bulletVector = new Vector2(0, 1f);
     [Space(10)]
     [HideInInspector] public float finalSize;
     public EnemyData enemyData;

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemSprite: {fileID: 0}
   isActivable: 1
-  itemClass: 0
+  itemClass: 12
   isTemporal: 0
   multiplicatorValue: 0
   itemSpeed: 0.5

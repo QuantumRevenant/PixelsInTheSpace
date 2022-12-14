@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 [RequireComponent(typeof(Enemy_Manager))]
 public class Enemy_Shooting : MonoBehaviour
-{   
+{
     #region - Variables
     [Header("Enemy Stats")]
-    private float modifiedReloadTime=0.1f;
+    private float modifiedReloadTime = 0.1f;
     private float reloadTimer;
-    [SerializeField, Range(0,1)] private float ReloadOffsetPercent;
+    [SerializeField, Range(0, 1)] private float ReloadOffsetPercent;
     private float reloadOffset;
     [Space(10)]
 
@@ -34,13 +34,13 @@ public class Enemy_Shooting : MonoBehaviour
 
     void Awake()
     {
-        enemyData=gameObject.GetComponent<Enemy_Manager>().enemyData;   
+        enemyData = gameObject.GetComponent<Enemy_Manager>().enemyData;
     }
     void Start()
     {
-        reloadOffset=(float)System.Math.Round(Random.Range(-enemyData.BaseReloadTime*ReloadOffsetPercent,enemyData.BaseReloadTime*ReloadOffsetPercent),2);
+        reloadOffset = (float)System.Math.Round(Random.Range(-enemyData.BaseReloadTime * ReloadOffsetPercent, enemyData.BaseReloadTime * ReloadOffsetPercent), 2);
         RecalculateTimer();
-        reloadTimer=modifiedReloadTime;
+        reloadTimer = modifiedReloadTime;
         GetVariables();
     }
 
@@ -48,13 +48,13 @@ public class Enemy_Shooting : MonoBehaviour
     {
         RecalculateTimer();
         GetVariables();
-        if(ValidateShoot())
+        if (ValidateShoot())
             Select();
     }
 
     void RecalculateTimer()
     {
-        modifiedReloadTime=(enemyData.BaseReloadTime-reloadOffset)*multiplicatorReload;
+        modifiedReloadTime = (enemyData.BaseReloadTime - reloadOffset) * multiplicatorReload;
     }
 
     private void GetVariables()
@@ -67,23 +67,23 @@ public class Enemy_Shooting : MonoBehaviour
         multiplicatorBulletScale = EnemyManager.multiplicatorBulletScale;
         multiplicatorBulletSpeed = EnemyManager.multiplicatorBulletSpeed;
 
-        if(enemyData.IsEnemy)
-            direction=-1;
+        if (enemyData.IsEnemy)
+            direction = -1;
         else
-            direction=1;
+            direction = 1;
     }
 
     bool ValidateShoot()
     {
-        bool output=false;
-        
-        if(reloadTimer<=0)
+        bool output = false;
+
+        if (reloadTimer <= 0)
         {
-            output=true;
-            reloadTimer=modifiedReloadTime;
+            output = true;
+            reloadTimer = modifiedReloadTime;
         }
         else
-            reloadTimer+=-Time.deltaTime;
+            reloadTimer += -Time.deltaTime;
 
         return output;
     }
@@ -95,12 +95,13 @@ public class Enemy_Shooting : MonoBehaviour
 
     void Generate()
     {
-        Enemy_Manager enemyManager=gameObject.GetComponent<Enemy_Manager>();
-        enemyManager.isShooting=true;
-        GameObject inst=Instantiate(SimpleBullet,transform.position,Quaternion.identity);
-        Bullet_Script bulletScript= inst.GetComponent<Bullet_Script>();
+        Enemy_Manager enemyManager = gameObject.GetComponent<Enemy_Manager>();
+        enemyManager.isShooting = true;
+        GameObject inst = Instantiate(SimpleBullet, transform.position, Quaternion.identity);
+        Bullet_Script bulletScript = inst.GetComponent<Bullet_Script>();
 
-        bulletScript.baseScale=enemyData.BaseBulletScale;
+        bulletScript.baseScale = enemyData.BaseBulletScale;
+        bulletScript.bulletDesviation = enemyData.BaseBulletDesviation;
         bulletScript.bulletVector = bulletVector;
         bulletScript.bulletColor = enemyData.BulletColor;
         bulletScript.bulletSpeed = enemyData.BaseSpeed * multiplicatorBulletSpeed;
@@ -110,10 +111,10 @@ public class Enemy_Shooting : MonoBehaviour
             bulletScript.bulletDirection = direction;
         else
             bulletScript.bulletDirection = 1;
-            
-        bulletScript.bulletEnemy=enemyData.IsEnemy;
-        bulletScript.multiplicatorBulletScale=multiplicatorBulletScale;
-        enemyManager.isShooting=false;
+
+        bulletScript.bulletEnemy = enemyData.IsEnemy;
+        bulletScript.multiplicatorBulletScale = multiplicatorBulletScale;
+        enemyManager.isShooting = false;
     }
 
 
