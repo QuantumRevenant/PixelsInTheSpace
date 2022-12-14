@@ -49,7 +49,7 @@ public class Enemy_Manager : MonoBehaviour
             trigger = false;
             Damage(250);
         }
-        changeSize();
+        ChangeSize();
 
         if (onLaser)
         {
@@ -141,7 +141,7 @@ public class Enemy_Manager : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    public void changeSize()
+    public void ChangeSize()
     {
         float baseSize = enemyData.EnemySize * 10;
         float changedSize = baseSize * multiplicatorScale;

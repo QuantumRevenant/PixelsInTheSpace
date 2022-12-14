@@ -293,6 +293,8 @@ MonoBehaviour:
   multiplicatorBulletSpeed: 1
   multiplicatorBulletScale: 1
   bulletVector: {x: 0, y: 1}
+  inventorySize: 4
+  inventory: 
   finalSize: 0
   playerData: {fileID: 11400000, guid: a1938200f8a019043aa933fbfe3190c8, type: 2}
 --- !u!61 &381469934

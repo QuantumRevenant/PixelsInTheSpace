@@ -34,17 +34,16 @@ public class Enemy_Shooting : MonoBehaviour
 
     void Awake()
     {
-        enemyData=gameObject.GetComponent<Enemy_Manager>().enemyData;
+        enemyData=gameObject.GetComponent<Enemy_Manager>().enemyData;   
     }
-    // Start is called before the first frame update
     void Start()
     {
         reloadOffset=(float)System.Math.Round(Random.Range(-enemyData.BaseReloadTime*ReloadOffsetPercent,enemyData.BaseReloadTime*ReloadOffsetPercent),2);
         RecalculateTimer();
         reloadTimer=modifiedReloadTime;
+        GetVariables();
     }
 
-    // Update is called once per frame
     void Update()
     {
         RecalculateTimer();

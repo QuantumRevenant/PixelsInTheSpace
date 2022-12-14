@@ -33,7 +33,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Cambiar Activable",
+                    "name": "Hotbar Scroll",
                     "type": "PassThrough",
                     "id": "fe3cdc6a-aca9-4845-9ebf-f223a2508adf",
                     "expectedControlType": "Axis",
@@ -42,7 +42,16 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Eyectar Arma",
+                    "name": "Hotbar Select",
+                    "type": "Button",
+                    "id": "d6cc6069-cd41-409d-82d4-f1ab5cc3766b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Eject Weapon",
                     "type": "Button",
                     "id": "1ea9f10b-1846-4731-b6a0-34453d470d83",
                     "expectedControlType": "Button",
@@ -51,7 +60,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Eyectar Activable",
+                    "name": "Eject Activable",
                     "type": "Button",
                     "id": "100b0e2b-91ac-4e84-b296-99c3b21c423a",
                     "expectedControlType": "Button",
@@ -60,7 +69,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Pausa",
+                    "name": "Pause",
                     "type": "Button",
                     "id": "cc84175e-ddfc-4019-8cfc-1f5bfd1ae0a9",
                     "expectedControlType": "Button",
@@ -253,7 +262,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Cambiar Activable",
+                    "action": "Hotbar Scroll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -264,7 +273,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Cambiar Activable",
+                    "action": "Hotbar Scroll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -275,7 +284,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Cambiar Activable",
+                    "action": "Hotbar Scroll",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -286,7 +295,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Cambiar Activable",
+                    "action": "Hotbar Scroll",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -297,7 +306,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Cambiar Activable",
+                    "action": "Hotbar Scroll",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -308,7 +317,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Cambiar Activable",
+                    "action": "Hotbar Scroll",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -319,7 +328,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Cambiar Activable",
+                    "action": "Hotbar Scroll",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -330,7 +339,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Cambiar Activable",
+                    "action": "Hotbar Scroll",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -341,7 +350,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Eyectar Arma",
+                    "action": "Eject Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -352,7 +361,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Eyectar Arma",
+                    "action": "Eject Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -363,7 +372,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Eyectar Arma",
+                    "action": "Eject Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -374,7 +383,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Eyectar Arma",
+                    "action": "Eject Weapon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -385,7 +394,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Eyectar Activable",
+                    "action": "Eject Activable",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -396,7 +405,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Eyectar Activable",
+                    "action": "Eject Activable",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -407,7 +416,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Eyectar Activable",
+                    "action": "Eject Activable",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -418,7 +427,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Eyectar Activable",
+                    "action": "Eject Activable",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -429,7 +438,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Eyectar Activable",
+                    "action": "Eject Activable",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -484,7 +493,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Pausa",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -495,7 +504,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Pausa",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -506,7 +515,7 @@
                     "interactions": "Press",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Pausa",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -517,7 +526,62 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Pausa",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8748a6fb-292f-4740-898b-edc3415e22c2",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "Scale",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Hotbar Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e8f13e78-3173-46f3-9fc6-0f155ad1034d",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "Scale(factor=2)",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Hotbar Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bbb2a368-d46e-4739-a83a-a2f5a1de45b4",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "Scale(factor=3)",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Hotbar Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d502a07c-ae9f-4aee-ae87-dc8ffae9b06a",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "Scale(factor=4)",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Hotbar Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6c7728d1-635a-4f09-a2b3-2d167250f951",
+                    "path": "<Keyboard>/5",
+                    "interactions": "",
+                    "processors": "Scale(factor=5)",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Hotbar Select",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

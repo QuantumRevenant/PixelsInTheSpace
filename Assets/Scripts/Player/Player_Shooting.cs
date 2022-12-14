@@ -8,7 +8,7 @@ public class Player_Shooting : MonoBehaviour
 {
     #region - Variables
     [Header("Player Stats")]
-    private float reloadTimer=0;
+    private float reloadTimer = 0;
     private bool isShooting = false;
     [Space(10)]
 
@@ -29,7 +29,7 @@ public class Player_Shooting : MonoBehaviour
 
     [Header("Bullets GameObject")]
     [SerializeField] private GameObject SimpleBullet;
-    public PlayerInput playerInput;
+    [HideInInspector] public PlayerInput playerInput;
 
     //Functionality
     private PlayerController playerController;
@@ -67,8 +67,8 @@ public class Player_Shooting : MonoBehaviour
     private void Shoot(float shootPressed)
     {
         reloadTimer += -(Time.deltaTime);
-            
-        if (reloadTimer <= 0 && shootPressed>0)
+
+        if (reloadTimer <= 0 && shootPressed > 0)
         {
             reloadTimer = playerData.BaseReloadTime;
             Select();

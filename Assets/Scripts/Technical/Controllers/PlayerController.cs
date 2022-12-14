@@ -55,7 +55,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Cambiar Activable"",
+                    ""name"": ""Hotbar Scroll"",
                     ""type"": ""PassThrough"",
                     ""id"": ""fe3cdc6a-aca9-4845-9ebf-f223a2508adf"",
                     ""expectedControlType"": ""Axis"",
@@ -64,7 +64,16 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Eyectar Arma"",
+                    ""name"": ""Hotbar Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""d6cc6069-cd41-409d-82d4-f1ab5cc3766b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Eject Weapon"",
                     ""type"": ""Button"",
                     ""id"": ""1ea9f10b-1846-4731-b6a0-34453d470d83"",
                     ""expectedControlType"": ""Button"",
@@ -73,7 +82,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Eyectar Activable"",
+                    ""name"": ""Eject Activable"",
                     ""type"": ""Button"",
                     ""id"": ""100b0e2b-91ac-4e84-b296-99c3b21c423a"",
                     ""expectedControlType"": ""Button"",
@@ -82,7 +91,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Pausa"",
+                    ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""cc84175e-ddfc-4019-8cfc-1f5bfd1ae0a9"",
                     ""expectedControlType"": ""Button"",
@@ -275,7 +284,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Cambiar Activable"",
+                    ""action"": ""Hotbar Scroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -286,7 +295,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Cambiar Activable"",
+                    ""action"": ""Hotbar Scroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -297,7 +306,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cambiar Activable"",
+                    ""action"": ""Hotbar Scroll"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -308,7 +317,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Cambiar Activable"",
+                    ""action"": ""Hotbar Scroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -319,7 +328,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Cambiar Activable"",
+                    ""action"": ""Hotbar Scroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -330,7 +339,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Cambiar Activable"",
+                    ""action"": ""Hotbar Scroll"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -341,7 +350,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Cambiar Activable"",
+                    ""action"": ""Hotbar Scroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -352,7 +361,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Cambiar Activable"",
+                    ""action"": ""Hotbar Scroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -363,7 +372,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Eyectar Arma"",
+                    ""action"": ""Eject Weapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -374,7 +383,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Eyectar Arma"",
+                    ""action"": ""Eject Weapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -385,7 +394,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Eyectar Arma"",
+                    ""action"": ""Eject Weapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -396,7 +405,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Eyectar Arma"",
+                    ""action"": ""Eject Weapon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -407,7 +416,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Eyectar Activable"",
+                    ""action"": ""Eject Activable"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -418,7 +427,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Eyectar Activable"",
+                    ""action"": ""Eject Activable"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -429,7 +438,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Eyectar Activable"",
+                    ""action"": ""Eject Activable"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -440,7 +449,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Eyectar Activable"",
+                    ""action"": ""Eject Activable"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -451,7 +460,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Eyectar Activable"",
+                    ""action"": ""Eject Activable"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -506,7 +515,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Pausa"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -517,7 +526,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Pausa"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -528,7 +537,7 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Pausa"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -539,7 +548,62 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Pausa"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8748a6fb-292f-4740-898b-edc3415e22c2"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Hotbar Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e8f13e78-3173-46f3-9fc6-0f155ad1034d"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=2)"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Hotbar Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bbb2a368-d46e-4739-a83a-a2f5a1de45b4"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=3)"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Hotbar Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d502a07c-ae9f-4aee-ae87-dc8ffae9b06a"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=4)"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Hotbar Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6c7728d1-635a-4f09-a2b3-2d167250f951"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=5)"",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Hotbar Select"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -592,10 +656,11 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_Trigger = m_Player.FindAction("Trigger", throwIfNotFound: true);
-        m_Player_CambiarActivable = m_Player.FindAction("Cambiar Activable", throwIfNotFound: true);
-        m_Player_EyectarArma = m_Player.FindAction("Eyectar Arma", throwIfNotFound: true);
-        m_Player_EyectarActivable = m_Player.FindAction("Eyectar Activable", throwIfNotFound: true);
-        m_Player_Pausa = m_Player.FindAction("Pausa", throwIfNotFound: true);
+        m_Player_HotbarScroll = m_Player.FindAction("Hotbar Scroll", throwIfNotFound: true);
+        m_Player_HotbarSelect = m_Player.FindAction("Hotbar Select", throwIfNotFound: true);
+        m_Player_EjectWeapon = m_Player.FindAction("Eject Weapon", throwIfNotFound: true);
+        m_Player_EjectActivable = m_Player.FindAction("Eject Activable", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -658,10 +723,11 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_Trigger;
-    private readonly InputAction m_Player_CambiarActivable;
-    private readonly InputAction m_Player_EyectarArma;
-    private readonly InputAction m_Player_EyectarActivable;
-    private readonly InputAction m_Player_Pausa;
+    private readonly InputAction m_Player_HotbarScroll;
+    private readonly InputAction m_Player_HotbarSelect;
+    private readonly InputAction m_Player_EjectWeapon;
+    private readonly InputAction m_Player_EjectActivable;
+    private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
         private @PlayerController m_Wrapper;
@@ -669,10 +735,11 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @Trigger => m_Wrapper.m_Player_Trigger;
-        public InputAction @CambiarActivable => m_Wrapper.m_Player_CambiarActivable;
-        public InputAction @EyectarArma => m_Wrapper.m_Player_EyectarArma;
-        public InputAction @EyectarActivable => m_Wrapper.m_Player_EyectarActivable;
-        public InputAction @Pausa => m_Wrapper.m_Player_Pausa;
+        public InputAction @HotbarScroll => m_Wrapper.m_Player_HotbarScroll;
+        public InputAction @HotbarSelect => m_Wrapper.m_Player_HotbarSelect;
+        public InputAction @EjectWeapon => m_Wrapper.m_Player_EjectWeapon;
+        public InputAction @EjectActivable => m_Wrapper.m_Player_EjectActivable;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -691,18 +758,21 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                 @Trigger.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTrigger;
                 @Trigger.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTrigger;
                 @Trigger.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnTrigger;
-                @CambiarActivable.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCambiarActivable;
-                @CambiarActivable.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCambiarActivable;
-                @CambiarActivable.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCambiarActivable;
-                @EyectarArma.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEyectarArma;
-                @EyectarArma.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEyectarArma;
-                @EyectarArma.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEyectarArma;
-                @EyectarActivable.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEyectarActivable;
-                @EyectarActivable.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEyectarActivable;
-                @EyectarActivable.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEyectarActivable;
-                @Pausa.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPausa;
-                @Pausa.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPausa;
-                @Pausa.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPausa;
+                @HotbarScroll.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHotbarScroll;
+                @HotbarScroll.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHotbarScroll;
+                @HotbarScroll.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHotbarScroll;
+                @HotbarSelect.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHotbarSelect;
+                @HotbarSelect.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHotbarSelect;
+                @HotbarSelect.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHotbarSelect;
+                @EjectWeapon.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEjectWeapon;
+                @EjectWeapon.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEjectWeapon;
+                @EjectWeapon.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEjectWeapon;
+                @EjectActivable.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEjectActivable;
+                @EjectActivable.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEjectActivable;
+                @EjectActivable.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEjectActivable;
+                @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -716,18 +786,21 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
                 @Trigger.started += instance.OnTrigger;
                 @Trigger.performed += instance.OnTrigger;
                 @Trigger.canceled += instance.OnTrigger;
-                @CambiarActivable.started += instance.OnCambiarActivable;
-                @CambiarActivable.performed += instance.OnCambiarActivable;
-                @CambiarActivable.canceled += instance.OnCambiarActivable;
-                @EyectarArma.started += instance.OnEyectarArma;
-                @EyectarArma.performed += instance.OnEyectarArma;
-                @EyectarArma.canceled += instance.OnEyectarArma;
-                @EyectarActivable.started += instance.OnEyectarActivable;
-                @EyectarActivable.performed += instance.OnEyectarActivable;
-                @EyectarActivable.canceled += instance.OnEyectarActivable;
-                @Pausa.started += instance.OnPausa;
-                @Pausa.performed += instance.OnPausa;
-                @Pausa.canceled += instance.OnPausa;
+                @HotbarScroll.started += instance.OnHotbarScroll;
+                @HotbarScroll.performed += instance.OnHotbarScroll;
+                @HotbarScroll.canceled += instance.OnHotbarScroll;
+                @HotbarSelect.started += instance.OnHotbarSelect;
+                @HotbarSelect.performed += instance.OnHotbarSelect;
+                @HotbarSelect.canceled += instance.OnHotbarSelect;
+                @EjectWeapon.started += instance.OnEjectWeapon;
+                @EjectWeapon.performed += instance.OnEjectWeapon;
+                @EjectWeapon.canceled += instance.OnEjectWeapon;
+                @EjectActivable.started += instance.OnEjectActivable;
+                @EjectActivable.performed += instance.OnEjectActivable;
+                @EjectActivable.canceled += instance.OnEjectActivable;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -764,9 +837,10 @@ public partial class @PlayerController : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnTrigger(InputAction.CallbackContext context);
-        void OnCambiarActivable(InputAction.CallbackContext context);
-        void OnEyectarArma(InputAction.CallbackContext context);
-        void OnEyectarActivable(InputAction.CallbackContext context);
-        void OnPausa(InputAction.CallbackContext context);
+        void OnHotbarScroll(InputAction.CallbackContext context);
+        void OnHotbarSelect(InputAction.CallbackContext context);
+        void OnEjectWeapon(InputAction.CallbackContext context);
+        void OnEjectActivable(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

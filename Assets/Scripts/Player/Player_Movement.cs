@@ -15,7 +15,7 @@ public class Player_Movement : MonoBehaviour
     [Header("Functionality")]
     // [SerializeField] 
     //private Vector3 inputVector;
-    public PlayerInput playerInput;
+    [HideInInspector] public PlayerInput playerInput;
     [Space(10)]
 
     [SerializeField] private PlayerData playerData;
@@ -24,8 +24,8 @@ public class Player_Movement : MonoBehaviour
     #region - Awake/Start
     private void Awake()
     {
-        playerInput=GetComponent<PlayerInput>();
-        playerData=gameObject.GetComponent<Player_Manager>().playerData;
+        playerInput = GetComponent<PlayerInput>();
+        playerData = gameObject.GetComponent<Player_Manager>().playerData;
     }
 
     void Start()
@@ -41,7 +41,8 @@ public class Player_Movement : MonoBehaviour
     }
 
     private void GetVariables()
-    {   Player_Manager PlayerManager;
+    {
+        Player_Manager PlayerManager;
         PlayerManager = gameObject.GetComponent<Player_Manager>();
         multiplicatorScale = PlayerManager.multiplicatorScale;
         multiplicatorSpeed = PlayerManager.multiplicatorSpeed;
@@ -58,13 +59,13 @@ public class Player_Movement : MonoBehaviour
         Vector3 PosAndSize;
         PosAndSize.x = transform.position.x;
         PosAndSize.y = transform.position.y;
-        PosAndSize.z=playerData.PlayerSize*multiplicatorScale;
+        PosAndSize.z = playerData.PlayerSize * multiplicatorScale;
 
-        PosAndSize.x=Mathf.Clamp(PosAndSize.x, -playerData.PlayerBoundaries.x+(PosAndSize.z/ 2), playerData.PlayerBoundaries.x - (PosAndSize.z/ 2));
-        PosAndSize.y=Mathf.Clamp(PosAndSize.y, -playerData.PlayerBoundaries.y, playerData.PlayerBoundaries.y - (PosAndSize.z/ 2));
+        PosAndSize.x = Mathf.Clamp(PosAndSize.x, -playerData.PlayerBoundaries.x + (PosAndSize.z / 2), playerData.PlayerBoundaries.x - (PosAndSize.z / 2));
+        PosAndSize.y = Mathf.Clamp(PosAndSize.y, -playerData.PlayerBoundaries.y, playerData.PlayerBoundaries.y - (PosAndSize.z / 2));
 
-        PosAndSize.z=transform.position.z;
+        PosAndSize.z = transform.position.z;
 
         transform.position = PosAndSize;
-    }  
+    }
 }

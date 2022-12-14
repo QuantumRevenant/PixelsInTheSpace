@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.InputSystem;
 
 //Items Enumerator
-enum Items{Nothing,Shield,Laser,Bomb};
+enum Items { Nothing, BlockedSpace, Shield, Laser, Bomb, Misil, Torpedo, DoubleShot, TripleShot, WaveShoot, Dron, Bengal };
 
-[RequireComponent(typeof(Rigidbody2D),typeof(BoxCollider2D))]
+[RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
 public class Player_Manager : MonoBehaviour
 {
     #region - Variables
@@ -29,17 +30,27 @@ public class Player_Manager : MonoBehaviour
     [HideInInspector] public float multiplicatorBulletScale = 1f;
     [HideInInspector] public Vector2 bulletVector = new Vector2(0f, 1f);
     [Space(10)]
+    public PlayerData playerData;
+    [Space(10)]
 
     [Header("Inventory")]
+    [SerializeField, Range(1, 5)] private int inventoryPosition = 1;
+    [SerializeField] private int inventorySize = 5;
+    [SerializeField] private List<Items> inventory;
+    private bool isAvailableScrollInv = true;
+    private const int inventoryStadardSize = 5;
+    private const float scrollCooldownTimeInventory = 0.5f;
 
     [HideInInspector] public float finalSize;
-    public PlayerData playerData;
+    [HideInInspector] public PlayerInput playerInput;
+
     #endregion
 
 
     private void Awake()
     {
-        //playerColor = gameObject.GetComponent<SpriteRenderer>().color;
+        playerInput = GetComponent<PlayerInput>();
+        InitializeInventory();
     }
 
     // Start is called before the first frame update
@@ -52,13 +63,22 @@ public class Player_Manager : MonoBehaviour
     void Update()
     {
         if (trigger)
-        {
-            trigger = false;
-            Damage(1);
-        }
-        changeSize();
+            Trigger();
+        ChangeSize();
+        ScrollActivable(playerInput.actions["Hotbar Scroll"].ReadValue<float>());
+        ScrollSelect(playerInput.actions["Hotbar Select"].ReadValue<float>());
     }
 
+    private void onHold(InputAction.CallbackContext context)
+    {
+        bool pressedDown = context.ReadValueAsButton();
+    }
+
+    private void Trigger()
+    {
+        trigger = false;
+        Damage(1);
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         switch (collision.tag)
@@ -93,7 +113,7 @@ public class Player_Manager : MonoBehaviour
     [ContextMenu("Change Invulnerable Status")]
     public void ToggleInvulnerable()
     {
-        isInvulnerable=!isInvulnerable;
+        isInvulnerable = !isInvulnerable;
         Debug.Log("Cambiamos el valor de Invulnerabilidad a" + isInvulnerable);
     }
     public void Damage(float damage, bool invulnerableCheck = true)
@@ -132,14 +152,60 @@ public class Player_Manager : MonoBehaviour
         }
         isInvulnerable = false;
     }
-    #endregion
-
-    private void Death()
+    IEnumerator cooldownScrollActivable()
     {
-        Debug.Log("Me mori :(");
+        isAvailableScrollInv = false;
+        yield return new WaitForSeconds(scrollCooldownTimeInventory);
+        isAvailableScrollInv = true;
     }
 
-    public void changeSize()
+    private void ScrollSelect(float value)
+    {
+        if (value <= 0 || value > inventorySize)
+            return;
+
+        inventoryPosition = (int)value;
+
+    }
+    private void ScrollActivable(float value)
+    {
+        if (value == 0 || !isAvailableScrollInv)
+            return;
+        //Debug.Log(value);
+        StartCoroutine("cooldownScrollActivable");
+        if (value > 0)
+        {
+            if (inventoryPosition >= inventorySize)
+                inventoryPosition = 1;
+            else
+                inventoryPosition += 1;
+        }
+        else
+        {
+            if (inventoryPosition <= 1)
+                inventoryPosition = inventorySize;
+            else
+                inventoryPosition += -1;
+        }
+    }
+    private void Death()
+    {
+        gameObject.SetActive(false);
+    }
+    #endregion
+
+    private void InitializeInventory()
+    {
+        for (int i = 0; i < inventoryStadardSize; i++)
+        {
+            if (i < inventorySize)
+                inventory.Add(Items.Nothing);
+            else
+                inventory.Add(Items.BlockedSpace);
+        }
+    }
+
+    public void ChangeSize()
     {
         float baseSize = playerData.PlayerSize * 10;
         float changedSize = baseSize * multiplicatorScale;
