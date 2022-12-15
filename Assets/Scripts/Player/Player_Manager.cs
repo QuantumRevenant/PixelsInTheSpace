@@ -39,7 +39,7 @@ public class Player_Manager : MonoBehaviour
     [SerializeField] private int inventorySize = 5;
     [SerializeField] private List<Items> inventory;
     private bool isAvailableScrollInv = true;
-    private const int inventoryStadardSize = 5;
+    private const int inventoryStandardSize = 5;
     private const float scrollCooldownTimeInventory = 0.5f;
 
     [HideInInspector] public float finalSize;
@@ -82,6 +82,7 @@ public class Player_Manager : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
+
         switch (collision.tag)
         {
             case "Enemy":
@@ -107,9 +108,31 @@ public class Player_Manager : MonoBehaviour
                     Damage(1);
                     break;
                 }
+            case "PickupItem":
+                {
+                    TouchedItem(collision);
+                    break;
+                }
         }
     }
-
+    private void TouchedItem(Collider2D collision)
+    {
+        Items itemClass=collision.GetComponent<Item_Script>().itemData.ItemClass;
+        if(itemClass==Items.Nothing||itemClass==Items.BlockedSpace)
+        {
+            Debug.Log("Error, El jugador Tocó un " + itemClass);
+            return;
+        }
+            
+        if(itemClass!=Items.ExtraLife)
+            SaveItem(itemClass,collision);
+        else if(playerLife<10)
+        {
+            playerLife++;
+            Destroy(collision.gameObject);
+        }
+            
+    }
     #region Damage
     [ContextMenu("Change Invulnerable Status")]
     public void ToggleInvulnerable()
@@ -138,7 +161,6 @@ public class Player_Manager : MonoBehaviour
         }
 
     }
-
     IEnumerator blinking()
     {
         //bool state = true;
@@ -159,7 +181,6 @@ public class Player_Manager : MonoBehaviour
         yield return new WaitForSeconds(scrollCooldownTimeInventory);
         isAvailableScrollInv = true;
     }
-
     private void ScrollSelect(float value)
     {
         if (value <= 0 || value > inventorySize)
@@ -194,10 +215,9 @@ public class Player_Manager : MonoBehaviour
         gameObject.SetActive(false);
     }
     #endregion
-
     private void InitializeInventory()
     {
-        for (int i = 0; i < inventoryStadardSize; i++)
+        for (int i = 0; i < inventoryStandardSize; i++)
         {
             if (i < inventorySize)
                 inventory.Add(Items.Nothing);
@@ -205,7 +225,18 @@ public class Player_Manager : MonoBehaviour
                 inventory.Add(Items.BlockedSpace);
         }
     }
-
+    private void SaveItem(Items itemClass,Collider2D colission)
+    {
+        for(int i=0;i<inventorySize;i++)
+        {
+            if(inventory[i]==Items.Nothing)
+            {
+                inventory[i]=itemClass;
+                i=inventorySize;
+                Destroy(colission.gameObject);
+            }
+        }
+    }
     public void ChangeSize()
     {
         float baseSize = playerData.PlayerSize * 10;
@@ -213,4 +244,5 @@ public class Player_Manager : MonoBehaviour
         gameObject.transform.localScale = new Vector3(changedSize, changedSize, changedSize);
         finalSize = changedSize / 10;
     }
+
 }

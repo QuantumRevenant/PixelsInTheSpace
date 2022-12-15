@@ -10,7 +10,7 @@ TagManager:
   - EnemyLaser
   - Explosion
   - AllyLaser
-  - PowerUp
+  - PickupItem
   layers:
   - Default
   - TransparentFX
@@ -25,7 +25,7 @@ TagManager:
   - AllyLaser
   - EnemyLaser
   - InstantedObject
-  - PowerUp
+  - PickupItem
   - 
   - 
   - 
