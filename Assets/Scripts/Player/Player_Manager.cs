@@ -15,6 +15,7 @@ public class Player_Manager : MonoBehaviour
     [Header("Life")]
     [Range(0, 10)] public float playerLife = 5f;
     private bool isInvulnerable;
+    private bool isShielded = false;
     [SerializeField] private bool trigger;
     private float invulnerableTimer;
     [Space(10)]
@@ -68,18 +69,14 @@ public class Player_Manager : MonoBehaviour
         ChangeSize();
         ScrollActivable(playerInput.actions["Hotbar Scroll"].ReadValue<float>());
         ScrollSelect(playerInput.actions["Hotbar Select"].ReadValue<float>());
+        UseItem(inventoryPosition,playerInput.actions["Trigger"].ReadValue<float>());
     }
-
-    private void onHold(InputAction.CallbackContext context)
-    {
-        bool pressedDown = context.ReadValueAsButton();
-    }
-
     private void Trigger()
     {
         trigger = false;
         Damage(1);
     }
+    #region TriggerEnter
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
@@ -117,22 +114,23 @@ public class Player_Manager : MonoBehaviour
     }
     private void TouchedItem(Collider2D collision)
     {
-        Items itemClass=collision.GetComponent<Item_Script>().itemData.ItemClass;
-        if(itemClass==Items.Nothing||itemClass==Items.BlockedSpace)
+        Items itemClass = collision.GetComponent<Item_Script>().itemData.ItemClass;
+        if (itemClass == Items.Nothing || itemClass == Items.BlockedSpace)
         {
             Debug.Log("Error, El jugador Tocó un " + itemClass);
             return;
         }
-            
-        if(itemClass!=Items.ExtraLife)
-            SaveItem(itemClass,collision);
-        else if(playerLife<10)
+
+        if (itemClass != Items.ExtraLife)
+            SaveItem(itemClass, collision);
+        else if (playerLife < 10)
         {
             playerLife++;
             Destroy(collision.gameObject);
         }
-            
+
     }
+    #endregion
     #region Damage
     [ContextMenu("Change Invulnerable Status")]
     public void ToggleInvulnerable()
@@ -142,7 +140,7 @@ public class Player_Manager : MonoBehaviour
     }
     public void Damage(float damage, bool invulnerableCheck = true)
     {
-        if (!isInvulnerable)
+        if (!isInvulnerable && !isShielded)
         {
             playerLife += -damage;
             if (playerLife <= 0)
@@ -159,6 +157,27 @@ public class Player_Manager : MonoBehaviour
                 }
             }
         }
+        if (isShielded)
+        {
+            ShieldChange(false);
+        }
+
+    }
+    private void ShieldChange(bool TurnOn)
+    {
+        transform.GetChild(0).gameObject.SetActive(TurnOn);
+        isShielded=TurnOn;
+        if (TurnOn)
+        {
+            GetComponent<BoxCollider2D>().size = new Vector2(0.15f, 0.15f);
+        }
+        else
+        {
+            GetComponent<BoxCollider2D>().size = new Vector2(0.0875f, 0.0875f);
+            isInvulnerable = true;
+            invulnerableTimer = playerData.InvulnerableTime;
+            StartCoroutine("blinking");
+        }
 
     }
     IEnumerator blinking()
@@ -174,6 +193,22 @@ public class Player_Manager : MonoBehaviour
             invulnerableTimer += (-playerData.BlinkTime * 2);
         }
         isInvulnerable = false;
+    }
+    private void Death()
+    {
+        gameObject.SetActive(false);
+    }
+    #endregion
+    #region Inventory
+    private void InitializeInventory()
+    {
+        for (int i = 0; i < inventoryStandardSize; i++)
+        {
+            if (i < inventorySize)
+                inventory.Add(Items.Nothing);
+            else
+                inventory.Add(Items.BlockedSpace);
+        }
     }
     IEnumerator cooldownScrollActivable()
     {
@@ -210,33 +245,65 @@ public class Player_Manager : MonoBehaviour
                 inventoryPosition += -1;
         }
     }
-    private void Death()
+    private void SaveItem(Items itemClass, Collider2D colission)
     {
-        gameObject.SetActive(false);
-    }
-    #endregion
-    private void InitializeInventory()
-    {
-        for (int i = 0; i < inventoryStandardSize; i++)
+        for (int i = 0; i < inventorySize; i++)
         {
-            if (i < inventorySize)
-                inventory.Add(Items.Nothing);
-            else
-                inventory.Add(Items.BlockedSpace);
-        }
-    }
-    private void SaveItem(Items itemClass,Collider2D colission)
-    {
-        for(int i=0;i<inventorySize;i++)
-        {
-            if(inventory[i]==Items.Nothing)
+            if (inventory[i] == Items.Nothing)
             {
-                inventory[i]=itemClass;
-                i=inventorySize;
+                inventory[i] = itemClass;
+                i = inventorySize;
                 Destroy(colission.gameObject);
             }
         }
     }
+    private void UseItem(int pos, float value)
+    {
+        if (value < 1)
+            return;
+        if (inventory[pos - 1] == Items.Nothing || inventory[pos - 1] == Items.BlockedSpace)
+            return;
+        switch (inventory[pos - 1])
+        {
+            case Items.Shield:
+                ShieldChange(true);
+                break;
+            case Items.Laser:
+                //Chage Value to Laser
+                break;
+            case Items.Bomb:
+                //Instantiate Bomb
+                break;
+            case Items.Misil:
+                //Instantiate Misil
+                break;
+            case Items.Torpedo:
+                //Instantiate Torpedo
+                break;
+            case Items.DoubleShot:
+                //Change Value to Double Shot
+                break;
+            case Items.TripleShot:
+                //Change Valuer to Triple Shot
+                break;
+            case Items.WaveShoot:
+                //Change Value to Wave Shot
+                break;
+            case Items.Dron:
+                //Generate Dron
+                break;
+            case Items.Bengal:
+                //Instantiate Bengals
+                break;
+            case Items.ExtraLife:
+                if (playerLife < 10)
+                    playerLife++;
+                break;
+        }
+        inventory[pos-1]=Items.Nothing;
+    }
+    #endregion
+
     public void ChangeSize()
     {
         float baseSize = playerData.PlayerSize * 10;
