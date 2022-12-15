@@ -5,8 +5,8 @@ using System.Linq;
 using UnityEngine.InputSystem;
 
 //Items Enumerator
-enum Items { Nothing, BlockedSpace, Shield, Laser, Bomb, Misil, Torpedo, DoubleShot, TripleShot, WaveShoot, Dron, Bengal, ExtraLife };
-enum MultiplicatorValue { Speed, Scale, Damage, Reload, BulletSpeed, BulletScale }
+public enum Items { Nothing, BlockedSpace, Shield, Laser, Bomb, Misil, Torpedo, DoubleShot, TripleShot, WaveShoot, Dron, Bengal, ExtraLife };
+public enum MultiplicatorType { Speed, Scale, Damage, Reload, BulletSpeed, BulletScale }
 
 [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
 public class Player_Manager : MonoBehaviour

@@ -24,4 +24,7 @@ MonoBehaviour:
   baseDamage: 25
   bulletColor: {r: 0.3, g: 1, b: 0, a: 1}
   baseBulletSpeed: 1
+  baseBulletDesviation: 0
+  baseBulletScale: 1
   isEnemy: 0
+  inventoryMaxSize: 0

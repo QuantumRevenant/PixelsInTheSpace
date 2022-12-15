@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2d506fd53aa4144a9d5d3ba6743558f, type: 3}
   m_Name: ExtraLife
   m_EditorClassIdentifier: 
-  itemSprite: {fileID: 0}
+  itemSprite: {fileID: 7431529995326980795, guid: 9c0ef779ebdd4dc4cbf5fca17abaaf01, type: 3}
   isActivable: 1
   itemClass: 12
   isTemporal: 0
   multiplicatorValue: 0
-  itemSpeed: 0.5
+  multiplicatorType: 0
+  itemSpeed: 0.25
