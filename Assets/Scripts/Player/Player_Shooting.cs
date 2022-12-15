@@ -10,6 +10,8 @@ public class Player_Shooting : MonoBehaviour
     [Header("Player Stats")]
     private float reloadTimer = 0;
     private bool isShooting = false;
+    public ShootingType shootingType=ShootingType.Simple;
+    private GameObject Laser;
     [Space(10)]
 
     [Header("Bullet Stats")]
@@ -42,6 +44,7 @@ public class Player_Shooting : MonoBehaviour
     }
     void Start()
     {
+        Laser = gameObject.GetComponent<Player_Manager>().GetChildWithName(gameObject, "Laser");
     }
     void Update()
     {
@@ -53,6 +56,7 @@ public class Player_Shooting : MonoBehaviour
     {
         Player_Manager PlayerManager;
         PlayerManager = gameObject.GetComponent<Player_Manager>();
+        shootingType=PlayerManager.shootingType;
         multiplicatorReload = PlayerManager.multiplicatorReload;
         multiplicatorDamage = PlayerManager.multiplicatorDamage;
         bulletVector = PlayerManager.bulletVector;
@@ -72,12 +76,25 @@ public class Player_Shooting : MonoBehaviour
         {
             reloadTimer = playerData.BaseReloadTime;
             Select();
+        }else if(shootPressed==0)
+        {
+            LaserChange(false);
         }
 
     }
+    private void LaserChange(bool TurnOn)
+    {
+        Laser.SetActive(TurnOn);
+    }
     private void Select()
     {
+        if(shootingType==ShootingType.Laser)
+            LaserChange(true);
+        else
+        {
+        LaserChange(false);
         Generate();
+        }
     }
     private void Generate()
     {

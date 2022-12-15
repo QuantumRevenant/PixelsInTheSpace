@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 //Items Enumerator
 public enum Items { Nothing, BlockedSpace, Shield, Laser, Bomb, Misil, Torpedo, DoubleShot, TripleShot, WaveShoot, Dron, Bengal, ExtraLife };
 public enum MultiplicatorType { Speed, Scale, Damage, Reload, BulletSpeed, BulletScale }
+public enum ShootingType { Simple, Double, Triple, Wave, Laser }
 
 [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
 public class Player_Manager : MonoBehaviour
@@ -45,6 +46,8 @@ public class Player_Manager : MonoBehaviour
 
     [HideInInspector] public float finalSize;
     [HideInInspector] public PlayerInput playerInput;
+    public ShootingType shootingType=ShootingType.Simple;
+    private GameObject Shield;
 
     #endregion
 
@@ -54,14 +57,11 @@ public class Player_Manager : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         InitializeInventory();
     }
-
-    // Start is called before the first frame update
     void Start()
     {
-
+        Shield = GetChildWithName(gameObject, "Shield");
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (trigger)
@@ -69,7 +69,7 @@ public class Player_Manager : MonoBehaviour
         ChangeSize();
         ScrollActivable(playerInput.actions["Hotbar Scroll"].ReadValue<float>());
         ScrollSelect(playerInput.actions["Hotbar Select"].ReadValue<float>());
-        UseItem(inventoryPosition,playerInput.actions["Trigger"].ReadValue<float>());
+        UseItem(inventoryPosition, playerInput.actions["Trigger"].ReadValue<float>());
     }
     private void Trigger()
     {
@@ -165,8 +165,8 @@ public class Player_Manager : MonoBehaviour
     }
     private void ShieldChange(bool TurnOn)
     {
-        transform.GetChild(0).gameObject.SetActive(TurnOn);
-        isShielded=TurnOn;
+        Shield.SetActive(TurnOn);
+        isShielded = TurnOn;
         if (TurnOn)
         {
             GetComponent<BoxCollider2D>().size = new Vector2(0.15f, 0.15f);
@@ -300,10 +300,9 @@ public class Player_Manager : MonoBehaviour
                     playerLife++;
                 break;
         }
-        inventory[pos-1]=Items.Nothing;
+        inventory[pos - 1] = Items.Nothing;
     }
     #endregion
-
     public void ChangeSize()
     {
         float baseSize = playerData.PlayerSize * 10;
@@ -311,5 +310,17 @@ public class Player_Manager : MonoBehaviour
         gameObject.transform.localScale = new Vector3(changedSize, changedSize, changedSize);
         finalSize = changedSize / 10;
     }
-
+    public GameObject GetChildWithName(GameObject obj, string name)
+    {
+        Transform trans = obj.transform;
+        Transform childTrans = trans.Find(name);
+        if (childTrans != null)
+        {
+            return childTrans.gameObject;
+        }
+        else
+        {
+            return null;
+        }
+    }
 }

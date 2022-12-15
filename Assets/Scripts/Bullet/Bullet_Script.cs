@@ -28,24 +28,16 @@ public class Bullet_Script : MonoBehaviour
     [SerializeField] private Vector2 boundaries;
     [SerializeField] private float boundariesOffset;
     [SerializeField] private float spriteSize;
-
-
     #endregion
-
-    #region - Awake/Start
     private void Awake()
     {
         gameObject.layer = LayerMask.NameToLayer("InstantedObject");
         baseScale = transform.localScale;
     }
-    // Start is called before the first frame update
     void Start()
     {
 
     }
-    #endregion
-
-    // Update is called once per frame
     void Update()
     {
         Movement();
@@ -60,12 +52,15 @@ public class Bullet_Script : MonoBehaviour
 
             gameObject.tag = "EnemyProjectile";
             gameObject.layer = LayerMask.NameToLayer("EnemyProjectile");
+            bulletDirection = -1;
         }
         else
         {
             gameObject.tag = "AllyProjectile";
             gameObject.layer = LayerMask.NameToLayer("AllyProjectile");
+            bulletDirection = 1;
         }
+
         float bulletAngle = Vector3.Angle(new Vector3(0.0f, 1.0f, 0.0f), new Vector3(bulletVector.x, bulletVector.y, 0.0f));
         bulletTotalDesviation = ChangeOrientation(bulletTotalDesviation, bulletDesviation);
         if (bulletVector.x < 0.0f)
@@ -76,7 +71,7 @@ public class Bullet_Script : MonoBehaviour
         bulletAngle += bulletTotalDesviation;
 
         transform.rotation = Quaternion.Euler(0f, 0f, bulletAngle);
-        Vector3 vectorFinal = transform.up * bulletSpeed * Time.deltaTime;
+        Vector3 vectorFinal = transform.up * bulletDirection * bulletSpeed * Time.deltaTime;
         transform.Translate(vectorFinal, Space.Self);
     }
     private float ChangeOrientation(float input, float angularSpeed)
