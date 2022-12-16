@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7effb4ce312022040a6fc6c0bda7b129, type: 3}
+  m_Name: TripleShoot
+  m_EditorClassIdentifier: 
+  _shootingtype: 2
+  bulletData:
+  - {fileID: 11400000, guid: f2eb083bf96768b408f378a50eee5c0c, type: 2}
+  - {fileID: 11400000, guid: dd0f0ffc8b23733458300256c08e8fbd, type: 2}
+  - {fileID: 11400000, guid: de611d3399ccbfb43bfcddc98cbe5224, type: 2}

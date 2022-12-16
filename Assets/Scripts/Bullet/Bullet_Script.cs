@@ -4,52 +4,35 @@ using UnityEngine;
 
 public class Bullet_Script : MonoBehaviour
 {
-    #region - Variables
-
     [Header("Stats")]
-    public Vector2 bulletVector;
-    public Color bulletColor;
-    public float bulletSpeed;
     [Tooltip("Relation 0.1-1.8 VerticalSpeed-AngularSpeed")]
-    public float bulletDesviation = 0f;
-    [SerializeField] private float bulletTotalDesviation = 0.0f;
-    public float bulletDamage;
-    [Range(-1, 1)] public int bulletDirection;
-    public bool bulletEnemy;
-    public float orientation;
-    [HideInInspector] public Vector3 baseScale;
+    private float bulletTotalDesviation = 0.0f;//
+    private int bulletDirection;//
+    public float bulletDamage;//
+    public bool bulletEnemy=false;//
     [Space(10)]
 
     [Header("Modificators")]
-    public float multiplicatorBulletScale;
+    public float multiplicatorBulletScale;//
     [Space(10)]
-
-    [Header("Boundaries")]
-    [SerializeField] private Vector2 boundaries;
-    [SerializeField] private float boundariesOffset;
-    [SerializeField] private float spriteSize;
-    #endregion
+    public BulletData bulletData;//
+    
     private void Awake()
     {
         gameObject.layer = LayerMask.NameToLayer("InstantedObject");
-        baseScale = transform.localScale;
-    }
-    void Start()
-    {
-
     }
     void Update()
     {
+        if(bulletData==null)
+            return;
         Movement();
-        ChangeSize();
-        ChangeColor();
+        ChangeProperties();
         Boundaries();
     }
     private void Movement()
     {
         if (bulletEnemy)
         {
-
             gameObject.tag = "EnemyProjectile";
             gameObject.layer = LayerMask.NameToLayer("EnemyProjectile");
             bulletDirection = -1;
@@ -60,19 +43,29 @@ public class Bullet_Script : MonoBehaviour
             gameObject.layer = LayerMask.NameToLayer("AllyProjectile");
             bulletDirection = 1;
         }
-
-        float bulletAngle = Vector3.Angle(new Vector3(0.0f, 1.0f, 0.0f), new Vector3(bulletVector.x, bulletVector.y, 0.0f));
-        bulletTotalDesviation = ChangeOrientation(bulletTotalDesviation, bulletDesviation);
-        if (bulletVector.x < 0.0f)
-        {
-            bulletAngle = -bulletAngle;
-            bulletAngle = bulletAngle + 360;
-        }
+        float bulletAngle = GetAngle(bulletData.BaseVector.normalized,bulletData.BaseAngle,bulletData.UseAngle);
+        bulletTotalDesviation = ChangeOrientation(bulletTotalDesviation, bulletData.BaseDesviation);
+        // if (bulletData.BaseVector.x < 0.0f)
+        // {
+        //     bulletAngle = -bulletAngle;
+        //     bulletAngle = bulletAngle + 360;
+        // }
         bulletAngle += bulletTotalDesviation;
-
+        Debug.Log("Bullet angle"+bulletAngle+"Total desv"+bulletTotalDesviation);
         transform.rotation = Quaternion.Euler(0f, 0f, bulletAngle);
-        Vector3 vectorFinal = transform.up * bulletDirection * bulletSpeed * Time.deltaTime;
+        Vector3 vectorFinal = Vector3.up * bulletDirection * bulletData.BaseSpeed * Time.deltaTime;
+        Debug.Log((Vector3.up * bulletDirection).x+","+(transform.up * bulletDirection).y);
         transform.Translate(vectorFinal, Space.Self);
+    }
+    private float GetAngle(Vector2 vector, float angle, bool useAngle)
+    {
+        if(useAngle)
+            return -angle;
+        Vector2 vec=Vector2.right;
+        float outputAngle=Mathf.Atan2(-vector.x, vector.y) * 180 / Mathf.PI;
+        return outputAngle;
+
+
     }
     private float ChangeOrientation(float input, float angularSpeed)
     {
@@ -84,19 +77,18 @@ public class Bullet_Script : MonoBehaviour
             Output += 360;
         return Output;
     }
-    private void ChangeSize()
+    private void ChangeProperties()
     {
-        transform.localScale = baseScale * multiplicatorBulletScale;
+        gameObject.GetComponent<SpriteRenderer>().sprite=bulletData.BulletSprite;
+        transform.localScale = bulletData.BaseScale * multiplicatorBulletScale;
+        gameObject.GetComponent<SpriteRenderer>().color = bulletData.BulletColor;
     }
-
-    private void ChangeColor()
-    {
-        gameObject.GetComponent<SpriteRenderer>().color = bulletColor;
-    }
-
     private void Boundaries()
     {
         Vector3 actualPosition = transform.position;
+        Vector2 boundaries=bulletData.Boundaries;
+        float boundariesOffset=bulletData.BoundariesOffset;
+
         if (actualPosition.x > boundaries.x + boundariesOffset || actualPosition.x < -(boundaries.x + boundariesOffset))
         {
             Destroy(gameObject);

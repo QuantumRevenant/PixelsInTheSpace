@@ -10,7 +10,7 @@ public class Player_Shooting : MonoBehaviour
     [Header("Player Stats")]
     private float reloadTimer = 0;
     private bool isShooting = false;
-    public ShootingType shootingType=ShootingType.Simple;
+    public ShootingType shootingType = ShootingType.Simple;
     private GameObject Laser;
     [Space(10)]
 
@@ -31,6 +31,7 @@ public class Player_Shooting : MonoBehaviour
 
     [Header("Bullets GameObject")]
     [SerializeField] private GameObject SimpleBullet;
+    [SerializeField] private ShootingData shootData;
     [HideInInspector] public PlayerInput playerInput;
 
     //Functionality
@@ -51,12 +52,11 @@ public class Player_Shooting : MonoBehaviour
         GetVariables();
         Shoot(playerInput.actions["Shoot"].ReadValue<float>());
     }
-
     private void GetVariables()
     {
         Player_Manager PlayerManager;
         PlayerManager = gameObject.GetComponent<Player_Manager>();
-        shootingType=PlayerManager.shootingType;
+        shootingType = PlayerManager.shootingType;
         multiplicatorReload = PlayerManager.multiplicatorReload;
         multiplicatorDamage = PlayerManager.multiplicatorDamage;
         bulletVector = PlayerManager.bulletVector;
@@ -76,7 +76,8 @@ public class Player_Shooting : MonoBehaviour
         {
             reloadTimer = playerData.BaseReloadTime;
             Select();
-        }else if(shootPressed==0)
+        }
+        else if (shootPressed == 0)
         {
             LaserChange(false);
         }
@@ -88,32 +89,37 @@ public class Player_Shooting : MonoBehaviour
     }
     private void Select()
     {
-        if(shootingType==ShootingType.Laser)
-            LaserChange(true);
-        else
+        if (shootingType == ShootingType.Laser)
         {
-        LaserChange(false);
-        Generate();
+            LaserChange(true);
+            return;
         }
+        LaserChange(false);
+
+        switch (shootingType)
+        {
+            default:
+                ReadShootGroup(shootData);
+                break;
+        }
+
     }
-    private void Generate()
+    private void ReadShootGroup(ShootingData shootingData)
+    {
+        int size = shootingData.bulletData.Length;
+
+        Debug.Log("Piu " + size);
+        for (int i = 0; i < size; i++)
+            Generate(shootingData.bulletData[i]);
+    }
+    private void Generate(BulletData bulletData)
     {
         GameObject inst = Instantiate(SimpleBullet, transform.position, Quaternion.identity);
         Bullet_Script bulletScript = inst.GetComponent<Bullet_Script>();
 
-        bulletScript.baseScale = playerData.BaseBulletScale;
-        bulletScript.bulletDesviation = playerData.BaseBulletDesviation;
-        bulletScript.bulletVector = bulletVector;
-        bulletScript.bulletColor = playerData.BulletColor;
-        bulletScript.bulletSpeed = playerData.BaseBulletSpeed * multiplicatorBulletSpeed;
+        bulletScript.bulletData = bulletData;
         bulletScript.multiplicatorBulletScale = multiplicatorBulletScale;
         bulletScript.bulletDamage = playerData.BaseDamage * multiplicatorDamage;
-        if (direction != 0)
-            bulletScript.bulletDirection = direction;
-        else
-            bulletScript.bulletDirection = 1;
-
-        bulletScript.bulletEnemy = playerData.IsEnemy;
         bulletScript.multiplicatorBulletScale = multiplicatorBulletScale;
 
     }

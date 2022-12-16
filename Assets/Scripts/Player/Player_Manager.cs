@@ -7,8 +7,7 @@ using UnityEngine.InputSystem;
 //Items Enumerator
 public enum Items { Nothing, BlockedSpace, Shield, Laser, Bomb, Misil, Torpedo, DoubleShot, TripleShot, WaveShoot, Dron, Bengal, ExtraLife };
 public enum MultiplicatorType { Speed, Scale, Damage, Reload, BulletSpeed, BulletScale }
-public enum ShootingType { Simple, Double, Triple, Wave, Laser }
-
+public enum ShootingType { Simple, Double, Triple, Wave, Laser,Others,GroupShootTypes }
 [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
 public class Player_Manager : MonoBehaviour
 {
@@ -20,7 +19,6 @@ public class Player_Manager : MonoBehaviour
     [SerializeField] private bool trigger;
     private float invulnerableTimer;
     [Space(10)]
-
     [Header("Player Multiplicators")]
     [HideInInspector] public float multiplicatorSpeed = 1f;
     [HideInInspector] public float multiplicatorScale = 1f;
