@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 //Items Enumerator
 public enum Items { Nothing, BlockedSpace, Shield, Laser, Bomb, Misil, Torpedo, DoubleShot, TripleShot, WaveShoot, Dron, Bengal, ExtraLife };
 public enum MultiplicatorType { Speed, Scale, Damage, Reload, BulletSpeed, BulletScale }
-public enum ShootingType { Simple, Double, Triple, Wave, Laser,Others,GroupShootTypes }
+public enum ShootingType { Simple, Double, Arch, Wave, Laser,Others}
 [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
 public class Player_Manager : MonoBehaviour
 {
@@ -226,7 +226,6 @@ public class Player_Manager : MonoBehaviour
     {
         if (value == 0 || !isAvailableScrollInv)
             return;
-        //Debug.Log(value);
         StartCoroutine("cooldownScrollActivable");
         if (value > 0)
         {

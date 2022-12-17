@@ -106,17 +106,42 @@ public class Player_Shooting : MonoBehaviour
     }
     private void ReadShootGroup(ShootingData shootingData)
     {
-        int size = shootingData.bulletData.Length;
 
-        Debug.Log("Piu " + size);
-        for (int i = 0; i < size; i++)
-            Generate(shootingData.bulletData[i]);
+        ShootArch(shootingData.bulletData[0], shootingData.AngleArch, shootingData.BulletNumber);
+
     }
-    private void Generate(BulletData bulletData)
-    {
-        GameObject inst = Instantiate(SimpleBullet, transform.position, Quaternion.identity);
-        Bullet_Script bulletScript = inst.GetComponent<Bullet_Script>();
 
+    private void ShootArch(BulletData bData, float angleArch, int bulletNumber)
+    {
+        float resultingAngle = 0f;
+        float value = bulletNumber;
+
+        if (angleArch >= 360)
+        {
+            for (int i = 0; i < bulletNumber; i++)
+            {
+                if (bulletNumber <= 1)
+                    value = 2;
+                resultingAngle = Mathf.Lerp(0, angleArch, (float)i / (value));
+                Generate(bData, resultingAngle);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < bulletNumber; i++)
+            {
+                if (bulletNumber <= 1)
+                    value = 2;
+                resultingAngle = Mathf.Lerp(-angleArch / 2, angleArch / 2, (float)i / (bulletNumber - 1));
+                Generate(bData, resultingAngle);
+            }
+        }
+    }
+    private void Generate(BulletData bulletData, float angle)
+    {
+        GameObject inst = Instantiate(SimpleBullet, transform.position, Quaternion.Euler(0f, 0f, angle));
+        Bullet_Script bulletScript = inst.GetComponent<Bullet_Script>();
+        bulletScript.initialAngle = angle;
         bulletScript.bulletData = bulletData;
         bulletScript.multiplicatorBulletScale = multiplicatorBulletScale;
         bulletScript.bulletDamage = playerData.BaseDamage * multiplicatorDamage;

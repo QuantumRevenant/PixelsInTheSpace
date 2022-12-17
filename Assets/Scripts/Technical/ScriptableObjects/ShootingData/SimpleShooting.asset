@@ -13,4 +13,8 @@ MonoBehaviour:
   m_Name: SimpleShooting
   m_EditorClassIdentifier: 
   _shootingtype: 0
-  bulletData: []
+  _bulletData:
+  - {fileID: 11400000, guid: dd0f0ffc8b23733458300256c08e8fbd, type: 2}
+  angleArch: 0
+  bulletNumber: 1
+  identifier: 

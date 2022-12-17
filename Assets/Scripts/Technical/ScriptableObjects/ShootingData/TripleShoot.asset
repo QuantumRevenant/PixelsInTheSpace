@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: TripleShoot
   m_EditorClassIdentifier: 
   _shootingtype: 2
-  bulletData:
-  - {fileID: 11400000, guid: f2eb083bf96768b408f378a50eee5c0c, type: 2}
+  _bulletData:
   - {fileID: 11400000, guid: dd0f0ffc8b23733458300256c08e8fbd, type: 2}
-  - {fileID: 11400000, guid: de611d3399ccbfb43bfcddc98cbe5224, type: 2}
+  angleArch: 74
+  bulletNumber: 3
+  identifier: 

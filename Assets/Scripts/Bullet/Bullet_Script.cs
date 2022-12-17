@@ -6,6 +6,8 @@ public class Bullet_Script : MonoBehaviour
 {
     [Header("Stats")]
     [Tooltip("Relation 0.1-1.8 VerticalSpeed-AngularSpeed")]
+    [HideInInspector]public float initialAngle=0.0f;
+    private bool firstSaveAngle=true;
     private float bulletTotalDesviation = 0.0f;//
     private int bulletDirection;//
     public float bulletDamage;//
@@ -20,6 +22,9 @@ public class Bullet_Script : MonoBehaviour
     private void Awake()
     {
         gameObject.layer = LayerMask.NameToLayer("InstantedObject");
+    }
+    void Start()
+    {
     }
     void Update()
     {
@@ -45,16 +50,9 @@ public class Bullet_Script : MonoBehaviour
         }
         float bulletAngle = GetAngle(bulletData.BaseVector.normalized,bulletData.BaseAngle,bulletData.UseAngle);
         bulletTotalDesviation = ChangeOrientation(bulletTotalDesviation, bulletData.BaseDesviation);
-        // if (bulletData.BaseVector.x < 0.0f)
-        // {
-        //     bulletAngle = -bulletAngle;
-        //     bulletAngle = bulletAngle + 360;
-        // }
         bulletAngle += bulletTotalDesviation;
-        Debug.Log("Bullet angle"+bulletAngle+"Total desv"+bulletTotalDesviation);
-        transform.rotation = Quaternion.Euler(0f, 0f, bulletAngle);
+        transform.rotation = Quaternion.Euler(0f, 0f, initialAngle+bulletAngle);
         Vector3 vectorFinal = Vector3.up * bulletDirection * bulletData.BaseSpeed * Time.deltaTime;
-        Debug.Log((Vector3.up * bulletDirection).x+","+(transform.up * bulletDirection).y);
         transform.Translate(vectorFinal, Space.Self);
     }
     private float GetAngle(Vector2 vector, float angle, bool useAngle)
