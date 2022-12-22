@@ -31,11 +31,17 @@ public class Player_Shooting : MonoBehaviour
 
     [Header("Bullets GameObject")]
     [SerializeField] private GameObject SimpleBullet;
-    [SerializeField] private ShootingData shootData;
+    [SerializeField] private ShootingTableData shootData;
     [HideInInspector] public PlayerInput playerInput;
 
+    // [Header("SinusMove")]
+    // public float frecuency = 5f;
+    // public float magnitude = 0.5f;
+    // private Vector3 axis;
+    // private Vector3 pos;
+    // private float timer = 0f;
+
     //Functionality
-    private PlayerController playerController;
     [SerializeField] private PlayerData playerData;
     #endregion
     private void Awake()
@@ -75,7 +81,7 @@ public class Player_Shooting : MonoBehaviour
         if (reloadTimer <= 0 && shootPressed > 0)
         {
             reloadTimer = playerData.BaseReloadTime;
-            Select();
+            Select(shootData);
         }
         else if (shootPressed == 0)
         {
@@ -87,7 +93,7 @@ public class Player_Shooting : MonoBehaviour
     {
         Laser.SetActive(TurnOn);
     }
-    private void Select()
+    private void Select(ShootingTableData shootingTable)
     {
         if (shootingType == ShootingType.Laser)
         {
@@ -95,22 +101,55 @@ public class Player_Shooting : MonoBehaviour
             return;
         }
         LaserChange(false);
-
-        switch (shootingType)
+        // if (shootingType == ShootingType.Wave)
+        // {
+        //     return;
+        // }
+        for (int i = 0; i < shootingTable.shootingData.Length; i++)
         {
-            default:
-                ReadShootGroup(shootData);
-                break;
+            if (shootingTable.shootingData[i].shootingType == shootingType)
+            {
+                ReadShootGroup(shootingTable.shootingData[i]);
+                i = shootingTable.shootingData.Length;
+            }
         }
 
     }
     private void ReadShootGroup(ShootingData shootingData)
     {
-
-        ShootArch(shootingData.bulletData[0], shootingData.AngleArch, shootingData.BulletNumber);
-
+        ShootWave(shootingData);
+        // ShootArch(shootingData.bulletData[0], shootingData.AngleArch, shootingData.BulletNumber);
+        // ShootLateral(shootingData.bulletData[0], shootingData.BulletSeparation, shootingData.BulletNumber);
     }
 
+    //Not used
+    // private void ShootWave(BulletData bData, float bulletSeparation, int bulletNumber)
+    // {
+    //     pos = transform.position;
+    //     timer+=Time.fixedDeltaTime;
+    //     float offset = Mathf.Sin(timer * frecuency) * magnitude;
+    //     Generate(bData, 0, new Vector2(offset, 0));
+    // }
+    private void ShootWave(ShootingData shootingData)
+    {
+        int value = shootingData.BulletNumber < shootingData.bulletData.Length ? shootingData.BulletNumber : shootingData.bulletData.Length;
+        for (int i = 0; i < value; i++)
+            Generate(shootingData.bulletData[i], 0, Vector2.zero);
+    }
+    private void ShootLateral(BulletData bData, float bulletSeparation, int bulletNumber)
+    {
+        float resultingDistance = 0f;
+        float value = bulletNumber;
+
+        for (int i = 0; i < bulletNumber; i++)
+        {
+            if (bulletNumber <= 1)
+                value = 2;
+            resultingDistance = Mathf.Lerp(-bulletSeparation / 2, bulletSeparation / 2, (float)i / (value - 1));
+            Generate(bData, 0, new Vector2(resultingDistance, 0));
+
+        }
+    }
     private void ShootArch(BulletData bData, float angleArch, int bulletNumber)
     {
         float resultingAngle = 0f;
@@ -122,8 +161,8 @@ public class Player_Shooting : MonoBehaviour
             {
                 if (bulletNumber <= 1)
                     value = 2;
-                resultingAngle = Mathf.Lerp(0, angleArch, (float)i / (value));
-                Generate(bData, resultingAngle);
+                resultingAngle = Mathf.Lerp(0, angleArch, (float)i / value);
+                Generate(bData, resultingAngle, Vector2.zero);
             }
         }
         else
@@ -132,14 +171,15 @@ public class Player_Shooting : MonoBehaviour
             {
                 if (bulletNumber <= 1)
                     value = 2;
-                resultingAngle = Mathf.Lerp(-angleArch / 2, angleArch / 2, (float)i / (bulletNumber - 1));
-                Generate(bData, resultingAngle);
+                resultingAngle = Mathf.Lerp(-angleArch / 2, angleArch / 2, (float)i / (value - 1));
+                Generate(bData, resultingAngle, Vector2.zero);
             }
         }
     }
-    private void Generate(BulletData bulletData, float angle)
+    private void Generate(BulletData bulletData, float angle, Vector2 offsetPos)
     {
-        GameObject inst = Instantiate(SimpleBullet, transform.position, Quaternion.Euler(0f, 0f, angle));
+        Vector3 vec3OffsetPos = offsetPos;
+        GameObject inst = Instantiate(SimpleBullet, transform.position + vec3OffsetPos, Quaternion.Euler(0f, 0f, angle));
         Bullet_Script bulletScript = inst.GetComponent<Bullet_Script>();
         bulletScript.initialAngle = angle;
         bulletScript.bulletData = bulletData;

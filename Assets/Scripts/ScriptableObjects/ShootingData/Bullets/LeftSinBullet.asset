@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2459167ab50fe0c42b1dfc6e372f4828, type: 3}
-  m_Name: BasicShoot
+  m_Name: LeftSinBullet
   m_EditorClassIdentifier: 
-  bulletSprite: {fileID: -7976837497307082302, guid: 9c0ef779ebdd4dc4cbf5fca17abaaf01, type: 3}
+  bulletSprite: {fileID: -7803065417098437583, guid: 9c0ef779ebdd4dc4cbf5fca17abaaf01, type: 3}
   bulletColor: {r: 0.3, g: 1, b: 0, a: 1}
   baseSpeed: 1
   baseDesviation: 0
@@ -22,3 +22,7 @@ MonoBehaviour:
   baseScale: 1
   boundaries: {x: 1.25, y: 1}
   boundariesOffset: 0
+  isSinusoidal: 1
+  sinusDirection: -1
+  frecuency: 6.5
+  amplitude: 0.05

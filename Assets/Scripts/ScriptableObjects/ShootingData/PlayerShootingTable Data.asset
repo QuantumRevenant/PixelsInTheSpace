@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1b853fe3362c11439a441d5bce8fb99, type: 3}
+  m_Name: PlayerShootingTable Data
+  m_EditorClassIdentifier: 
+  _shootingData:
+  - {fileID: 11400000, guid: 00ce47b2dc4028447832060665062a58, type: 2}
+  - {fileID: 11400000, guid: 5e544fb025ab95c4a9266b8eb5a8a552, type: 2}
+  - {fileID: 11400000, guid: 867fb5ce945982c43baead669fa1f459, type: 2}
+  - {fileID: 11400000, guid: a2e025bdde970124a97c4db57a6119d9, type: 2}

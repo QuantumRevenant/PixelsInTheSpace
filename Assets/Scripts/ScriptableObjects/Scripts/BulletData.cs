@@ -11,7 +11,13 @@ public class BulletData : ScriptableObject
     [SerializeField] private float baseAngle = 0;
     [SerializeField] private float baseScale = 1f;
     [SerializeField] private Vector2 boundaries = new Vector2(1.25f, 1);
-    [SerializeField] private float boundariesOffset = 0;
+    [SerializeField] private float boundariesOffset = 0;    
+    [Tooltip("Not compatible with other types of shots")]
+    [SerializeField] private bool isSinusoidal=false;
+    [SerializeField] private float sinusDirection=1f;
+    [SerializeField] private float frecuency=30f;
+    [SerializeField] private float amplitude=0.05f;
+
     // [SerializeField] private float spriteSize;
     public Sprite BulletSprite { get { return bulletSprite; } }
     public Color BulletColor { get { return bulletColor; } }
@@ -23,6 +29,9 @@ public class BulletData : ScriptableObject
     public Vector3 BaseScale { get { return new Vector3(baseScale, baseScale, baseScale); } }
     public Vector2 Boundaries { get { return boundaries; } }
     public float BoundariesOffset { get { return boundariesOffset; } }
-
-
+    public bool IsSinusoidal { get { return isSinusoidal; } }
+    public float SinusDirection { get { return sinusDirection; } }
+    public float Frecuency { get { return frecuency; } }
+    public float Amplitude { get { return amplitude; } }
+    
 }

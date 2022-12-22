@@ -19,7 +19,7 @@ MonoBehaviour:
   playerSize: 0.1
   playerBoundaries: {x: 1.125, y: 1}
   baseSpeed: 1
-  baseVector: {x: 1.25, y: 0.75}
+  baseVector: {x: 1, y: 0.75}
   baseReloadTime: 0.25
   baseDamage: 25
   bulletColor: {r: 0.3, g: 1, b: 0, a: 1}

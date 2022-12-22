@@ -99,18 +99,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c158a5178900a784ba2a3938fb661bba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletVector: {x: 0, y: 0}
-  bulletColor: {r: 0, g: 0, b: 0, a: 0}
-  bulletSpeed: 0
+  initialAngle: 0
   bulletDamage: 0
-  bulletDirection: 0
   bulletEnemy: 0
-  orientation: 0
-  baseScale: {x: 0, y: 0, z: 0}
   multiplicatorBulletScale: 0
-  boundaries: {x: 1.25, y: 1}
-  boundariesOffset: 0
-  spriteSize: 0
+  bulletData: {fileID: 0}
+  frecuency: 30
+  magnitude: 0.05
 --- !u!61 &3587477846495804352
 BoxCollider2D:
   m_ObjectHideFlags: 0
