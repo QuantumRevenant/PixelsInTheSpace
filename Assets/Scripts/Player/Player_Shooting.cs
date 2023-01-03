@@ -6,44 +6,29 @@ using UnityEngine.InputSystem.Controls;
 [RequireComponent(typeof(Player_Manager))]
 public class Player_Shooting : MonoBehaviour
 {
-    #region - Variables
     [Header("Player Stats")]
     private float reloadTimer = 0;
-    private bool isShooting = false;
     public ShootingType shootingType = ShootingType.Simple;
     private GameObject Laser;
     [Space(10)]
-
     [Header("Bullet Stats")]
     private Vector2 bulletVector;
     private int direction;
     [Space(10)]
-
     [Header("Player Modificators")]
     private float multiplicatorReload = 1f;
     private float multiplicatorDamage = 1f;
     [Space(10)]
-
     [Header("Bullet Modificators")]
     private float multiplicatorBulletSpeed = 1f;
     private float multiplicatorBulletScale = 1f;
     [Space(10)]
-
     [Header("Bullets GameObject")]
     [SerializeField] private GameObject SimpleBullet;
     [SerializeField] private ShootingTableData shootData;
     [HideInInspector] public PlayerInput playerInput;
-
-    // [Header("SinusMove")]
-    // public float frecuency = 5f;
-    // public float magnitude = 0.5f;
-    // private Vector3 axis;
-    // private Vector3 pos;
-    // private float timer = 0f;
-
-    //Functionality
     [SerializeField] private PlayerData playerData;
-    #endregion
+
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -58,6 +43,7 @@ public class Player_Shooting : MonoBehaviour
         GetVariables();
         Shoot(playerInput.actions["Shoot"].ReadValue<float>());
     }
+    
     private void GetVariables()
     {
         Player_Manager PlayerManager;
@@ -101,10 +87,6 @@ public class Player_Shooting : MonoBehaviour
             return;
         }
         LaserChange(false);
-        // if (shootingType == ShootingType.Wave)
-        // {
-        //     return;
-        // }
         for (int i = 0; i < shootingTable.shootingData.Length; i++)
         {
             if (shootingTable.shootingData[i].shootingType == shootingType)
@@ -113,7 +95,6 @@ public class Player_Shooting : MonoBehaviour
                 i = shootingTable.shootingData.Length;
             }
         }
-
     }
     private void ReadShootGroup(ShootingData shootingData)
     {
@@ -121,15 +102,6 @@ public class Player_Shooting : MonoBehaviour
         // ShootArch(shootingData.bulletData[0], shootingData.AngleArch, shootingData.BulletNumber);
         // ShootLateral(shootingData.bulletData[0], shootingData.BulletSeparation, shootingData.BulletNumber);
     }
-
-    //Not used
-    // private void ShootWave(BulletData bData, float bulletSeparation, int bulletNumber)
-    // {
-    //     pos = transform.position;
-    //     timer+=Time.fixedDeltaTime;
-    //     float offset = Mathf.Sin(timer * frecuency) * magnitude;
-    //     Generate(bData, 0, new Vector2(offset, 0));
-    // }
     private void ShootWave(ShootingData shootingData)
     {
         int value = shootingData.BulletNumber < shootingData.bulletData.Length ? shootingData.BulletNumber : shootingData.bulletData.Length;
@@ -147,7 +119,6 @@ public class Player_Shooting : MonoBehaviour
                 value = 2;
             resultingDistance = Mathf.Lerp(-bulletSeparation / 2, bulletSeparation / 2, (float)i / (value - 1));
             Generate(bData, 0, new Vector2(resultingDistance, 0));
-
         }
     }
     private void ShootArch(BulletData bData, float angleArch, int bulletNumber)

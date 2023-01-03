@@ -8,17 +8,15 @@ public class Bullet_Script : MonoBehaviour
     [Tooltip("Relation 0.1-1.8 VerticalSpeed-AngularSpeed")]
     [HideInInspector] public float initialAngle = 0.0f;
     private bool firstSaveAngle = true;
-    private float bulletTotalDesviation = 0.0f;//
-    private int bulletDirection;//
-    public float bulletDamage;//
-    public bool bulletEnemy = false;//
+    private float bulletTotalDesviation = 0.0f;
+    private int bulletDirection;
+    public float bulletDamage;
+    public bool bulletEnemy = false;
     [Space(10)]
-
     [Header("Modificators")]
-    public float multiplicatorBulletScale;//
+    public float multiplicatorBulletScale;
     [Space(10)]
-    public BulletData bulletData;//
-
+    public BulletData bulletData;
     [Header("SinusMove")]
     private Vector3 startPos;
     private float startTime = 0f;
@@ -63,7 +61,7 @@ public class Bullet_Script : MonoBehaviour
             float newXPos = bulletData.SinusDirection * bulletData.Amplitude * Mathf.Sin((Time.time - startTime) * bulletData.Frecuency) + startPos.x;
             float xStep = newXPos - transform.position.x;
             transform.Translate(new Vector3(xStep, 0), Space.Self);
-            bulletAngle=0;
+            bulletAngle = 0;
         }
 
         transform.rotation = Quaternion.Euler(0f, 0f, initialAngle + bulletAngle);
@@ -77,17 +75,12 @@ public class Bullet_Script : MonoBehaviour
         Vector2 vec = Vector2.right;
         float outputAngle = Mathf.Atan2(-vector.x, vector.y) * 180 / Mathf.PI;
         return outputAngle;
-
-
     }
     private float ChangeOrientation(float input, float angularSpeed)
     {
         float Output;
         Output = input + (angularSpeed * Time.deltaTime);
-        if (Output >= 360)
-            Output -= 360;
-        else if (Output < 0)
-            Output += 360;
+        Output = Output >= 360 ? Output - 360 : Output < 0 ? Output + 360 : Output;
         return Output;
     }
     private void ChangeProperties()
@@ -103,12 +96,8 @@ public class Bullet_Script : MonoBehaviour
         float boundariesOffset = bulletData.BoundariesOffset;
 
         if (actualPosition.x > boundaries.x + boundariesOffset || actualPosition.x < -(boundaries.x + boundariesOffset))
-        {
             Destroy(gameObject);
-        }
         if (actualPosition.y > boundaries.y + boundariesOffset || actualPosition.y < -(boundaries.y + boundariesOffset))
-        {
             Destroy(gameObject);
-        }
     }
 }

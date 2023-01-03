@@ -11,8 +11,6 @@ public class LootTableData : ScriptableObject
         public int Weight { get { return weight; } }
         Items ItemClass { get { return itemClass; } }
         public ItemData _ItemData { get { return itemData; } }
-
-
     }
 
     public Loot[] Objetos;

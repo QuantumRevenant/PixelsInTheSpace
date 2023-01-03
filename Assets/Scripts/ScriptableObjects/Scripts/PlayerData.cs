@@ -10,28 +10,22 @@ public class PlayerData : ScriptableObject
     [SerializeField] private float playerSize = 0.1f;
     [SerializeField] private Vector2 playerBoundaries = new Vector2(1.125f, 1f);
     [Space(10)]
-    /////////////////////////////////////////////////////
     [Header("Player Movement")]
     [SerializeField] private float baseSpeed = 1f;
     [SerializeField] private Vector2 baseVector = new Vector2(1.25f, 0.75f);
     [Space(10)]
-    /////////////////////////////////////////////////////
     [Header("Player Shooting")]
     [SerializeField] private float baseReloadTime = 0.25f;
     [SerializeField] private float baseDamage = 25f;
     [Space(10)]
-    /////////////////////////////////////////////////////
     [Header("Bullet Characteristics")]
     [SerializeField] private Color bulletColor = new Color(0.3f, 1f, 0, 1);
     [SerializeField] private float baseBulletSpeed = 1;
     [SerializeField] private float baseBulletDesviation = 0;
     [SerializeField] private float baseBulletScale = 1f;
     [SerializeField] private bool isEnemy = false;
-
-    /////////////////////////////////////////////////////
     [Header("Inventory Characteristics")]
     [SerializeField] private int inventoryMaxSize;
-
 
     public Color PlayerColor { get { return playerColor; } }
     public Color PlayerDamagedColor { get { return playerDamagedColor; } }
@@ -48,5 +42,4 @@ public class PlayerData : ScriptableObject
     public float BaseBulletDesviation { get { return baseBulletDesviation; } }
     public Vector3 BaseBulletScale { get { return new Vector3(baseBulletScale, baseBulletScale, baseBulletScale); } }
     public bool IsEnemy { get { return isEnemy; } }
-
 }

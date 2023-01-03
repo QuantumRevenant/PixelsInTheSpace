@@ -14,17 +14,14 @@ public class EnemyData : ScriptableObject
     [SerializeField] private float meleeDamage = 1;
     [SerializeField] private Vector2 enemyBoundaries = new Vector2(1.125f, 1);
     [Space(10)]
-    /////////////////////////////////////////////////////
     [Header("Enemy Movement")]
     [SerializeField] private float baseSpeed = 0.5f;
     [SerializeField] private Vector2 baseVector = new Vector2(1, 0.125f);
     [Space(10)]
-    /////////////////////////////////////////////////////
     [Header("Enemy Shooting")]
     [SerializeField] private float baseReloadTime = 1;
     [SerializeField] private float baseDamage = 1;
     [Space(10)]
-    /////////////////////////////////////////////////////
     [Header("Bullet Characteristics")]
     [SerializeField] private Color bulletColor = new Color(1f, 0f, 0.3f, 1);
     [SerializeField] private float baseBulletSpeed = 1;

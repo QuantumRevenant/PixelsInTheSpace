@@ -18,7 +18,6 @@ public class BulletData : ScriptableObject
     [SerializeField] private float frecuency=30f;
     [SerializeField] private float amplitude=0.05f;
 
-    // [SerializeField] private float spriteSize;
     public Sprite BulletSprite { get { return bulletSprite; } }
     public Color BulletColor { get { return bulletColor; } }
     public float BaseSpeed { get { return baseSpeed; } }
@@ -33,5 +32,4 @@ public class BulletData : ScriptableObject
     public float SinusDirection { get { return sinusDirection; } }
     public float Frecuency { get { return frecuency; } }
     public float Amplitude { get { return amplitude; } }
-    
 }

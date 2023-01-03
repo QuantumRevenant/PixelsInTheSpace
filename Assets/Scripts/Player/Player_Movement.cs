@@ -6,40 +6,26 @@ using UnityEngine.InputSystem.Controls;
 [RequireComponent(typeof(Player_Manager))]
 public class Player_Movement : MonoBehaviour
 {
-    #region - Variables
     [Header("Modificators")]
     private float multiplicatorSpeed;
     private float multiplicatorScale;
     [Space(10)]
-
     [Header("Functionality")]
-    // [SerializeField] 
-    //private Vector3 inputVector;
     [HideInInspector] public PlayerInput playerInput;
     [Space(10)]
-
     [SerializeField] private PlayerData playerData;
-    #endregion
-
-    #region - Awake/Start
+    
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
         playerData = gameObject.GetComponent<Player_Manager>().playerData;
     }
-
-    void Start()
-    {
-
-    }
-    #endregion
-
     void Update()
     {
         GetVariables();
         Movement(playerInput.actions["Move"].ReadValue<Vector2>());
     }
-
+    
     private void GetVariables()
     {
         Player_Manager PlayerManager;
@@ -65,7 +51,6 @@ public class Player_Movement : MonoBehaviour
         PosAndSize.y = Mathf.Clamp(PosAndSize.y, -playerData.PlayerBoundaries.y, playerData.PlayerBoundaries.y - (PosAndSize.z / 2));
 
         PosAndSize.z = transform.position.z;
-
         transform.position = PosAndSize;
     }
 }

@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.InputSystem;
-
 //Items Enumerator
 public enum Items { Nothing, BlockedSpace, Shield, Laser, Bomb, Misil, Torpedo, DoubleShot, TripleShot, WaveShoot, Dron, Bengal, ExtraLife };
 public enum MultiplicatorType { Speed, Scale, Damage, Reload, BulletSpeed, BulletScale }
-public enum ShootingType { Simple, Lateral, Arch, Wave, Laser,Others}
+public enum ShootingType { Simple, Lateral, Arch, Wave, Laser, Others }
 [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
 public class Player_Manager : MonoBehaviour
 {
-    #region - Variables
     [Header("Life")]
     [Range(0, 10)] public float playerLife = 5f;
     private bool isInvulnerable;
@@ -25,7 +23,6 @@ public class Player_Manager : MonoBehaviour
     [HideInInspector] public float multiplicatorDamage = 1f;
     [HideInInspector] public float multiplicatorReload = 1f;
     [Space(10)]
-
     [Header("Bullet Multiplicators")]
     [HideInInspector] public float multiplicatorBulletSpeed = 1f;
     [HideInInspector] public float multiplicatorBulletScale = 1f;
@@ -33,7 +30,6 @@ public class Player_Manager : MonoBehaviour
     [Space(10)]
     public PlayerData playerData;
     [Space(10)]
-
     [Header("Inventory")]
     [SerializeField, Range(1, 5)] private int inventoryPosition = 1;
     [SerializeField] private int inventorySize = 5;
@@ -41,14 +37,10 @@ public class Player_Manager : MonoBehaviour
     private bool isAvailableScrollInv = true;
     private const int inventoryStandardSize = 5;
     private const float scrollCooldownTimeInventory = 0.5f;
-
     [HideInInspector] public float finalSize;
     [HideInInspector] public PlayerInput playerInput;
-    public ShootingType shootingType=ShootingType.Simple;
+    public ShootingType shootingType = ShootingType.Simple;
     private GameObject Shield;
-
-    #endregion
-
 
     private void Awake()
     {
@@ -59,7 +51,6 @@ public class Player_Manager : MonoBehaviour
     {
         Shield = GetChildWithName(gameObject, "Shield");
     }
-
     void Update()
     {
         if (trigger)
@@ -69,15 +60,8 @@ public class Player_Manager : MonoBehaviour
         ScrollSelect(playerInput.actions["Hotbar Select"].ReadValue<float>());
         UseItem(inventoryPosition, playerInput.actions["Trigger"].ReadValue<float>());
     }
-    private void Trigger()
-    {
-        trigger = false;
-        Damage(1);
-    }
-    #region TriggerEnter
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
         switch (collision.tag)
         {
             case "Enemy":
@@ -110,6 +94,7 @@ public class Player_Manager : MonoBehaviour
                 }
         }
     }
+    
     private void TouchedItem(Collider2D collision)
     {
         Items itemClass = collision.GetComponent<Item_Script>().itemData.ItemClass;
@@ -118,7 +103,6 @@ public class Player_Manager : MonoBehaviour
             Debug.Log("Error, El jugador Tocó un " + itemClass);
             return;
         }
-
         if (itemClass != Items.ExtraLife)
             SaveItem(itemClass, collision);
         else if (playerLife < 10)
@@ -126,15 +110,22 @@ public class Player_Manager : MonoBehaviour
             playerLife++;
             Destroy(collision.gameObject);
         }
-
     }
-    #endregion
-    #region Damage
-    [ContextMenu("Change Invulnerable Status")]
-    public void ToggleInvulnerable()
+    public GameObject GetChildWithName(GameObject obj, string name)
     {
-        isInvulnerable = !isInvulnerable;
-        Debug.Log("Cambiamos el valor de Invulnerabilidad a" + isInvulnerable);
+        Transform trans = obj.transform;
+        Transform childTrans = trans.Find(name);
+        if (childTrans != null)
+            return childTrans.gameObject;
+        else
+            return null;
+    }
+    public void ChangeSize()
+    {
+        float baseSize = playerData.PlayerSize * 10;
+        float changedSize = baseSize * multiplicatorScale;
+        gameObject.transform.localScale = new Vector3(changedSize, changedSize, changedSize);
+        finalSize = changedSize / 10;
     }
     public void Damage(float damage, bool invulnerableCheck = true)
     {
@@ -142,9 +133,7 @@ public class Player_Manager : MonoBehaviour
         {
             playerLife += -damage;
             if (playerLife <= 0)
-            {
                 Death();
-            }
             else
             {
                 if (invulnerableCheck)
@@ -156,19 +145,14 @@ public class Player_Manager : MonoBehaviour
             }
         }
         if (isShielded)
-        {
             ShieldChange(false);
-        }
-
     }
     private void ShieldChange(bool TurnOn)
     {
         Shield.SetActive(TurnOn);
         isShielded = TurnOn;
         if (TurnOn)
-        {
             GetComponent<BoxCollider2D>().size = new Vector2(0.15f, 0.15f);
-        }
         else
         {
             GetComponent<BoxCollider2D>().size = new Vector2(0.0875f, 0.0875f);
@@ -176,28 +160,11 @@ public class Player_Manager : MonoBehaviour
             invulnerableTimer = playerData.InvulnerableTime;
             StartCoroutine("blinking");
         }
-
-    }
-    IEnumerator blinking()
-    {
-        //bool state = true;
-        SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        while (invulnerableTimer > 0)
-        {
-            spriteRenderer.color = playerData.PlayerDamagedColor;
-            yield return new WaitForSeconds(playerData.BlinkTime);
-            spriteRenderer.color = playerData.PlayerColor;
-            yield return new WaitForSeconds(playerData.BlinkTime);
-            invulnerableTimer += (-playerData.BlinkTime * 2);
-        }
-        isInvulnerable = false;
     }
     private void Death()
     {
         gameObject.SetActive(false);
     }
-    #endregion
-    #region Inventory
     private void InitializeInventory()
     {
         for (int i = 0; i < inventoryStandardSize; i++)
@@ -206,40 +173,6 @@ public class Player_Manager : MonoBehaviour
                 inventory.Add(Items.Nothing);
             else
                 inventory.Add(Items.BlockedSpace);
-        }
-    }
-    IEnumerator cooldownScrollActivable()
-    {
-        isAvailableScrollInv = false;
-        yield return new WaitForSeconds(scrollCooldownTimeInventory);
-        isAvailableScrollInv = true;
-    }
-    private void ScrollSelect(float value)
-    {
-        if (value <= 0 || value > inventorySize)
-            return;
-
-        inventoryPosition = (int)value;
-
-    }
-    private void ScrollActivable(float value)
-    {
-        if (value == 0 || !isAvailableScrollInv)
-            return;
-        StartCoroutine("cooldownScrollActivable");
-        if (value > 0)
-        {
-            if (inventoryPosition >= inventorySize)
-                inventoryPosition = 1;
-            else
-                inventoryPosition += 1;
-        }
-        else
-        {
-            if (inventoryPosition <= 1)
-                inventoryPosition = inventorySize;
-            else
-                inventoryPosition += -1;
         }
     }
     private void SaveItem(Items itemClass, Collider2D colission)
@@ -299,25 +232,50 @@ public class Player_Manager : MonoBehaviour
         }
         inventory[pos - 1] = Items.Nothing;
     }
-    #endregion
-    public void ChangeSize()
+    private void ScrollSelect(float value)
     {
-        float baseSize = playerData.PlayerSize * 10;
-        float changedSize = baseSize * multiplicatorScale;
-        gameObject.transform.localScale = new Vector3(changedSize, changedSize, changedSize);
-        finalSize = changedSize / 10;
+        if (value <= 0 || value > inventorySize)
+            return;
+
+        inventoryPosition = (int)value;
     }
-    public GameObject GetChildWithName(GameObject obj, string name)
+    private void ScrollActivable(float value)
     {
-        Transform trans = obj.transform;
-        Transform childTrans = trans.Find(name);
-        if (childTrans != null)
+        if (value == 0 || !isAvailableScrollInv)
+            return;
+        StartCoroutine("cooldownScrollActivable");
+        inventoryPosition = value > 0 ? inventoryPosition >= inventorySize ? 1 : inventoryPosition + 1 : inventoryPosition <= 1 ? inventorySize : inventoryPosition - 1;
+    }
+    
+    IEnumerator blinking()
+    {
+        SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        while (invulnerableTimer > 0)
         {
-            return childTrans.gameObject;
+            spriteRenderer.color = playerData.PlayerDamagedColor;
+            yield return new WaitForSeconds(playerData.BlinkTime);
+            spriteRenderer.color = playerData.PlayerColor;
+            yield return new WaitForSeconds(playerData.BlinkTime);
+            invulnerableTimer += (-playerData.BlinkTime * 2);
         }
-        else
-        {
-            return null;
-        }
+        isInvulnerable = false;
+    }
+    IEnumerator cooldownScrollActivable()
+    {
+        isAvailableScrollInv = false;
+        yield return new WaitForSeconds(scrollCooldownTimeInventory);
+        isAvailableScrollInv = true;
+    }
+    
+    private void Trigger()
+    {
+        trigger = false;
+        Damage(1);
+    }
+    [ContextMenu("Change Invulnerable Status")]
+    public void ToggleInvulnerable()
+    {
+        isInvulnerable = !isInvulnerable;
+        Debug.Log("Cambiamos el valor de Invulnerabilidad a " + isInvulnerable);
     }
 }

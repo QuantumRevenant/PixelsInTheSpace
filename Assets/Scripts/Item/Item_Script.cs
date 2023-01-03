@@ -12,13 +12,12 @@ public class Item_Script : MonoBehaviour
         RefreshItem();
         Move(itemData.ItemSpeed);
     }
-
+    
     void Move(float speed)
     {
         Vector3 movementVector=-transform.up*speed*Time.deltaTime;
         transform.Translate(movementVector,Space.Self);
     }
-
     void RefreshItem()
     {
         gameObject.GetComponent<SpriteRenderer>().sprite=itemData.ItemSprite;
