@@ -8,7 +8,7 @@ public class Player_Shooting : MonoBehaviour
 {
     [Header("Player Stats")]
     private float reloadTimer = 0;
-    public ShootingType shootingType = ShootingType.Simple;
+    public ShootingType shootType = ShootingType.Simple;
     private GameObject Laser;
     [Space(10)]
     [Header("Bullet Stats")]
@@ -48,7 +48,7 @@ public class Player_Shooting : MonoBehaviour
     {
         Player_Manager PlayerManager;
         PlayerManager = gameObject.GetComponent<Player_Manager>();
-        shootingType = PlayerManager.shootingType;
+        shootType = PlayerManager.shootingType;
         multiplicatorReload = PlayerManager.multiplicatorReload;
         multiplicatorDamage = PlayerManager.multiplicatorDamage;
         bulletVector = PlayerManager.bulletVector;
@@ -81,7 +81,7 @@ public class Player_Shooting : MonoBehaviour
     }
     private void Select(ShootingTableData shootingTable)
     {
-        if (shootingType == ShootingType.Laser)
+        if (shootType == ShootingType.Laser)
         {
             LaserChange(true);
             return;
@@ -89,18 +89,33 @@ public class Player_Shooting : MonoBehaviour
         LaserChange(false);
         for (int i = 0; i < shootingTable.shootingData.Length; i++)
         {
-            if (shootingTable.shootingData[i].shootingType == shootingType)
+            if (shootingTable.shootingData[i].shootingType == shootType)
             {
-                ReadShootGroup(shootingTable.shootingData[i]);
+                ReadShootGroup(shootingTable.shootingData[i], shootType);
                 i = shootingTable.shootingData.Length;
             }
         }
     }
-    private void ReadShootGroup(ShootingData shootingData)
+    private void ReadShootGroup(ShootingData shootingData, ShootingType shootingType)
     {
-        ShootWave(shootingData);
-        // ShootArch(shootingData.bulletData[0], shootingData.AngleArch, shootingData.BulletNumber);
-        // ShootLateral(shootingData.bulletData[0], shootingData.BulletSeparation, shootingData.BulletNumber);
+        switch(shootingType)
+        {
+            case ShootingType.Simple:
+                Generate(shootingData.bulletData[0], 0, Vector2.zero);
+                break;
+            case ShootingType.Lateral:
+                ShootLateral(shootingData.bulletData[0], shootingData.BulletSeparation, shootingData.BulletNumber);
+                break;
+            case ShootingType.Arch:
+                ShootArch(shootingData.bulletData[0], shootingData.AngleArch, shootingData.BulletNumber);
+                break;
+            case ShootingType.Wave: 
+                ShootWave(shootingData);
+                break;
+            default:
+                Debug.Log("Player_Shooting.cs, ReadShootGroup, shooting type no coincidente");
+                break;
+        }
     }
     private void ShootWave(ShootingData shootingData)
     {
