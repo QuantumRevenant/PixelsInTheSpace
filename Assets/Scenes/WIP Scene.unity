@@ -242,7 +242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 1ffcae8e55ab78b42a23016ae1c6f03e, type: 3}
-  m_NotificationBehavior: 0
+  m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -253,7 +253,39 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0ea7b376-a2c9-42b0-872b-82f36f909761
+    m_ActionName: Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6fa6de10-6deb-4d1f-a034-e87ef05bf73b
+    m_ActionName: Player/Shoot[/Mouse/leftButton,/Keyboard/z]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 94e400f9-33dc-4d06-9ad3-1938c64ee53e
+    m_ActionName: Player/Trigger[/Mouse/rightButton,/Keyboard/x]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: fe3cdc6a-aca9-4845-9ebf-f223a2508adf
+    m_ActionName: Player/Hotbar Scroll[/Mouse/scroll/y,/Keyboard/leftShift,/Keyboard/leftCtrl]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d6cc6069-cd41-409d-82d4-f1ab5cc3766b
+    m_ActionName: Player/Hotbar Select[/Keyboard/1,/Keyboard/2,/Keyboard/3,/Keyboard/4,/Keyboard/5]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1ea9f10b-1846-4731-b6a0-34453d470d83
+    m_ActionName: Player/Eject Weapon[/Keyboard/q,/Keyboard/c]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 100b0e2b-91ac-4e84-b296-99c3b21c423a
+    m_ActionName: Player/Eject Activable[/Keyboard/e,/Keyboard/v,/Mouse/middleButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cc84175e-ddfc-4019-8cfc-1f5bfd1ae0a9
+    m_ActionName: Player/Pause[/Keyboard/escape,/Keyboard/p,/Keyboard/f10]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -271,12 +303,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e38c3f16bbfbe5844add1c535c76922a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootingType: 0
+  shootType: 0
   SimpleBullet: {fileID: 1947319807814442615, guid: 58fd124a85dc0e444876956641d812c2, type: 3}
   shootData: {fileID: 11400000, guid: cb7caad9fe157a9458473ef2d53c86b0, type: 2}
   playerInput: {fileID: 0}
-  frecuency: 360
-  magnitude: 0.05
   playerData: {fileID: 11400000, guid: a1938200f8a019043aa933fbfe3190c8, type: 2}
 --- !u!114 &381469933
 MonoBehaviour:
@@ -1194,7 +1224,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1810975058
 Transform:
   m_ObjectHideFlags: 0

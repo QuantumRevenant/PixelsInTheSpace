@@ -8,12 +8,8 @@ public class Player_Shooting : MonoBehaviour
 {
     [Header("Player Stats")]
     private float reloadTimer = 0;
-    public ShootingType shootType = ShootingType.Simple;
+    public ShootingTypes shootType = ShootingTypes.Simple;
     private GameObject Laser;
-    [Space(10)]
-    [Header("Bullet Stats")]
-    private Vector2 bulletVector;
-    private int direction;
     [Space(10)]
     [Header("Player Modificators")]
     private float multiplicatorReload = 1f;
@@ -51,14 +47,8 @@ public class Player_Shooting : MonoBehaviour
         shootType = PlayerManager.shootingType;
         multiplicatorReload = PlayerManager.multiplicatorReload;
         multiplicatorDamage = PlayerManager.multiplicatorDamage;
-        bulletVector = PlayerManager.bulletVector;
         multiplicatorBulletScale = PlayerManager.multiplicatorBulletScale;
         multiplicatorBulletSpeed = PlayerManager.multiplicatorBulletSpeed;
-
-        if (playerData.IsEnemy)
-            direction = -1;
-        else
-            direction = 1;
     }
     private void Shoot(float shootPressed)
     {
@@ -81,7 +71,7 @@ public class Player_Shooting : MonoBehaviour
     }
     private void Select(ShootingTableData shootingTable)
     {
-        if (shootType == ShootingType.Laser)
+        if (shootType == ShootingTypes.Laser)
         {
             LaserChange(true);
             return;
@@ -96,20 +86,20 @@ public class Player_Shooting : MonoBehaviour
             }
         }
     }
-    private void ReadShootGroup(ShootingData shootingData, ShootingType shootingType)
+    private void ReadShootGroup(ShootingData shootingData, ShootingTypes shootingType)
     {
         switch(shootingType)
         {
-            case ShootingType.Simple:
+            case ShootingTypes.Simple:
                 Generate(shootingData.bulletData[0], 0, Vector2.zero);
                 break;
-            case ShootingType.Lateral:
+            case ShootingTypes.Lateral:
                 ShootLateral(shootingData.bulletData[0], shootingData.BulletSeparation, shootingData.BulletNumber);
                 break;
-            case ShootingType.Arch:
+            case ShootingTypes.Arch:
                 ShootArch(shootingData.bulletData[0], shootingData.AngleArch, shootingData.BulletNumber);
                 break;
-            case ShootingType.Wave: 
+            case ShootingTypes.Wave: 
                 ShootWave(shootingData);
                 break;
             default:

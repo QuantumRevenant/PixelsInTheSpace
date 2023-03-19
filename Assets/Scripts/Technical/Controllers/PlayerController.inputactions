@@ -21,7 +21,7 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Trigger",
@@ -34,7 +34,7 @@
                 },
                 {
                     "name": "Hotbar Scroll",
-                    "type": "PassThrough",
+                    "type": "Value",
                     "id": "fe3cdc6a-aca9-4845-9ebf-f223a2508adf",
                     "expectedControlType": "Axis",
                     "processors": "",

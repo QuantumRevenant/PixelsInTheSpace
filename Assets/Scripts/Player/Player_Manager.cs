@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 //Items Enumerator
 public enum Items { Nothing, BlockedSpace, Shield, Laser, Bomb, Misil, Torpedo, DoubleShot, TripleShot, WaveShoot, Dron, Bengal, ExtraLife };
 public enum MultiplicatorType { Speed, Scale, Damage, Reload, BulletSpeed, BulletScale }
-public enum ShootingType { Simple, Lateral, Arch, Wave, Laser, Others }
+public enum ShootingTypes { Simple, Lateral, Arch, Wave, Laser, Others }
 [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
 public class Player_Manager : MonoBehaviour
 {
@@ -39,7 +39,7 @@ public class Player_Manager : MonoBehaviour
     private const float scrollCooldownTimeInventory = 0.5f;
     [HideInInspector] public float finalSize;
     [HideInInspector] public PlayerInput playerInput;
-    public ShootingType shootingType = ShootingType.Simple;
+    public ShootingTypes shootingType = ShootingTypes.Simple;
     private GameObject Shield;
 
     private void Awake()
@@ -163,6 +163,7 @@ public class Player_Manager : MonoBehaviour
     }
     private void Death()
     {
+        Debug.Log("GG, GAME OVER!");
         gameObject.SetActive(false);
     }
     private void InitializeInventory()
