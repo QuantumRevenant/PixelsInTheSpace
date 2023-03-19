@@ -7,33 +7,33 @@ using UnityEngine.InputSystem.Controls;
 public class Player_Scr : MonoBehaviour
 {
     [Header("Life")]
-    [Range(0, 10)] private float _healthPoints = 5f;
+    [SerializeField][Range(0, 10)] private float _healthPoints = 5f;
     private float _invulnerableTimer;
     private bool _isInvulnerable = false, _isShielded = false;
     private GameObject _shield;
     [Space(10)]
 
     [Header("Shooting")]
-    private float _reloadTimer;
-    private ShootingTypes _shootingType = ShootingTypes.Simple;
+    [SerializeField]private float _reloadTimer;
+    [SerializeField]private ShootingTypes _shootingType = ShootingTypes.Simple;
     private GameObject _laser;
-    // [Space(10)]
+    [Space(10)]
 
-    // [Header("Motion")]
+    [Header("Motion")]
 
-    // [Space(10)]
+    [Space(10)]
 
-    // [Header("Management")]
-    private int score = 10;
+    [Header("Management")]
+    [SerializeField]private int score = 0;
     public int Score { get { return score; } }
 
     [Header("Inventory")]
-    [Range(1, 5)] private int _inventoryPosition = 1;
+    [SerializeField][Range(1, 5)] private int _inventoryPosition = 1;
     private int _inventorySize = 5;
-    private List<Items> _inventory;
-    private bool _canScroll;
+    [SerializeField]private List<Items> _inventory;
+    private bool _canScroll=true;
     private const int _BaseInvSize = 5;
-    private const float _ScrollCooldown = 0.5f;
+    private const float _ScrollCooldown = 0.25f;
 
 
     [SerializeField] private GameObject SimpleBullet;
@@ -47,6 +47,7 @@ public class Player_Scr : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         playerInput = GetComponent<PlayerInput>();
+        _laser= GetChildWithName(gameObject, "Laser");
         _shield = GetChildWithName(gameObject, "Shield");
         InitializeInventory();
     }
@@ -148,6 +149,7 @@ public class Player_Scr : MonoBehaviour
         if (_reloadTimer <= 0 && shootPressed > 0)
         {
             _reloadTimer = playerData.BaseReloadTime;
+            Select(shootData);
         }
         else if (shootPressed == 0)
         {
@@ -356,19 +358,21 @@ public class Player_Scr : MonoBehaviour
         }
         _inventory[pos - 1] = Items.Nothing;
     }
-    private void InventorySelectPosition(InputAction.CallbackContext callbackContext)
+    public void InventorySelectPosition(InputAction.CallbackContext callbackContext)
     {
-        if (callbackContext.ReadValue<int>() <= 0 || callbackContext.ReadValue<int>() > _inventorySize)
+        if (callbackContext.ReadValue<float>() <= 0 || callbackContext.ReadValue<float>() > _inventorySize)
             return;
         if (callbackContext.performed)
-            _inventoryPosition = callbackContext.ReadValue<int>();
+            _inventoryPosition = (int)callbackContext.ReadValue<float>();
     }
-    private void InventoryScrollPosition(float value)
+    public void InventoryScrollPosition(InputAction.CallbackContext callbackContext)
     {
-        if (value == 0 || !_canScroll)
+        if(!callbackContext.performed)
+            return;
+        if (callbackContext.ReadValue<float>() == 0 || !_canScroll)
             return;
         StartCoroutine("ScrollInvCooldown");
-        if (value > 0)
+        if (callbackContext.ReadValue<float>() > 0)
             if (_inventoryPosition >= _inventorySize) _inventoryPosition = 1; else _inventoryPosition++;
         else
             if (_inventoryPosition <= 1) _inventoryPosition = _inventorySize; else _inventoryPosition--;

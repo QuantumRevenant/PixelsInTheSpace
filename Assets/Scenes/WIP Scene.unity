@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 381469930}
   - component: {fileID: 381469929}
+  - component: {fileID: 381469936}
   - component: {fileID: 381469933}
   - component: {fileID: 381469932}
   - component: {fileID: 381469928}
@@ -153,7 +154,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 381469927}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5712b510dcc0fcb4a8abb0260fe007bf, type: 3}
   m_Name: 
@@ -267,11 +268,35 @@ MonoBehaviour:
     m_ActionId: 94e400f9-33dc-4d06-9ad3-1938c64ee53e
     m_ActionName: Player/Trigger[/Mouse/rightButton,/Keyboard/x]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 381469936}
+        m_TargetAssemblyTypeName: Player_Scr, Assembly-CSharp
+        m_MethodName: InventoryScrollPosition
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: fe3cdc6a-aca9-4845-9ebf-f223a2508adf
     m_ActionName: Player/Hotbar Scroll[/Mouse/scroll/y,/Keyboard/leftShift,/Keyboard/leftCtrl]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 381469936}
+        m_TargetAssemblyTypeName: Player_Scr, Assembly-CSharp
+        m_MethodName: InventorySelectPosition
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: d6cc6069-cd41-409d-82d4-f1ab5cc3766b
     m_ActionName: Player/Hotbar Select[/Keyboard/1,/Keyboard/2,/Keyboard/3,/Keyboard/4,/Keyboard/5]
   - m_PersistentCalls:
@@ -298,7 +323,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 381469927}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e38c3f16bbfbe5844add1c535c76922a, type: 3}
   m_Name: 
@@ -315,7 +340,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 381469927}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8885a48c9e343b34e9d474395d017231, type: 3}
   m_Name: 
@@ -383,6 +408,28 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &381469936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381469927}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5836bda5f618c1d4b90f5b28b826b3b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _healthPoints: 5
+  _reloadTimer: 0
+  _shootingType: 0
+  score: 0
+  _inventoryPosition: 1
+  _inventory: 
+  SimpleBullet: {fileID: 1947319807814442615, guid: 58fd124a85dc0e444876956641d812c2, type: 3}
+  shootData: {fileID: 11400000, guid: cb7caad9fe157a9458473ef2d53c86b0, type: 2}
+  playerData: {fileID: 11400000, guid: a1938200f8a019043aa933fbfe3190c8, type: 2}
+  playerInput: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
