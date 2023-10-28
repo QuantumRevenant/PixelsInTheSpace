@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+public enum Items { Nothing, BlockedSpace, Shield, Laser, Bomb, Misil, Torpedo, DoubleShot, TripleShot, WaveShoot, Dron, Bengal, ExtraLife };
+public enum MultiplicatorType { Speed, Scale, Damage, Reload, BulletSpeed, BulletScale }
+public enum ShootingTypes { Simple, Lateral, Arch, Wave, Others }
+
 [RequireComponent(typeof(Rigidbody2D), typeof(BoxCollider2D))]
 public class Player_Scr : MonoBehaviour
 {
@@ -14,8 +18,10 @@ public class Player_Scr : MonoBehaviour
     [Space(10)]
 
     [Header("Shooting")]
-    [SerializeField]private float _reloadTimer;
-    [SerializeField]private ShootingTypes _shootingType = ShootingTypes.Simple;
+    [SerializeField] private float _reloadTimer;
+    [SerializeField] private float _laserTimer;
+    [SerializeField] private float _laserLifeTime = 5f;
+    [SerializeField] private ShootingTypes _shootingType = ShootingTypes.Simple;
     private GameObject _laser;
     [Space(10)]
 
@@ -24,14 +30,14 @@ public class Player_Scr : MonoBehaviour
     [Space(10)]
 
     [Header("Management")]
-    [SerializeField]private int score = 0;
+    [SerializeField] private int score = 0;
     public int Score { get { return score; } }
 
     [Header("Inventory")]
     [SerializeField][Range(1, 5)] private int _inventoryPosition = 1;
     private int _inventorySize = 5;
-    [SerializeField]private List<Items> _inventory;
-    private bool _canScroll=true;
+    [SerializeField] private List<Items> _inventory;
+    private bool _canScroll = true;
     private const int _BaseInvSize = 5;
     private const float _ScrollCooldown = 0.25f;
 
@@ -47,7 +53,7 @@ public class Player_Scr : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         playerInput = GetComponent<PlayerInput>();
-        _laser= GetChildWithName(gameObject, "Laser");
+        _laser = GetChildWithName(gameObject, "Laser");
         _shield = GetChildWithName(gameObject, "Shield");
         InitializeInventory();
     }
@@ -57,6 +63,7 @@ public class Player_Scr : MonoBehaviour
     private void Update()
     {
         Shoot(playerInput.actions["Shoot"].ReadValue<float>());
+
     }
     private void FixedUpdate()
     {
@@ -142,6 +149,11 @@ public class Player_Scr : MonoBehaviour
     #endregion
 
     #region Shooting
+    [ContextMenu("Pull Trigger")]
+    private void Trigger()
+    {
+        UseItem(_inventoryPosition,1);
+    }
     private void Shoot(float shootPressed)
     {
         _reloadTimer += -(Time.deltaTime);
@@ -159,9 +171,10 @@ public class Player_Scr : MonoBehaviour
     }
     private void Select(ShootingTableData shootingTable)
     {
-        if (_shootingType == ShootingTypes.Laser)
+        if (_laserTimer > 0)
         {
             _laser.SetActive(true);
+            _laserTimer -= Time.deltaTime*10;
             return;
         }
         _laser.SetActive(false);
@@ -292,7 +305,7 @@ public class Player_Scr : MonoBehaviour
         Items itemClass = collision.GetComponent<Item_Script>().itemData.ItemClass;
         if (itemClass == Items.Nothing || itemClass == Items.BlockedSpace)
         {
-            Debug.Log("Error, El jugador tocó un " + itemClass);
+            Debug.Log("Error, El jugador tocï¿½ un " + itemClass);
             return;
         }
         if (itemClass == Items.ExtraLife && _healthPoints < 10)
@@ -324,7 +337,8 @@ public class Player_Scr : MonoBehaviour
                 ShieldChange(true);
                 break;
             case Items.Laser:
-                //Chage Value to Laser
+                _laserTimer = _laserLifeTime;
+                Debug.Log(_laserTimer);
                 break;
             case Items.Bomb:
                 //Instantiate Bomb
@@ -367,7 +381,7 @@ public class Player_Scr : MonoBehaviour
     }
     public void InventoryScrollPosition(InputAction.CallbackContext callbackContext)
     {
-        if(!callbackContext.performed)
+        if (!callbackContext.performed)
             return;
         if (callbackContext.ReadValue<float>() == 0 || !_canScroll)
             return;

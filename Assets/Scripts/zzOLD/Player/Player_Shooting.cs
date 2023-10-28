@@ -71,11 +71,11 @@ public class Player_Shooting : MonoBehaviour
     }
     private void Select(ShootingTableData shootingTable)
     {
-        if (shootType == ShootingTypes.Laser)
-        {
-            LaserChange(true);
-            return;
-        }
+        // if (shootType == ShootingTypes.Laser)
+        // {
+        //     LaserChange(true);
+        //     return;
+        // }
         LaserChange(false);
         for (int i = 0; i < shootingTable.shootingData.Length; i++)
         {
