@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum EntityStatus { Entering, PlayArea, Exiting }
-public enum Team { Neutral, Player, Enemy, Other }
+public enum Team { Neutral, Player, Enemy, Other } 
+[System.Flags]
+public enum Types { NoType = 0, Energy = 1, Kinetic = 2, Explosive = 4, Plasma = 8, Biological = 16, Antimatter = 32, AllTypes = -1 }
 public class Scr_Entity : MonoBehaviour
 {
     [Header("General")]
     private Team team;
+    private Types resistances;
     private float generalTimer;
     [Header("Armor")]
     private int armor;
@@ -39,16 +42,15 @@ public class Scr_Entity : MonoBehaviour
         float radius;
         float internalRadius;
     }
-    
-    
+
     #region General
     
     public void GeneralUpdate()
     {
-        generalTimer+=Time.deltaTime;
+        generalTimer += Time.deltaTime;
     }
     #endregion
-    
+
     #region Armor
     public void addArmor(int value = 1)
     {
@@ -214,7 +216,7 @@ public class Scr_Entity : MonoBehaviour
 
         // Traduce de nuevo al sistema original
         output = new Vector2(x_prime, y_prime) + posPlayer;
-    
+
         return output;
     }
     private void spawnBullet()
@@ -238,9 +240,9 @@ public class Scr_Entity : MonoBehaviour
                 float percentage = (float)i / (shotAtributtes.RoundsFired - 1);
                 angleArc = Mathf.Lerp(limit, -limit, percentage);
             }
-            float angleOffset=shotAtributtes.Offset+(shotAtributtes.OffsetSpeed*generalTimer);
-            angleOffset%=360;
-            firePointPos = rotateFirePoint(firePointPos, angleArc,angleOffset);
+            float angleOffset = shotAtributtes.Offset + (shotAtributtes.OffsetSpeed * generalTimer);
+            angleOffset %= 360;
+            firePointPos = rotateFirePoint(firePointPos, angleArc, angleOffset);
             for (int j = 0; j < cartridge.bulletsQuantity; j++)
             {
                 offset = 0;
@@ -250,16 +252,16 @@ public class Scr_Entity : MonoBehaviour
                     float percentage = (float)j / (cartridge.bulletsQuantity - 1);
                     offset = Mathf.Lerp(limit, -limit, percentage);
                 }
-                spawnBullet(firePointPos, offset, cartridge.Bullets[i],angleArc+angleOffset);
+                spawnBullet(firePointPos, offset, cartridge.Bullets[i], angleArc + angleOffset);
             }
         }
     }
 
     private void spawnBullet(Vector3 firePoint, float offset, ScO_Bullet bulletData, float angle)
     {
-        angle%=360;
+        angle %= 360;
         GameObject bullet = Scr_BulletPool.Instance.getBullet();
-        bullet.transform.Rotate(Vector3.forward,angle);
+        bullet.transform.Rotate(Vector3.forward, angle);
         bullet.transform.position = firePoint;
         bullet.transform.Translate(Vector2.left * offset, Space.Self);
         bullet.GetComponent<Scr_Bullet>().BulletData = bulletData;
@@ -289,7 +291,7 @@ public class Scr_Entity : MonoBehaviour
         // Gizmos.DrawLine(origen, puntoB);
     }
 
-    private void DrawGizmosFiringArea(float angle )
+    private void DrawGizmosFiringArea(float angle)
     {
         Utilities.NormalizeAngle(angle);
     }
