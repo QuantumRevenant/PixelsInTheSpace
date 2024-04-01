@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum EntityStatus { Entering, PlayArea, Exiting }
-public enum Team { Neutral, Player, Enemy, Other } 
+public enum Team { Neutral, Player, Enemy, Other }
 [System.Flags]
-public enum Types { NoType = 0, Energy = 1, Kinetic = 2, Explosive = 4, Plasma = 8, Biological = 16, Antimatter = 32, AllTypes = -1 }
+public enum Types { Standard = 0, Energy = 1, Kinetic = 2, Explosive = 4, Plasma = 8, Biological = 16, Antimatter = 32, AllTypes = -1 }
+public struct Damage { public int value; public Types type; }
 public class Scr_Entity : MonoBehaviour
 {
     [Header("General")]
@@ -44,7 +45,7 @@ public class Scr_Entity : MonoBehaviour
     }
 
     #region General
-    
+
     public void GeneralUpdate()
     {
         generalTimer += Time.deltaTime;
@@ -70,7 +71,7 @@ public class Scr_Entity : MonoBehaviour
         actualHP += value;
         actualHP = Mathf.Clamp(actualHP, 0, maxHP);
     }
-    public void hurt(float value)
+    private void hurt(float value)
     {
         if (isInvulnerable) { return; }
         if (armor > 0)
@@ -84,7 +85,23 @@ public class Scr_Entity : MonoBehaviour
         if (actualHP <= 0)
             death();
     }
+
+    public void hurt(Damage damage)
+    {
+        if (isResisted(damage.type)) { return; }
+
+        if (resistances == Types.Standard)
+            hurt(damage.value);
+        else
+            hurt(damage.value*2);
+
+    }
     protected virtual void death() { }
+
+    private bool isResisted(Types type)
+    {
+        return resistances.HasFlag(value) && value != Types.Standard;
+    }
     #endregion
 
     #region Invulnerability
