@@ -54,5 +54,6 @@
     },
     "conventionalCommits.scopes": [
         "General"
-    ]
+    ],
+    "dotnet.preferCSharpExtension": true
 }

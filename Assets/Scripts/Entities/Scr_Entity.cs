@@ -14,6 +14,7 @@ public class Scr_Entity : MonoBehaviour
     private Types resistances;
     private float generalTimer;
     [Header("Armor")]
+    private int maxArmor;
     private int armor;
     [Header("Health")]
     private float maxHP;
@@ -45,7 +46,6 @@ public class Scr_Entity : MonoBehaviour
     }
 
     #region General
-
     public void GeneralUpdate()
     {
         generalTimer += Time.deltaTime;
@@ -53,15 +53,15 @@ public class Scr_Entity : MonoBehaviour
     #endregion
 
     #region Armor
-    public void addArmor(int value = 1)
+    private void addArmor(int value = 1)
     {
         armor += value;
-        armor = Mathf.Clamp(armor, 0, 10);
+        armor = Mathf.Clamp(armor, 0, maxArmor);
     }
-    public void reduceArmor(int value = 1)
+    private void reduceArmor(int value = 1)
     {
         armor -= value;
-        armor = Mathf.Clamp(armor, 0, 10);
+        armor = Mathf.Clamp(armor, 0, maxArmor);
     }
     #endregion
 
@@ -85,7 +85,6 @@ public class Scr_Entity : MonoBehaviour
         if (actualHP <= 0)
             death();
     }
-
     public void hurt(Damage damage)
     {
         if (isResisted(damage.type)) { return; }
@@ -97,25 +96,23 @@ public class Scr_Entity : MonoBehaviour
 
     }
     protected virtual void death() { }
-
     private bool isResisted(Types type)
     {
-        return resistances.HasFlag(value) && value != Types.Standard;
+        return resistances.HasFlag(type) && type != Types.Standard;
     }
     #endregion
 
     #region Invulnerability
-    public void setInvulnerable(bool value) { isInvulnerable = value; }
-    public void switchInvulerable() { isInvulnerable = !isInvulnerable; }
-    public void ActivateInvulnerability()
-    {
-        if (!isInvulnerable)
-            StartCoroutine(TemporalInvulnerability(invulnerabilityTime));
-    }
-    public void ActivateInvulnerability(float duration)
+    private void setInvulnerable(bool value) { isInvulnerable = value; }
+    private void switchInvulerable() { isInvulnerable = !isInvulnerable; }
+    private void ActivateInvulnerability(float duration)
     {
         if (!isInvulnerable)
             StartCoroutine(TemporalInvulnerability(duration));
+    }
+    private void ActivateInvulnerability()
+    {
+       ActivateInvulnerability(invulnerabilityTime);
     }
     protected virtual void invulnerableAction() { }
     protected virtual IEnumerator TemporalInvulnerability(float duration)
