@@ -3,6 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Bullet Data", menuName = "Scriptable Objects/Bullet_Data")]
 public class ScO_Bullet : ScriptableObject
 {
+    [SerializeField] private PostMortemBulletAction postMortem;
     [SerializeField] private Sprite sprite;
     [SerializeField] private Color color = new Color(1f, 1f, 1f, 1f);
     [SerializeField] private float speed;
@@ -14,10 +15,10 @@ public class ScO_Bullet : ScriptableObject
     [SerializeField] private float aoeRadius;
 
     //Cartridge Integration
-    [SerializeField] private string identifier;
     [SerializeField] private ScO_Bullet[] subprojectile;
     [SerializeField] private float spacing;
 
+    public PostMortemBulletAction PostMortem { get => postMortem; set => postMortem = value; }
     public Sprite Sprite { get => sprite; set => sprite = value; }
     public float Speed { get => speed; set => speed = value; }
     public float Scale { get => scale; set => scale = value; }
@@ -28,7 +29,6 @@ public class ScO_Bullet : ScriptableObject
     public float Damage { get => damage; set => damage = value; }
     public float AoeRadius { get => aoeRadius; set => aoeRadius = value; }
 
-    public string Identifier { get => identifier; set => identifier = value; }
     public ScO_Bullet[] Subprojectile { get => subprojectile; set => subprojectile = value; }
     public int subprojectileQuantity {get => subprojectile.Length;}
     public float Spacing { get => spacing; set => spacing = value; }

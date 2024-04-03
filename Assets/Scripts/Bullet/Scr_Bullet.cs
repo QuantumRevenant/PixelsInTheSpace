@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
-
+[System.Flags] public enum PostMortemBulletAction { Nothing = 0, Explode = 1, Summon = 2 ,All=-1}
 public class Scr_Bullet : MonoBehaviour
 {
     [SerializeField] private ScO_Bullet bulletData;
@@ -29,6 +29,11 @@ public class Scr_Bullet : MonoBehaviour
         timerDeactivate();
         Movement();
     }
+
+    private void OnDisable()
+    {
+
+    }
     private void UpdateProperties()
     {
         gameObject.GetComponent<SpriteRenderer>().sprite = bulletData.Sprite;
@@ -36,6 +41,11 @@ public class Scr_Bullet : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, 0, bulletData.Angle);
         transform.localScale = new Vector3(bulletData.Scale, bulletData.Scale, bulletData.Scale);
         timerActive = bulletData.LifeTime;
+    }
+
+    private void cleanProperties()
+    {
+        
     }
 
     private void timerDeactivate()
