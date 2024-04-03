@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
-[System.Flags] public enum PostMortemBulletAction { Nothing = 0, Explode = 1, Summon = 2 ,All=-1}
+[System.Flags] public enum PostMortemBulletAction { Nothing = 0, Explode = 1, Summon = 2, All = -1 }
 public class Scr_Bullet : MonoBehaviour
 {
     [SerializeField] private ScO_Bullet bulletData;
@@ -17,53 +17,99 @@ public class Scr_Bullet : MonoBehaviour
             UpdateProperties();
         }
     }
-    void Start()
+
+    private SpriteRenderer spriteRenderer;
+
+    private void Awake()
     {
-        if (BulletData != null)
-        {
-            UpdateProperties();
-        }
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
+    void Start() { UpdateProperties(); }
     void Update()
     {
         timerDeactivate();
-        Movement();
+        if (BulletData != null)
+            Movement();
     }
+    private void OnEnable() { UpdateProperties(); }
+    private void OnDisable() { resetProperties(); }
 
-    private void OnDisable()
-    {
 
-    }
+    #region BulletProperties
+    [ContextMenu("updateProperties")]
     private void UpdateProperties()
     {
-        gameObject.GetComponent<SpriteRenderer>().sprite = bulletData.Sprite;
-        gameObject.GetComponent<SpriteRenderer>().color = bulletData.Color;
-        transform.rotation = Quaternion.Euler(0, 0, bulletData.Angle);
-        transform.localScale = new Vector3(bulletData.Scale, bulletData.Scale, bulletData.Scale);
-        timerActive = bulletData.LifeTime;
+        if (BulletData == null)
+            return;
+
+        setProperties(
+            bulletData.Sprite,
+            bulletData.Color,
+            Quaternion.Euler(0, 0, bulletData.Angle),
+            new Vector3(bulletData.Scale, bulletData.Scale, bulletData.Scale),
+            bulletData.LifeTime);
     }
 
+    [ContextMenu("resetProperties")]
+    private void resetProperties()
+    {
+        if(isReset())
+            return;
+
+        bulletData = null;
+        cleanProperties();
+    }
+
+    [ContextMenu("cleanProperties")]
     private void cleanProperties()
     {
-        
-    }
+        if(isClean())
+            return;
 
+        setProperties(
+            null,
+            new Color(),
+            Quaternion.Euler(0, 0, 0),
+            new Vector3(1, 1, 1),
+            float.PositiveInfinity);
+    }
+    private void setProperties(Sprite sprite, Color color, Quaternion euler, Vector3 scale, float timer)
+    {
+        spriteRenderer.sprite = sprite;
+        spriteRenderer.color = color;
+        transform.rotation = euler;
+        transform.localScale = scale;
+        timerActive = timer;
+    }
+    [ContextMenu("isReset")]
+    private bool isReset() { return isClean() && BulletData == null;}
+
+    [ContextMenu("isClean")]
+    private bool isClean()
+    {
+        bool output = true;
+        output &= spriteRenderer.sprite == null
+        && spriteRenderer.color == new Color()
+        && transform.rotation == Quaternion.Euler(0, 0, 0)
+        && transform.localScale == new Vector3(1, 1, 1)
+        && timerActive == float.PositiveInfinity;
+        Debug.Log(output);
+        return output;
+    }
+    #endregion
     private void timerDeactivate()
     {
         timerActive -= Time.deltaTime;
         if (timerActive <= 0)
-        {
             gameObject.SetActive(false);
-        }
     }
 
     private void onDrawGizmos()
     {
         float radius = 0;
         if (bulletData != null)
-        {
             radius = bulletData.AoeRadius;
-        }
+
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, radius);
     }
