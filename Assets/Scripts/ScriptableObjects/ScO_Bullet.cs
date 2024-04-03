@@ -3,7 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Bullet Data", menuName = "Scriptable Objects/Bullet_Data")]
 public class ScO_Bullet : ScriptableObject
 {
-    [SerializeField] private Team team=Team.Neutral;
     [SerializeField] private Sprite sprite;
     [SerializeField] private Color color = new Color(1f, 1f, 1f, 1f);
     [SerializeField] private float speed;

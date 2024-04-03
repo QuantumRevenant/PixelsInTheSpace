@@ -12,5 +12,5 @@ public class ScO_ShotAtributtes : ScriptableObject
     public int RoundsFired { get => roundsFired; set => roundsFired = value; }
     public float AngularOffset { get => angularOffset; set => angularOffset = value; }
     public float OffsetSpeed { get => offsetSpeed; set => offsetSpeed = value; }
-    public ScO_Cartridge Bullet { get => bullet; set => bullet = value; }
+    public ScO_Bullet Bullet { get => bullet; set => bullet = value; }
 }

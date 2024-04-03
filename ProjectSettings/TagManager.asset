@@ -4,28 +4,24 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Enemy
-  - EnemyProjectile
-  - AllyProjectile
-  - EnemyLaser
-  - Explosion
-  - AllyLaser
-  - PickupItem
+  - NeutralTeam
+  - PlayerTeam
+  - EnemyTeam
+  - PirateTeam
+  - OtherTeam
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Player
+  - 
   - Water
   - UI
-  - Enemy
-  - AllyProjectile
-  - EnemyProjectile
-  - Explosion
-  - AllyLaser
-  - EnemyLaser
-  - InstantedObject
-  - PickupItem
+  - 
+  - 
+  - 
+  - 
+  - PlayerCharacter
+  - NonPlayerCharacter
   - 
   - 
   - 
@@ -33,6 +29,8 @@ TagManager:
   - 
   - 
   - 
+  - 
+  - Projectile
   - 
   - 
   - 

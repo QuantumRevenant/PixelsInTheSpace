@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public enum EntityStatus { Entering, PlayArea, Exiting }
-public enum Team { Neutral, Player, Enemy, Other }
 [System.Flags]
 public enum Types { Standard = 0, Energy = 1, Kinetic = 2, Explosive = 4, Plasma = 8, Biological = 16, Antimatter = 32, AllTypes = -1 }
 public struct Damage { public int value; public Types type; }
 public class Scr_Entity : MonoBehaviour
 {
     [Header("General")]
-    private Team team;
     private Types resistances;
     private float generalTimer;
     [Header("Armor")]
@@ -92,7 +90,7 @@ public class Scr_Entity : MonoBehaviour
         if (resistances == Types.Standard)
             hurt(damage.value);
         else
-            hurt(damage.value*2);
+            hurt(damage.value * 2);
 
     }
     protected virtual void death() { }
@@ -112,7 +110,7 @@ public class Scr_Entity : MonoBehaviour
     }
     private void ActivateInvulnerability()
     {
-       ActivateInvulnerability(invulnerabilityTime);
+        ActivateInvulnerability(invulnerabilityTime);
     }
     protected virtual void invulnerableAction() { }
     protected virtual IEnumerator TemporalInvulnerability(float duration)
@@ -188,15 +186,13 @@ public class Scr_Entity : MonoBehaviour
     }
     private void changeEntityStatus()
     {
-        if (isOffLimits())
-        {
-            if (entityStatus == EntityStatus.PlayArea)
-                entityStatus = EntityStatus.Exiting;
-        }
-        else
+        if (!isOffLimits())
         {
             entityStatus = EntityStatus.PlayArea;
+            return;
         }
+        if (entityStatus == EntityStatus.PlayArea)
+            entityStatus = EntityStatus.Exiting;
     }
     private bool isOffLimits()
     {
@@ -235,7 +231,7 @@ public class Scr_Entity : MonoBehaviour
     }
     private void spawnBullet()
     {
-        ScO_Cartridge cartridge = shotAtributtes.Cartridge;
+        ScO_Bullet bullet = shotAtributtes.Bullet;
 
         Vector3 firePointPos;
         float offset;
@@ -254,19 +250,19 @@ public class Scr_Entity : MonoBehaviour
                 float percentage = (float)i / (shotAtributtes.RoundsFired - 1);
                 angleArc = Mathf.Lerp(limit, -limit, percentage);
             }
-            float angleOffset = shotAtributtes.Offset + (shotAtributtes.OffsetSpeed * generalTimer);
+            float angleOffset = shotAtributtes.AngularOffset + (shotAtributtes.OffsetSpeed * generalTimer);
             angleOffset %= 360;
             firePointPos = rotateFirePoint(firePointPos, angleArc, angleOffset);
-            for (int j = 0; j < cartridge.bulletsQuantity; j++)
+            for (int j = 0; j < bullet.subprojectileQuantity; j++)
             {
                 offset = 0;
-                if (cartridge.bulletsQuantity != 1)
+                if (bullet.subprojectileQuantity != 1)
                 {
-                    float limit = cartridge.Separation / 2;
-                    float percentage = (float)j / (cartridge.bulletsQuantity - 1);
+                    float limit = bullet.Spacing / 2;
+                    float percentage = (float)j / (bullet.subprojectileQuantity - 1);
                     offset = Mathf.Lerp(limit, -limit, percentage);
                 }
-                spawnBullet(firePointPos, offset, cartridge.Bullets[i], angleArc + angleOffset);
+                spawnBullet(firePointPos, offset, bullet.Subprojectile[i], angleArc + angleOffset);
             }
         }
     }
