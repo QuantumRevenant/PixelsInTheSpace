@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UtilitiesNS;
 
 public enum EntityStatus { Entering, PlayArea, Exiting }
 [System.Flags]

@@ -1,22 +1,15 @@
 using UnityEngine;
 
-public static class Utilities
+namespace UtilitiesNS
 {
-    public static float NormalizeAngle(float angle,bool equalLimits=false)
+    public static class Utilities
     {
-        if(angle%360==0)
+        public static float NormalizeAngle(float angle, bool equalLimits = false)
         {
-            if(!equalLimits)
-            {
-                if(angle==0)
-                {
-                    return 0;
-                }else
-                {
-                    return 360;
-                }
-            }
+            if (angle % 360 != 0 || equalLimits)
+                return angle %= 360;
+
+            return angle==0?0:360;
         }
-        return angle%=360;
     }
 }

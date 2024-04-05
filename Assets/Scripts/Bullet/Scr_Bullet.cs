@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
+using GeneralNS;
 [System.Flags] public enum PostMortemBulletAction { Nothing = 0, Explode = 1, Summon = 2, All = -1 }
 public class Scr_Bullet : MonoBehaviour
 {
@@ -71,15 +72,20 @@ public class Scr_Bullet : MonoBehaviour
             new Color(),
             Quaternion.Euler(0, 0, 0),
             new Vector3(1, 1, 1),
-            float.PositiveInfinity);
+            float.PositiveInfinity,Tags.NeutralTeam);
     }
     private void setProperties(Sprite sprite, Color color, Quaternion euler, Vector3 scale, float timer)
+    {
+        setProperties(sprite,color,euler,scale,timer,gameObject.tag);
+    }
+    private void setProperties(Sprite sprite, Color color, Quaternion euler, Vector3 scale, float timer,string tag)
     {
         spriteRenderer.sprite = sprite;
         spriteRenderer.color = color;
         transform.rotation = euler;
         transform.localScale = scale;
         timerActive = timer;
+        gameObject.tag=tag;
     }
     [ContextMenu("isReset")]
     private bool isReset() { return isClean() && BulletData == null;}
@@ -97,6 +103,7 @@ public class Scr_Bullet : MonoBehaviour
         return output;
     }
     #endregion
+    
     private void timerDeactivate()
     {
         timerActive -= Time.deltaTime;
@@ -104,7 +111,7 @@ public class Scr_Bullet : MonoBehaviour
             gameObject.SetActive(false);
     }
 
-    private void onDrawGizmos()
+    private void OnDrawGizmos()
     {
         float radius = 0;
         if (bulletData != null)
