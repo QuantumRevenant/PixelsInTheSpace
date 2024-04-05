@@ -45,7 +45,7 @@ public class Scr_Entity : MonoBehaviour
     }
 
     #region General
-    public void GeneralUpdate()
+    public virtual void Think()
     {
         generalTimer += Time.deltaTime;
     }
