@@ -212,6 +212,8 @@ public class Scr_Entity : MonoBehaviour
     #region Damage
     private Vector3 rotateFirePoint(Vector3 firePointPos, float angle, float offset)
     {
+        if(firePointPos==gameObject.transform.position)
+            return firePointPos;
         Vector2 posPlayer = new Vector2(transform.position.x, transform.position.y);
         Vector2 posFirePoint = new Vector2(firePointPos.x, firePointPos.y);
         Vector2 output;
@@ -240,10 +242,9 @@ public class Scr_Entity : MonoBehaviour
         for (int i = 0; i < shotAtributtes.RoundsFired; i++)
         {
             float angleArc = 0;
-            if (firePoint != null)
-                firePointPos = firePoint.transform.position;
-            else
-                firePointPos = gameObject.transform.position;
+
+
+            firePointPos = firePoint == null ? gameObject.transform.position : firePoint.transform.position;
 
             if (shotAtributtes.RoundsFired != 1)
             {
