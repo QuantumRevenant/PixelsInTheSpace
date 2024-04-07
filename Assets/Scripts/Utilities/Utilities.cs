@@ -13,6 +13,19 @@ namespace QuantumRevenant
 
                 return angle == 0 ? 0 : 360;
             }
+
+            public static bool DoesTagExist(string aTag)
+            {
+                try
+                {
+                    GameObject.FindGameObjectWithTag(aTag);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
         }
     }
 }

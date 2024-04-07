@@ -52,7 +52,8 @@
         "Temp/": true
     },
     "conventionalCommits.scopes": [
-        "General"
+        "General",
+        "Utilities"
     ],
     "dotnet.preferCSharpExtension": true,
     "dotnet.defaultSolution": "PixelsInTheSpace.sln"
