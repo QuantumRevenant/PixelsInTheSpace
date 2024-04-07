@@ -1,16 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UtilitiesNS;
+using QuantumRevenant.Utilities;
+using QuantumRevenant.PixelsinTheSpace;
 
-public enum EntityStatus { Entering, PlayArea, Exiting }
-[System.Flags]
-public enum Types { Standard = 0, Energy = 1, Kinetic = 2, Explosive = 4, Plasma = 8, Biological = 16, Antimatter = 32, AllTypes = -1 }
-public struct Damage { public int value; public Types type; }
 public class Scr_Entity : MonoBehaviour
 {
     [Header("General")]
-    private Types resistances;
+    private DamageTypes resistances;
     private float generalTimer;
     [Header("Armor")]
     private int maxArmor;
@@ -88,16 +85,16 @@ public class Scr_Entity : MonoBehaviour
     {
         if (isResisted(damage.type)) { return; }
 
-        if (resistances == Types.Standard)
+        if (resistances == DamageTypes.Standard)
             hurt(damage.value);
         else
             hurt(damage.value * 2);
 
     }
     protected virtual void death() { }
-    private bool isResisted(Types type)
+    private bool isResisted(DamageTypes type)
     {
-        return resistances.HasFlag(type) && type != Types.Standard;
+        return resistances.HasFlag(type) && type != DamageTypes.Standard;
     }
     #endregion
 
@@ -305,7 +302,7 @@ public class Scr_Entity : MonoBehaviour
 
     private void DrawGizmosFiringArea(float angle)
     {
-        Utilities.NormalizeAngle(angle);
+        Tools.NormalizeAngle(angle);
     }
 
 }

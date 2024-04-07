@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
-using GeneralNS;
+using QuantumRevenant.GeneralNS;
 [System.Flags] public enum PostMortemBulletAction { Nothing = 0, Explode = 1, Summon = 2, All = -1 }
 public class Scr_Bullet : MonoBehaviour
 {
