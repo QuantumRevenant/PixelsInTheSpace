@@ -99,7 +99,6 @@ public class Scr_Bullet : MonoBehaviour
         && transform.rotation == Quaternion.Euler(0, 0, 0)
         && transform.localScale == new Vector3(1, 1, 1)
         && timerActive == float.PositiveInfinity;
-        Debug.Log(output);
         return output;
     }
     #endregion
