@@ -29,7 +29,7 @@ public class Scr_Entity : MonoBehaviour
     private float waitTime;
     private bool isWaiting = false;
     [Header("Damage")]
-    private ScO_ShotAtributtes shotAtributtes;
+    [SerializeField]private ScO_ShotAtributtes shotAtributtes;
     private GameObject firePoint;
     private float reloadTime;
     [Header("Gizmos")]
@@ -208,6 +208,7 @@ public class Scr_Entity : MonoBehaviour
     #endregion
 
     #region Damage
+    [ContextMenu("Shoot")]
     private void spawnBullet()
     {
         ScO_Bullet bullet = shotAtributtes.Bullet;

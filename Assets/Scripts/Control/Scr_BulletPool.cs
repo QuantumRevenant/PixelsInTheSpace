@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Scr_BulletPool : MonoBehaviour
 {
-    private GameObject bulletPrefab;
+    [SerializeField]private GameObject bulletPrefab;
     private int initialPoolSize = 10;
     private List<GameObject> bullets;
 
