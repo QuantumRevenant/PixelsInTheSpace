@@ -57,9 +57,9 @@ public class Scr_BulletPool : MonoBehaviour
     {
         angle = Utility.NormalizeAngle(angle);
         GameObject bullet = getBullet();
-
-        bullet.transform.Rotate(Vector3.forward, angle);
-
+        Scr_Bullet bulletScr=bullet.GetComponent<Scr_Bullet>();
+        
+        bulletScr.inheritedAngle=angle;
         bullet.transform.position = firePoint;
         bullet.transform.Translate(Vector2.left * offset, Space.Self);
 
@@ -71,5 +71,8 @@ public class Scr_BulletPool : MonoBehaviour
             bullet.tag=Tags.NeutralTeam;
 
         bullet.SetActive(true);
+        Debug.Log($"Angle from bullet after activate: {bullet.transform.eulerAngles.z}");
+        Debug.Log($"Angle from bullet expected after: {bulletData.Angle} + {angle} == {bulletData.Angle+angle}");
+
     }
 }

@@ -232,8 +232,7 @@ public class Scr_Entity : MonoBehaviour
 
             if (firePointPos != gameObjectPos)
                 firePointPos = Utility.rotatePoint3DRelativeToPivotZ(firePointPos, gameObjectPos, angleArc + angleOffset);
-
-            Scr_BulletPool.Instance.spawnBullet(firePointPos, 0, bullet, angleArc + angleOffset,gameObject.tag);
+            Scr_BulletPool.Instance.spawnBullet(firePointPos, 0, bullet, angleArc + angleOffset+transform.eulerAngles.z,gameObject.tag);
         }
     }
     #endregion

@@ -11,6 +11,7 @@ public class Scr_Bullet : MonoBehaviour
 {
     [SerializeField] private ScO_Bullet bulletData;
     [SerializeField] private float timerActive = float.PositiveInfinity;
+    /*[HideInInspector]*/ public float inheritedAngle=0;
     public ScO_Bullet BulletData
     {
         get { return bulletData; }
@@ -34,7 +35,7 @@ public class Scr_Bullet : MonoBehaviour
         if (BulletData != null)
             Movement();
     }
-    private void OnEnable() { UpdateProperties(); }
+    private void OnEnable() {}
     private void OnDisable() { resetProperties(); }
 
 
@@ -48,13 +49,13 @@ public class Scr_Bullet : MonoBehaviour
         setProperties(
             bulletData.Sprite,
             bulletData.Color,
-            bulletData.Angle+gameObject.transform.eulerAngles.z,
+            bulletData.Angle+inheritedAngle,
             new Vector3(bulletData.Scale, bulletData.Scale, bulletData.Scale),
             bulletData.LifeTime);
     }
 
     [ContextMenu("resetProperties")]
-    private void resetProperties()
+    public void resetProperties()
     {
         if (isReset())
             return;
@@ -68,7 +69,7 @@ public class Scr_Bullet : MonoBehaviour
     {
         if (isClean())
             return;
-
+        inheritedAngle=0;
         setProperties(
             null,
             new Color(),
@@ -84,7 +85,7 @@ public class Scr_Bullet : MonoBehaviour
     {
         spriteRenderer.sprite = sprite;
         spriteRenderer.color = color;
-        transform.rotation=Quaternion.Euler(0,0,angle);
+        transform.eulerAngles=new Vector3(0,0,angle);
         transform.localScale = scale;
         timerActive = timer;
         gameObject.tag = tag;
@@ -95,13 +96,11 @@ public class Scr_Bullet : MonoBehaviour
     [ContextMenu("isClean")]
     private bool isClean()
     {
-        bool output = true;
-        output &= spriteRenderer.sprite == null
+        return spriteRenderer.sprite == null
         && spriteRenderer.color == new Color()
         && transform.rotation == Quaternion.Euler(0, 0, 0)
         && transform.localScale == new Vector3(1, 1, 1)
-        && timerActive == float.PositiveInfinity;
-        return output;
+        && timerActive == float.PositiveInfinity&&inheritedAngle==0;
     }
     #endregion
 
@@ -165,7 +164,6 @@ public class Scr_Bullet : MonoBehaviour
                 float percentage = (float)i / (bulletData.subprojectileQuantity - 1);
                 offset = Mathf.Lerp(limit, -limit, percentage);
             }
-            Debug.Log($"Rotation: {transform.eulerAngles.z}",this);
             Scr_BulletPool.Instance.spawnBullet(gameObject.transform.position, offset,bulletData.Subprojectile[i],transform.eulerAngles.z,gameObject.tag);
         }
     }

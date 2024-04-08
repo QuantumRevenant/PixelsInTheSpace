@@ -1631,6 +1631,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletData: {fileID: 0}
   timerActive: Infinity
+  inheritedAngle: 0
 --- !u!1 &2116950117
 GameObject:
   m_ObjectHideFlags: 0
