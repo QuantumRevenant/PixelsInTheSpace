@@ -30,7 +30,7 @@ public class Scr_Entity : MonoBehaviour
     private bool isWaiting = false;
     [Header("Damage")]
     [SerializeField]private ScO_ShotAtributtes shotAtributtes;
-    private GameObject firePoint;
+    [SerializeField]private GameObject firePoint;
     private float reloadTime;
     [Header("Gizmos")]
     private GizmosShoot gizmosShoot;

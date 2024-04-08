@@ -163,9 +163,8 @@ public class Scr_Bullet : MonoBehaviour
                 float limit = bulletData.Spacing / 2;
                 float percentage = (float)i / (bulletData.subprojectileQuantity - 1);
                 offset = Mathf.Lerp(limit, -limit, percentage);
-                Scr_BulletPool.Instance.spawnBullet(gameObject.transform.position, offset,bulletData.Subprojectile[i],gameObject.transform.position.z,gameObject.tag);
             }
-
+            Scr_BulletPool.Instance.spawnBullet(gameObject.transform.position, offset,bulletData.Subprojectile[i],gameObject.transform.position.z,gameObject.tag);
         }
     }
 }

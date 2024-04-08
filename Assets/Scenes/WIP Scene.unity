@@ -154,6 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotAtributtes: {fileID: 11400000, guid: 3d58c9a081c517b478125b5d486e402c, type: 2}
+  firePoint: {fileID: 1362807580}
 --- !u!212 &365298388
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1307,7 +1308,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1362807580}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
