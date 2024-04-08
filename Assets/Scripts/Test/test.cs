@@ -4,17 +4,18 @@ using UnityEngine.PlayerLoop;
 
 public class test : MonoBehaviour
 {
-    public string tag;
+    public PostMortemBulletAction tag;
     GameObject[] testobj;
-    [ContextMenu("Test Tag")]
+    [ContextMenu("Test")]
     public void Test()
     {
-        try
-        {
-            testobj = GameObject.FindGameObjectsWithTag(tag);
-            Debug.Log("exist",this);
-        } catch{
-            Debug.Log("No exist",this);
-        }
+        PostMortemBulletAction postMortem = tag;
+
+        if (postMortem.HasFlag(PostMortemBulletAction.Explode))
+            Debug.Log("explode()");
+        if (postMortem.HasFlag(PostMortemBulletAction.Summon))
+            Debug.Log("summon()");
+
+        Debug.Log("gameObject.SetActive(false);");
     }
 }
