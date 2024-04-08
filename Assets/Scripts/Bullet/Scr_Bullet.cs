@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using QuantumRevenant.GeneralNS;
 using System;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 [System.Flags] public enum PostMortemBulletAction { Nothing = 0, Explode = 1, Summon = 2, All = -1 }
 public class Scr_Bullet : MonoBehaviour
 {
@@ -47,7 +48,7 @@ public class Scr_Bullet : MonoBehaviour
         setProperties(
             bulletData.Sprite,
             bulletData.Color,
-            Quaternion.Euler(0, 0, bulletData.Angle),
+            bulletData.Angle+gameObject.transform.eulerAngles.z,
             new Vector3(bulletData.Scale, bulletData.Scale, bulletData.Scale),
             bulletData.LifeTime);
     }
@@ -71,19 +72,19 @@ public class Scr_Bullet : MonoBehaviour
         setProperties(
             null,
             new Color(),
-            Quaternion.Euler(0, 0, 0),
+            0,
             new Vector3(1, 1, 1),
             float.PositiveInfinity, Tags.NeutralTeam);
     }
-    private void setProperties(Sprite sprite, Color color, Quaternion euler, Vector3 scale, float timer)
+    private void setProperties(Sprite sprite, Color color,  float angle, Vector3 scale, float timer)
     {
-        setProperties(sprite, color, euler, scale, timer, gameObject.tag);
+        setProperties(sprite, color, angle, scale, timer, gameObject.tag);
     }
-    private void setProperties(Sprite sprite, Color color, Quaternion euler, Vector3 scale, float timer, string tag)
+    private void setProperties(Sprite sprite, Color color, float angle, Vector3 scale, float timer, string tag)
     {
         spriteRenderer.sprite = sprite;
         spriteRenderer.color = color;
-        transform.rotation = euler;
+        transform.rotation=Quaternion.Euler(0,0,angle);
         transform.localScale = scale;
         timerActive = timer;
         gameObject.tag = tag;
@@ -164,7 +165,8 @@ public class Scr_Bullet : MonoBehaviour
                 float percentage = (float)i / (bulletData.subprojectileQuantity - 1);
                 offset = Mathf.Lerp(limit, -limit, percentage);
             }
-            Scr_BulletPool.Instance.spawnBullet(gameObject.transform.position, offset,bulletData.Subprojectile[i],gameObject.transform.position.z,gameObject.tag);
+            Debug.Log($"Rotation: {transform.eulerAngles.z}",this);
+            Scr_BulletPool.Instance.spawnBullet(gameObject.transform.position, offset,bulletData.Subprojectile[i],transform.eulerAngles.z,gameObject.tag);
         }
     }
 }

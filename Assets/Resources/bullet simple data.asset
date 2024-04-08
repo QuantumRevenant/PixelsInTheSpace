@@ -16,7 +16,7 @@ MonoBehaviour:
   sprite: {fileID: -7803065417098437583, guid: 9c0ef779ebdd4dc4cbf5fca17abaaf01, type: 3}
   color: {r: 0, g: 0.12544465, b: 1, a: 1}
   speed: 0.1
-  angularSpeed: 20
+  angularSpeed: 0
   angle: 90
   scale: 1
   lifeTime: 5

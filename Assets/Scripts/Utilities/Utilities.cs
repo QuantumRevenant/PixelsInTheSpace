@@ -33,6 +33,7 @@ namespace QuantumRevenant
             public static Vector2 rotatePointRelativeToPivot(Vector2 Point,Vector2 Pivot,float Angle)
             {
                 Angle*=Mathf.Deg2Rad;
+                Angle-=Mathf.PI;
 
                 float s=Mathf.Sin(Angle);
                 float c=Mathf.Cos(Angle);
