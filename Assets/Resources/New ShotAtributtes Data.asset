@@ -16,4 +16,4 @@ MonoBehaviour:
   projectileQuantity: 1
   angularOffset: 0
   offsetSpeed: 0
-  bullet: {fileID: 11400000, guid: cc0a69c944f956b47ba79ba7e07fdc0d, type: 2}
+  bullet: {fileID: 11400000, guid: 9f2fd5584fa14e445b9c03d449fd78b9, type: 2}

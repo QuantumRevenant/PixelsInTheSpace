@@ -17,11 +17,13 @@ MonoBehaviour:
   color: {r: 0, g: 1, b: 0.12585473, a: 1}
   speed: 0.1
   angularSpeed: 0
-  angle: 90
+  angle: 0
   scale: 1
-  lifeTime: 2.5
+  lifeTime: 0
   damage: 0
   aoeRadius: 0
   subprojectile:
-  - {fileID: 11400000}
+  - {fileID: 11400000, guid: 3772143224317b04299818b67f7120c6, type: 2}
+  - {fileID: 11400000, guid: e50ed218d33f2964ca2a5858a20c0c3e, type: 2}
+  - {fileID: 11400000, guid: cc0a69c944f956b47ba79ba7e07fdc0d, type: 2}
   spacing: 0

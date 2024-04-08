@@ -17,7 +17,7 @@ MonoBehaviour:
   color: {r: 0, g: 0.12544465, b: 1, a: 1}
   speed: 0.1
   angularSpeed: 0
-  angle: 90
+  angle: 45
   scale: 1
   lifeTime: 5
   damage: 0
