@@ -4,6 +4,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
 using QuantumRevenant.GeneralNS;
+using System;
 [System.Flags] public enum PostMortemBulletAction { Nothing = 0, Explode = 1, Summon = 2, All = -1 }
 public class Scr_Bullet : MonoBehaviour
 {
@@ -54,7 +55,7 @@ public class Scr_Bullet : MonoBehaviour
     [ContextMenu("resetProperties")]
     private void resetProperties()
     {
-        if(isReset())
+        if (isReset())
             return;
 
         bulletData = null;
@@ -64,7 +65,7 @@ public class Scr_Bullet : MonoBehaviour
     [ContextMenu("cleanProperties")]
     private void cleanProperties()
     {
-        if(isClean())
+        if (isClean())
             return;
 
         setProperties(
@@ -72,23 +73,23 @@ public class Scr_Bullet : MonoBehaviour
             new Color(),
             Quaternion.Euler(0, 0, 0),
             new Vector3(1, 1, 1),
-            float.PositiveInfinity,Tags.NeutralTeam);
+            float.PositiveInfinity, Tags.NeutralTeam);
     }
     private void setProperties(Sprite sprite, Color color, Quaternion euler, Vector3 scale, float timer)
     {
-        setProperties(sprite,color,euler,scale,timer,gameObject.tag);
+        setProperties(sprite, color, euler, scale, timer, gameObject.tag);
     }
-    private void setProperties(Sprite sprite, Color color, Quaternion euler, Vector3 scale, float timer,string tag)
+    private void setProperties(Sprite sprite, Color color, Quaternion euler, Vector3 scale, float timer, string tag)
     {
         spriteRenderer.sprite = sprite;
         spriteRenderer.color = color;
         transform.rotation = euler;
         transform.localScale = scale;
         timerActive = timer;
-        gameObject.tag=tag;
+        gameObject.tag = tag;
     }
     [ContextMenu("isReset")]
-    private bool isReset() { return isClean() && BulletData == null;}
+    private bool isReset() { return isClean() && BulletData == null; }
 
     [ContextMenu("isClean")]
     private bool isClean()
@@ -102,12 +103,14 @@ public class Scr_Bullet : MonoBehaviour
         return output;
     }
     #endregion
-    
+
     private void timerDeactivate()
     {
         timerActive -= Time.deltaTime;
         if (timerActive <= 0)
-            gameObject.SetActive(false);
+        {
+            death();
+        }
     }
 
     private void OnDrawGizmos()
@@ -132,5 +135,37 @@ public class Scr_Bullet : MonoBehaviour
         float angle = transform.localRotation.eulerAngles.z;
         angle += angularSpeed * Time.deltaTime;
         transform.localRotation = Quaternion.Euler(0f, 0f, angle);
+    }
+    private void death()
+    {
+        PostMortemBulletAction postMortem = bulletData.PostMortem;
+
+        if (postMortem.HasFlag(PostMortemBulletAction.Explode))
+            explode();
+        if (postMortem.HasFlag(PostMortemBulletAction.Summon))
+            summon();
+
+        gameObject.SetActive(false);
+    
+    }
+    private void explode()
+    {
+        
+    }
+
+    private void summon()
+    {
+        for (int i = 0; i < bulletData.subprojectileQuantity; i++)
+        {
+            float offset = 0;
+            if (bulletData.subprojectileQuantity != 1)
+            {
+                float limit = bulletData.Spacing / 2;
+                float percentage = (float)i / (bulletData.subprojectileQuantity - 1);
+                offset = Mathf.Lerp(limit, -limit, percentage);
+                Scr_BulletPool.Instance.spawnBullet(gameObject.transform.position, offset,bulletData.Subprojectile[i],gameObject.transform.position.z,gameObject.tag);
+            }
+
+        }
     }
 }
