@@ -29,7 +29,7 @@ public class Scr_Bullet : MonoBehaviour
         spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
     }
     void Start() { UpdateProperties(); }
-    void Update()
+    void FixedUpdate()
     {
         timerDeactivate();
         if (BulletData != null)
@@ -106,7 +106,7 @@ public class Scr_Bullet : MonoBehaviour
 
     private void timerDeactivate()
     {
-        timerActive -= Time.deltaTime;
+        timerActive -= Time.fixedDeltaTime;
         if (timerActive <= 0)
         {
             death();
@@ -125,7 +125,7 @@ public class Scr_Bullet : MonoBehaviour
 
     private void Movement()
     {
-        Vector3 translateMovement = Vector3.up * bulletData.Speed * Time.deltaTime;
+        Vector3 translateMovement = Vector3.up * bulletData.Speed * Time.fixedDeltaTime;
         transform.Translate(translateMovement, Space.Self);
         RotateObject(bulletData.AngularSpeed);
     }
@@ -133,7 +133,7 @@ public class Scr_Bullet : MonoBehaviour
     private void RotateObject(float angularSpeed)
     {
         float angle = transform.localRotation.eulerAngles.z;
-        angle += angularSpeed * Time.deltaTime;
+        angle += angularSpeed * Time.fixedDeltaTime;
         transform.localRotation = Quaternion.Euler(0f, 0f, angle);
     }
     private void death()
