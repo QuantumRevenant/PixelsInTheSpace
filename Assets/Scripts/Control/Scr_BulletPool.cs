@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using QuantumRevenant.GeneralNS;
+using QuantumRevenant.Utilities;
 using UnityEngine;
 
 public class Scr_BulletPool : MonoBehaviour
@@ -48,7 +50,26 @@ public class Scr_BulletPool : MonoBehaviour
                 return bullets[i];
             }
         }
-        
         return createNewBullet();
+    }
+
+    public void spawnBullet(Vector3 firePoint, float offset, ScO_Bullet bulletData, float angle,string tag)
+    {
+        angle = Utility.NormalizeAngle(angle);
+        GameObject bullet = getBullet();
+
+        bullet.transform.Rotate(Vector3.forward, angle);
+
+        bullet.transform.position = firePoint;
+        bullet.transform.Translate(Vector2.left * offset, Space.Self);
+
+        bullet.GetComponent<Scr_Bullet>().BulletData = bulletData;
+
+        if(Utility.DoesTagExist(tag))
+            bullet.tag = gameObject.tag;
+        else
+            bullet.tag=Tags.NeutralTeam;
+
+        bullet.SetActive(true);
     }
 }

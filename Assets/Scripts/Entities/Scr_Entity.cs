@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using QuantumRevenant.Utilities;
 using QuantumRevenant.PixelsinTheSpace;
+using UnityEditor;
 
 public class Scr_Entity : MonoBehaviour
 {
@@ -207,75 +208,32 @@ public class Scr_Entity : MonoBehaviour
     #endregion
 
     #region Damage
-    private Vector3 rotateFirePoint(Vector3 firePointPos, float angle, float offset)
-    {
-        if(firePointPos==gameObject.transform.position)
-            return firePointPos;
-        Vector2 posPlayer = new Vector2(transform.position.x, transform.position.y);
-        Vector2 posFirePoint = new Vector2(firePointPos.x, firePointPos.y);
-        Vector2 output;
-
-        float angleRadians = angle * Mathf.Deg2Rad;
-
-        // Traduce el sistema de coordenadas
-        Vector2 translatedPoint = posFirePoint - posPlayer;
-
-        // Aplica la rotación
-        float x_prime = translatedPoint.x * Mathf.Cos(angleRadians) - translatedPoint.y * Mathf.Sin(angleRadians);
-        float y_prime = translatedPoint.x * Mathf.Sin(angleRadians) + translatedPoint.y * Mathf.Cos(angleRadians);
-
-        // Traduce de nuevo al sistema original
-        output = new Vector2(x_prime, y_prime) + posPlayer;
-
-        return output;
-    }
     private void spawnBullet()
     {
         ScO_Bullet bullet = shotAtributtes.Bullet;
+        Vector3 firePointPos = firePoint == null ? gameObject.transform.position : firePoint.transform.position;
+        Vector3 gameObjectPos = gameObject.transform.position;
 
-        Vector3 firePointPos;
-        float offset;
-
-        for (int i = 0; i < shotAtributtes.RoundsFired; i++)
+        for (int i = 0; i < shotAtributtes.ProjectileQuantity; i++)
         {
             float angleArc = 0;
 
-
-            firePointPos = firePoint == null ? gameObject.transform.position : firePoint.transform.position;
-
-            if (shotAtributtes.RoundsFired != 1)
+            if (shotAtributtes.ProjectileQuantity != 1)
             {
                 float limit = shotAtributtes.FiringArc / 2;
-                float percentage = (float)i / (shotAtributtes.RoundsFired - 1);
+                float percentage = (float)i / (shotAtributtes.ProjectileQuantity - 1);
                 angleArc = Mathf.Lerp(limit, -limit, percentage);
             }
+
             float angleOffset = shotAtributtes.AngularOffset + (shotAtributtes.OffsetSpeed * generalTimer);
-            angleOffset %= 360;
-            firePointPos = rotateFirePoint(firePointPos, angleArc, angleOffset);
-            for (int j = 0; j < bullet.subprojectileQuantity; j++)
-            {
-                offset = 0;
-                if (bullet.subprojectileQuantity != 1)
-                {
-                    float limit = bullet.Spacing / 2;
-                    float percentage = (float)j / (bullet.subprojectileQuantity - 1);
-                    offset = Mathf.Lerp(limit, -limit, percentage);
-                }
-                spawnBullet(firePointPos, offset, bullet.Subprojectile[i], angleArc + angleOffset);
-            }
+            angleOffset = Utility.NormalizeAngle(angleOffset);
+
+            if (firePointPos != gameObjectPos)
+                firePointPos = Utility.rotatePoint3DRelativeToPivotZ(firePointPos, gameObjectPos, angleArc + angleOffset);
+
+            Scr_BulletPool.Instance.spawnBullet(firePointPos, 0, bullet, angleArc + angleOffset,gameObject.tag);
         }
     }
-
-    private void spawnBullet(Vector3 firePoint, float offset, ScO_Bullet bulletData, float angle)
-    {
-        angle %= 360;
-        GameObject bullet = Scr_BulletPool.Instance.getBullet();
-        bullet.transform.Rotate(Vector3.forward, angle);
-        bullet.transform.position = firePoint;
-        bullet.transform.Translate(Vector2.left * offset, Space.Self);
-        bullet.GetComponent<Scr_Bullet>().BulletData = bulletData;
-    }
-
     #endregion
 
     private void OnDrawGizmos()
@@ -302,7 +260,7 @@ public class Scr_Entity : MonoBehaviour
 
     private void DrawGizmosFiringArea(float angle)
     {
-        Tools.NormalizeAngle(angle);
+        Utility.NormalizeAngle(angle);
     }
 
 }
