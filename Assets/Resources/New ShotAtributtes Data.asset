@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: New ShotAtributtes Data
   m_EditorClassIdentifier: 
   firingArc: 0
-  projectileQuantity: 0
+  projectileQuantity: 1
   angularOffset: 0
   offsetSpeed: 0
-  bullet: {fileID: 0}
+  bullet: {fileID: 11400000, guid: 3772143224317b04299818b67f7120c6, type: 2}
