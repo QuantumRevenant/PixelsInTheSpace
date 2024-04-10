@@ -17,10 +17,13 @@ MonoBehaviour:
   color: {r: 0, g: 0.12544465, b: 1, a: 1}
   speed: 0.1
   angularSpeed: 0
-  angle: 45
+  angle: 0
   scale: 1
   lifeTime: 5
   damage: 0
   aoeRadius: 0
   subprojectile: []
   spacing: 0
+  firingArc: 0
+  subprojectileQuantity: 0
+  angularOffset: 0

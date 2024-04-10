@@ -18,6 +18,11 @@ public class ScO_Bullet : ScriptableObject
     [SerializeField] private ScO_Bullet[] subprojectile;
     [SerializeField] private float spacing;
 
+    //ShotAtributtes Integration
+    [SerializeField][Range(0,360)] private float firingArc; 
+    [SerializeField] private int subprojectileQuantity;
+    [SerializeField] private float angularOffset;
+
     public PostMortemBulletAction PostMortem { get => postMortem; set => postMortem = value; }
     public Sprite Sprite { get => sprite; set => sprite = value; }
     public float Speed { get => speed; set => speed = value; }
@@ -30,6 +35,10 @@ public class ScO_Bullet : ScriptableObject
     public float AoeRadius { get => aoeRadius; set => aoeRadius = value; }
 
     public ScO_Bullet[] Subprojectile { get => subprojectile; set => subprojectile = value; }
-    public int subprojectileQuantity {get => subprojectile.Length;}
+    public int AvailableSubprojectiles {get => subprojectile.Length;}
     public float Spacing { get => spacing; set => spacing = value; }
+
+    public float FiringArc { get => firingArc; set => firingArc = value; }
+    public int SubprojectileQuantity { get => subprojectileQuantity; set => subprojectileQuantity = value; }
+    public float AngularOffset { get => angularOffset; set => angularOffset = value; }
 }

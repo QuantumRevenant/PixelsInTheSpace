@@ -155,16 +155,31 @@ public class Scr_Bullet : MonoBehaviour
 
     private void summon()
     {
-        for (int i = 0; i < bulletData.subprojectileQuantity; i++)
+        int summonQuantity=bulletData.SubprojectileQuantity>0?bulletData.SubprojectileQuantity:bulletData.AvailableSubprojectiles;
+
+        for (int i = 0; i < summonQuantity; i++)
         {
-            float offset = 0;
-            if (bulletData.subprojectileQuantity != 1)
+            int x=i%bulletData.AvailableSubprojectiles;
+
+            float angleArc = 0;
+            float lateralOffset = 0;
+
+            if (summonQuantity != 1)
             {
-                float limit = bulletData.Spacing / 2;
-                float percentage = (float)i / (bulletData.subprojectileQuantity - 1);
-                offset = Mathf.Lerp(limit, -limit, percentage);
+                float limit=0;
+                float percentage=0;
+                limit = bulletData.FiringArc / 2;
+                percentage = (float)i / (summonQuantity - 1);
+                angleArc = Mathf.Lerp(limit, -limit, percentage);
+
+                limit = bulletData.Spacing / 2;
+                percentage = (float)i / (summonQuantity - 1);
+                lateralOffset = Mathf.Lerp(limit, -limit, percentage);
             }
-            Scr_BulletPool.Instance.spawnBullet(gameObject.transform.position, offset,bulletData.Subprojectile[i],transform.eulerAngles.z,gameObject.tag);
+
+            angleArc += bulletData.AngularOffset;
+
+            Scr_BulletPool.Instance.spawnBullet(gameObject.transform.position, lateralOffset,bulletData.Subprojectile[x],transform.eulerAngles.z+angleArc,gameObject.tag);
         }
     }
 }
