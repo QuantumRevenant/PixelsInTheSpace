@@ -7,10 +7,14 @@ public class ScO_ShotAtributtes : ScriptableObject
     [SerializeField] private float angularOffset;
     [SerializeField] private float offsetSpeed; 
     [SerializeField] private ScO_Bullet bullet;
+    
+    //Cartridge Integration
+    [SerializeField] private float spacing;
 
     public float FiringArc { get => firingArc; set => firingArc = value; }
     public int ProjectileQuantity { get => projectileQuantity; set => projectileQuantity = value; }
     public float AngularOffset { get => angularOffset; set => angularOffset = value; }
     public float OffsetSpeed { get => offsetSpeed; set => offsetSpeed = value; }
     public ScO_Bullet Bullet { get => bullet; set => bullet = value; }
+    public float Spacing { get => spacing; set => spacing = value; }
 }

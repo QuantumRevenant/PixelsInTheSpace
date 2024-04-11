@@ -219,12 +219,18 @@ public class Scr_Entity : MonoBehaviour
         for (int i = 0; i < shotAtributtes.ProjectileQuantity; i++)
         {
             float angleArc = 0;
+            float lateralOffset=0;
 
             if (shotAtributtes.ProjectileQuantity != 1)
             {
                 float limit = shotAtributtes.FiringArc / 2;
                 float percentage = (float)i / (shotAtributtes.ProjectileQuantity - 1);
                 angleArc = Mathf.Lerp(limit, -limit, percentage);
+
+                
+                limit = shotAtributtes.Spacing / 2;
+                percentage = (float)i / (shotAtributtes.ProjectileQuantity - 1);
+                lateralOffset = Mathf.Lerp(limit, -limit, percentage);
             }
 
             float angleOffset = shotAtributtes.AngularOffset + (shotAtributtes.OffsetSpeed * generalTimer);
@@ -232,7 +238,7 @@ public class Scr_Entity : MonoBehaviour
 
             if (firePointPos != gameObjectPos)
                 firePointPos = Utility.rotatePoint3DRelativeToPivotZ(firePointPos, gameObjectPos, angleArc + angleOffset);
-            Scr_BulletPool.Instance.spawnBullet(firePointPos, 0, bullet, angleArc + angleOffset+transform.eulerAngles.z,gameObject.tag);
+            Scr_BulletPool.Instance.spawnBullet(firePointPos, lateralOffset, bullet, angleArc + angleOffset+transform.eulerAngles.z,gameObject.tag);
         }
     }
     #endregion
