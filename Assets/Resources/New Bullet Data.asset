@@ -24,7 +24,6 @@ MonoBehaviour:
   aoeRadius: 0
   subprojectile:
   - {fileID: 11400000, guid: e50ed218d33f2964ca2a5858a20c0c3e, type: 2}
-  - {fileID: 11400000, guid: 9f2fd5584fa14e445b9c03d449fd78b9, type: 2}
   spacing: 0
   firingArc: 45
   subprojectileQuantity: 3

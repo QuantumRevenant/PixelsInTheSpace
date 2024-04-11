@@ -43,10 +43,14 @@ public class Scr_Entity : MonoBehaviour
         float internalRadius;
     }
 
+    private void FixedUpdate() {
+        Think();
+    }
+
     #region General
     public virtual void Think()
     {
-        generalTimer += Time.deltaTime;
+        generalTimer += Time.fixedDeltaTime;
     }
     #endregion
 
@@ -223,8 +227,15 @@ public class Scr_Entity : MonoBehaviour
 
             if (shotAtributtes.ProjectileQuantity != 1)
             {
-                float limit = shotAtributtes.FiringArc / 2;
-                float percentage = (float)i / (shotAtributtes.ProjectileQuantity - 1);
+                float limit=0;
+                float percentage=0;
+
+                if(Utility.NormalizeAngle(shotAtributtes.FiringArc)==360)
+                    limit=180f*(shotAtributtes.ProjectileQuantity-1)/shotAtributtes.ProjectileQuantity;
+                else
+                    limit =shotAtributtes.FiringArc / 2;
+
+                percentage = (float)i / (shotAtributtes.ProjectileQuantity - 1);
                 angleArc = Mathf.Lerp(limit, -limit, percentage);
 
                 
@@ -233,7 +244,7 @@ public class Scr_Entity : MonoBehaviour
                 lateralOffset = Mathf.Lerp(limit, -limit, percentage);
             }
 
-            float angleOffset = shotAtributtes.AngularOffset + (shotAtributtes.OffsetSpeed * generalTimer);
+            float angleOffset = shotAtributtes.AngularOffset + (shotAtributtes.AngularOffsetSpeed * generalTimer);
             angleOffset = Utility.NormalizeAngle(angleOffset);
 
             if (firePointPos != gameObjectPos)

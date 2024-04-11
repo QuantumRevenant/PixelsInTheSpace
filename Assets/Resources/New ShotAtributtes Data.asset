@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c52620309c842204382bbffec943a762, type: 3}
   m_Name: New ShotAtributtes Data
   m_EditorClassIdentifier: 
-  firingArc: 0
-  projectileQuantity: 1
+  firingArc: 359
+  projectileQuantity: 5
   angularOffset: 0
-  offsetSpeed: 0
+  angularOffsetSpeed: 0
   bullet: {fileID: 11400000, guid: 3772143224317b04299818b67f7120c6, type: 2}
+  spacing: 0

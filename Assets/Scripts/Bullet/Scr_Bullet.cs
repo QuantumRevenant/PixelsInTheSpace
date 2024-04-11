@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 using QuantumRevenant.GeneralNS;
 using System;
 using UnityEditor.Localization.Plugins.XLIFF.V12;
+using QuantumRevenant.Utilities;
 [System.Flags] public enum PostMortemBulletAction { Nothing = 0, Explode = 1, Summon = 2, All = -1 }
 public class Scr_Bullet : MonoBehaviour
 {
@@ -150,7 +151,7 @@ public class Scr_Bullet : MonoBehaviour
     }
     private void explode()
     {
-        
+        Debug.Log("I exploded!",this);
     }
 
     private void summon()
@@ -168,7 +169,12 @@ public class Scr_Bullet : MonoBehaviour
             {
                 float limit=0;
                 float percentage=0;
-                limit = bulletData.FiringArc / 2;
+
+                if(Utility.NormalizeAngle(bulletData.FiringArc)==360)
+                    limit=180f*(summonQuantity-1)/summonQuantity;
+                else
+                    limit =bulletData.FiringArc / 2;
+
                 percentage = (float)i / (summonQuantity - 1);
                 angleArc = Mathf.Lerp(limit, -limit, percentage);
 
