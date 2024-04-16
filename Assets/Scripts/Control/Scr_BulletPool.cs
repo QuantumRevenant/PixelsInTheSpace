@@ -26,6 +26,8 @@ public class Scr_BulletPool : MonoBehaviour
     void Start()
     {
         bullets = new List<GameObject>();
+        if(bulletPrefab==null)
+            return;
         for (int i = 0; i < initialPoolSize; i++)
         {
             createNewBullet();

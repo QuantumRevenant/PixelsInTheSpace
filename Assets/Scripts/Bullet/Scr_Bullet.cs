@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.UIElements;
-using QuantumRevenant.GeneralNS;
-using System;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using QuantumRevenant.Utilities;
-[System.Flags] public enum PostMortemBulletAction { Nothing = 0, Explode = 1, Summon = 2, All = -1 }
+using QuantumRevenant.GeneralNS;
+using QuantumRevenant.PixelsinTheSpace;
+[RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(BoxCollider2D)),RequireComponent(typeof(SpriteRenderer))]
 public class Scr_Bullet : MonoBehaviour
 {
     [SerializeField] private ScO_Bullet bulletData;
     [SerializeField] private float timerActive = float.PositiveInfinity;
-    /*[HideInInspector]*/ public float inheritedAngle=0;
+    /*[HideInInspector]*/
+    public float inheritedAngle = 0;
     public ScO_Bullet BulletData
     {
         get { return bulletData; }
@@ -24,10 +23,12 @@ public class Scr_Bullet : MonoBehaviour
     }
 
     private SpriteRenderer spriteRenderer;
+    private BoxCollider2D boxCollider2D;
 
     private void Awake()
     {
-        spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        boxCollider2D = GetComponent<BoxCollider2D>();
     }
     void Start() { UpdateProperties(); }
     void FixedUpdate()
@@ -36,7 +37,7 @@ public class Scr_Bullet : MonoBehaviour
         if (BulletData != null)
             Movement();
     }
-    private void OnEnable() {}
+    private void OnEnable() { }
     private void OnDisable() { resetProperties(); }
 
 
@@ -50,7 +51,7 @@ public class Scr_Bullet : MonoBehaviour
         setProperties(
             bulletData.Sprite,
             bulletData.Color,
-            bulletData.Angle+inheritedAngle,
+            bulletData.Angle + inheritedAngle,
             new Vector3(bulletData.Scale, bulletData.Scale, bulletData.Scale),
             bulletData.LifeTime);
     }
@@ -70,7 +71,7 @@ public class Scr_Bullet : MonoBehaviour
     {
         if (isClean())
             return;
-        inheritedAngle=0;
+        inheritedAngle = 0;
         setProperties(
             null,
             new Color(),
@@ -78,7 +79,7 @@ public class Scr_Bullet : MonoBehaviour
             new Vector3(1, 1, 1),
             float.PositiveInfinity, Tags.NeutralTeam);
     }
-    private void setProperties(Sprite sprite, Color color,  float angle, Vector3 scale, float timer)
+    private void setProperties(Sprite sprite, Color color, float angle, Vector3 scale, float timer)
     {
         setProperties(sprite, color, angle, scale, timer, gameObject.tag);
     }
@@ -86,10 +87,11 @@ public class Scr_Bullet : MonoBehaviour
     {
         spriteRenderer.sprite = sprite;
         spriteRenderer.color = color;
-        transform.eulerAngles=new Vector3(0,0,angle);
+        transform.eulerAngles = new Vector3(0, 0, angle);
         transform.localScale = scale;
         timerActive = timer;
         gameObject.tag = tag;
+        boxCollider2D=Utility.resizeBoxCollider2D(spriteRenderer,boxCollider2D,transform.localScale);
     }
     [ContextMenu("isReset")]
     private bool isReset() { return isClean() && BulletData == null; }
@@ -101,7 +103,7 @@ public class Scr_Bullet : MonoBehaviour
         && spriteRenderer.color == new Color()
         && transform.rotation == Quaternion.Euler(0, 0, 0)
         && transform.localScale == new Vector3(1, 1, 1)
-        && timerActive == float.PositiveInfinity&&inheritedAngle==0;
+        && timerActive == float.PositiveInfinity && inheritedAngle == 0;
     }
     #endregion
 
@@ -147,33 +149,33 @@ public class Scr_Bullet : MonoBehaviour
             summon();
 
         gameObject.SetActive(false);
-    
+
     }
     private void explode()
     {
-        Debug.Log("I exploded!",this);
+        Debug.Log("I exploded!", this);
     }
 
     private void summon()
     {
-        int summonQuantity=bulletData.SubprojectileQuantity>0?bulletData.SubprojectileQuantity:bulletData.AvailableSubprojectiles;
+        int summonQuantity = bulletData.SubprojectileQuantity > 0 ? bulletData.SubprojectileQuantity : bulletData.AvailableSubprojectiles;
 
         for (int i = 0; i < summonQuantity; i++)
         {
-            int x=i%bulletData.AvailableSubprojectiles;
+            int x = i % bulletData.AvailableSubprojectiles;
 
             float angleArc = 0;
             float lateralOffset = 0;
 
             if (summonQuantity != 1)
             {
-                float limit=0;
-                float percentage=0;
+                float limit = 0;
+                float percentage = 0;
 
-                if(Utility.NormalizeAngle(bulletData.FiringArc)==360)
-                    limit=180f*(summonQuantity-1)/summonQuantity;
+                if (Utility.NormalizeAngle(bulletData.FiringArc) == 360)
+                    limit = 180f * (summonQuantity - 1) / summonQuantity;
                 else
-                    limit =bulletData.FiringArc / 2;
+                    limit = bulletData.FiringArc / 2;
 
                 percentage = (float)i / (summonQuantity - 1);
                 angleArc = Mathf.Lerp(limit, -limit, percentage);
@@ -185,7 +187,8 @@ public class Scr_Bullet : MonoBehaviour
 
             angleArc += bulletData.AngularOffset;
 
-            Scr_BulletPool.Instance.spawnBullet(gameObject.transform.position, lateralOffset,bulletData.Subprojectile[x],transform.eulerAngles.z+angleArc,gameObject.tag);
+            Scr_BulletPool.Instance.spawnBullet(gameObject.transform.position, lateralOffset, bulletData.Subprojectile[x], transform.eulerAngles.z + angleArc, gameObject.tag);
         }
     }
+    
 }

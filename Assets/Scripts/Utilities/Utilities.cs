@@ -16,7 +16,6 @@ namespace QuantumRevenant
 
                 return angle == 0 ? 0 : 360;
             }
-
             public static bool DoesTagExist(string aTag)
             {
                 try
@@ -30,36 +29,49 @@ namespace QuantumRevenant
                     return false;
                 }
             }
-            public static Vector2 rotatePointRelativeToPivot(Vector2 Point,Vector2 Pivot,float Angle)
+            public static Vector2 rotatePointRelativeToPivot(Vector2 Point, Vector2 Pivot, float Angle)
             {
-                Angle*=Mathf.Deg2Rad;
+                Angle *= Mathf.Deg2Rad;
 
-                float s=Mathf.Sin(Angle);
-                float c=Mathf.Cos(Angle);
+                float s = Mathf.Sin(Angle);
+                float c = Mathf.Cos(Angle);
 
-                Point-=Pivot;
+                Point -= Pivot;
 
                 Vector2 output;
 
-                output.x=Point.x*c-Point.y*s;
-                output.y=Point.x*s+Point.y*c;
+                output.x = Point.x * c - Point.y * s;
+                output.y = Point.x * s + Point.y * c;
 
-                output+=Pivot;
+                output += Pivot;
 
                 return output;
             }
-
-            public static Vector3 rotatePoint3DRelativeToPivotZ(Vector3 Point,Vector3 Pivot,float Angle)
+            public static Vector3 rotatePoint3DRelativeToPivotZ(Vector3 Point, Vector3 Pivot, float Angle)
             {
-                Vector2 Point2D=new Vector2(Point.x,Point.y);
-                Vector2 Pivot2D=new Vector2(Pivot.x,Pivot.y);
+                Vector2 Point2D = new Vector2(Point.x, Point.y);
+                Vector2 Pivot2D = new Vector2(Pivot.x, Pivot.y);
 
-                Vector2 Output2D=rotatePointRelativeToPivot(Point2D,Pivot2D,Angle);
+                Vector2 Output2D = rotatePointRelativeToPivot(Point2D, Pivot2D, Angle);
 
-                Point.x=Output2D.x;
-                Point.y=Output2D.y;
+                Point.x = Output2D.x;
+                Point.y = Output2D.y;
 
                 return Point;
+            }
+            public static BoxCollider2D resizeBoxCollider2D(SpriteRenderer renderer, Collider2D collider2D,Vector3 scale, float resizeFactor=0.5f)
+            {
+                Vector3 v = renderer.bounds.size * resizeFactor;
+
+                v.x /= scale.x;
+                v.y /= scale.y;
+                v.z /= scale.z;
+
+                BoxCollider2D b = collider2D as BoxCollider2D;
+
+                b.size = v;
+
+                return b;
             }
         }
     }

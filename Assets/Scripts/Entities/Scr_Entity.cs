@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using QuantumRevenant.Utilities;
 using QuantumRevenant.PixelsinTheSpace;
-using UnityEditor;
-using UnityEngine.UIElements;
 
 public class Scr_Entity : MonoBehaviour
 {

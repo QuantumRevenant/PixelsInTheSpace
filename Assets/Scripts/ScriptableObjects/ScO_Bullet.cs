@@ -1,5 +1,5 @@
-using Unity.Mathematics;
 using UnityEngine;
+using QuantumRevenant.PixelsinTheSpace;
 [CreateAssetMenu(fileName = "New Bullet Data", menuName = "Scriptable Objects/Bullet_Data")]
 public class ScO_Bullet : ScriptableObject
 {
