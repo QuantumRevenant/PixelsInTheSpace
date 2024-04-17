@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace QuantumRevenant
 {
     namespace GeneralNS
@@ -9,6 +11,11 @@ namespace QuantumRevenant
             public const string EnemyTeam = "EnemyTeam";
             public const string PirateTeam = "PirateTeam";
             public const string OtherTeam = "OtherTeam";
+            public static bool isTeamTag(string str)
+            {
+                string[] teams=new string[] {NeutralTeam, PlayerTeam, EnemyTeam,PirateTeam,OtherTeam};
+                return teams.Contains(str);
+            }
         }
 
         public enum Layers

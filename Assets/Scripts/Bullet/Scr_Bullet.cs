@@ -5,7 +5,7 @@ using UnityEngine;
 using QuantumRevenant.Utilities;
 using QuantumRevenant.GeneralNS;
 using QuantumRevenant.PixelsinTheSpace;
-[RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(BoxCollider2D)),RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(BoxCollider2D)), RequireComponent(typeof(SpriteRenderer))]
 public class Scr_Bullet : MonoBehaviour
 {
     [SerializeField] private ScO_Bullet bulletData;
@@ -83,7 +83,7 @@ public class Scr_Bullet : MonoBehaviour
     {
         setProperties(sprite, color, angle, scale, timer, gameObject.tag);
     }
-    private void setProperties(Sprite sprite, Color color, float angle, Vector3 scale, float timer, string tag)
+    private void setProperties(Sprite sprite, Color color, float angle, Vector3 scale, float timer, string stag)
     {
         spriteRenderer.sprite = sprite;
         spriteRenderer.color = color;
@@ -91,8 +91,22 @@ public class Scr_Bullet : MonoBehaviour
         transform.localScale = scale;
         timerActive = timer;
         gameObject.tag = tag;
-        boxCollider2D=Utility.resizeBoxCollider2D(spriteRenderer,boxCollider2D,transform.localScale);
+        resizeBulletCollider2D();
     }
+
+    public void resizeBulletCollider2D()
+    {
+        float resizeFactor;
+
+        if (tag == Tags.NeutralTeam || tag == Tags.PlayerTeam)
+            resizeFactor = 1f;
+        else
+            resizeFactor = 0.5f;
+
+        boxCollider2D = Utility.resizeBoxCollider2D(spriteRenderer, boxCollider2D, transform.localScale, resizeFactor);
+    }
+
+
     [ContextMenu("isReset")]
     private bool isReset() { return isClean() && BulletData == null; }
 
@@ -190,5 +204,15 @@ public class Scr_Bullet : MonoBehaviour
             Scr_BulletPool.Instance.spawnBullet(gameObject.transform.position, lateralOffset, bulletData.Subprojectile[x], transform.eulerAngles.z + angleArc, gameObject.tag);
         }
     }
-    
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.tag == tag || !Tags.isTeamTag(collision.tag))
+            return;
+
+        if (collision.TryGetComponent(out Scr_Entity entity))
+        {
+            // entity.hurt(bulletData.Damage);
+        }
+    }
 }
