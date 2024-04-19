@@ -1,9 +1,10 @@
 using UnityEngine;
 using QuantumRevenant.PixelsinTheSpace;
+using MyBox;
+
 [CreateAssetMenu(fileName = "New Bullet Data", menuName = "Scriptable Objects/Bullet_Data")]
 public class ScO_Bullet : ScriptableObject
 {
-    [SerializeField] private PostMortemBulletAction postMortem;
     [SerializeField] private Sprite sprite;
     [SerializeField] private Color color = new Color(1f, 1f, 1f, 1f);
     [SerializeField] private float speed;
@@ -12,15 +13,35 @@ public class ScO_Bullet : ScriptableObject
     [SerializeField] private float scale;
     [SerializeField] private float lifeTime;
     [SerializeField] private float damage;
+
+    [Header("Post Mortem")]
+    [SerializeField] private PostMortemBulletAction postMortem;
+    
+    [ConditionalField(true,nameof(isExplosive))]
     [SerializeField] private float aoeRadius;
+    [ConditionalField(true,nameof(isPiercing))]
+    [SerializeField] private int pierceCounter;
+    [ConditionalField(true,nameof(isAlterer))]
+    [SerializeField] private string stats;
+    
+    private bool isSummoner() => postMortem.HasFlag(PostMortemBulletAction.Summon);
+    private bool isExplosive() => postMortem.HasFlag(PostMortemBulletAction.Explode);
+    private bool isPiercing() => postMortem.HasFlag(PostMortemBulletAction.Pierce);
+    private bool isAlterer() => postMortem.HasFlag(PostMortemBulletAction.Alter);
+
+
 
     //Cartridge Integration
-    [SerializeField] private ScO_Bullet[] subprojectile;
+    
+    [ConditionalField(true,nameof(isSummoner))]
+    [SerializeField] private CollectionWrapper<ScO_Bullet> subprojectile;
+    [ConditionalField(true,nameof(isSummoner))]
     [SerializeField] private float spacing;
-
-    //ShotAtributtes Integration
+    [ConditionalField(true,nameof(isSummoner))]
     [SerializeField][Range(0,360)] private float firingArc; 
+    [ConditionalField(true,nameof(isSummoner))]
     [SerializeField] private int subprojectileQuantity;
+    [ConditionalField(true,nameof(isSummoner))]
     [SerializeField] private float angularOffset;
 
     public PostMortemBulletAction PostMortem { get => postMortem; set => postMortem = value; }
@@ -34,8 +55,8 @@ public class ScO_Bullet : ScriptableObject
     public float Damage { get => damage; set => damage = value; }
     public float AoeRadius { get => aoeRadius; set => aoeRadius = value; }
 
-    public ScO_Bullet[] Subprojectile { get => subprojectile; set => subprojectile = value; }
-    public int AvailableSubprojectiles {get => subprojectile.Length;}
+    public ScO_Bullet[] Subprojectile { get => subprojectile.Value; set => subprojectile.Value = value; }
+    public int AvailableSubprojectiles {get => subprojectile.Value.Length;}
     public float Spacing { get => spacing; set => spacing = value; }
 
     public float FiringArc { get => firingArc; set => firingArc = value; }

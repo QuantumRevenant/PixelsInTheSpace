@@ -6,7 +6,7 @@ namespace QuantumRevenant
         [System.Flags] public enum DamageTypes { Standard = 0, Energy = 1, Kinetic = 2, Explosive = 4, Plasma = 8, Biological = 16, Antimatter = 32, AllTypes = -1 }
         public struct Damage { public int value; public DamageTypes type; }
 
-        [System.Flags] public enum PostMortemBulletAction { Nothing = 0, Explode = 1, Summon = 2,Pierce=3, All = -1 }
+        [System.Flags] public enum PostMortemBulletAction { Nothing = 0, Summon = 1, Explode = 2,Pierce=4,Alter=8, All = -1 }
 
     }
 }
