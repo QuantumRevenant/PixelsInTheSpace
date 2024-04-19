@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aabbfc67eac948e4b83380d47496dd15, type: 3}
   m_Name: Base
   m_EditorClassIdentifier: 
-  postMortem: 0
   sprite: {fileID: 7431529995326980795, guid: 9c0ef779ebdd4dc4cbf5fca17abaaf01, type: 3}
   color: {r: 1, g: 1, b: 1, a: 1}
   speed: 0
@@ -21,8 +20,12 @@ MonoBehaviour:
   scale: 1
   lifeTime: Infinity
   damage: 0
+  postMortem: 0
   aoeRadius: 0
-  subprojectile: []
+  pierceCounter: 0
+  stats: 
+  subprojectile:
+    Value: []
   spacing: 0
   firingArc: 0
   subprojectileQuantity: 0
