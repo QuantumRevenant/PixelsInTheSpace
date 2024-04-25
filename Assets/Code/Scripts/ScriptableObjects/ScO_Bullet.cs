@@ -62,4 +62,5 @@ public class ScO_Bullet : ScriptableObject
     public float FiringArc { get => firingArc; set => firingArc = value; }
     public int SubprojectileQuantity { get => subprojectileQuantity; set => subprojectileQuantity = value; }
     public float AngularOffset { get => angularOffset; set => angularOffset = value; }
+    public int PierceCounter { get => pierceCounter; set => pierceCounter = value; }
 }

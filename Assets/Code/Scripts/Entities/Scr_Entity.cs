@@ -89,7 +89,7 @@ public class Scr_Entity : MonoBehaviour
     {
         if (isResisted(damage.type)) { return; }
 
-        if (resistances == DamageTypes.Standard)
+        if (resistances == DamageTypes.Neutral)
             hurt(damage.value);
         else
             hurt(damage.value * 2);
@@ -98,7 +98,7 @@ public class Scr_Entity : MonoBehaviour
     protected virtual void death() { }
     private bool isResisted(DamageTypes type)
     {
-        return resistances.HasFlag(type) && type != DamageTypes.Standard;
+        return resistances.HasFlag(type) && type != DamageTypes.Neutral;
     }
     #endregion
 
