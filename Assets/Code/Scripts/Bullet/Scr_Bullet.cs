@@ -134,9 +134,11 @@ public class Scr_Bullet : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        float fixedReductor=100f; // With this reducer, when the Explosion Radius is 1, it is the standard size of the spherical bullet
+
         float radius = 0;
         if (bulletData != null)
-            radius = bulletData.AoeRadius;
+            radius = bulletData.AoeRadius*bulletData.Scale/fixedReductor;
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, radius);
