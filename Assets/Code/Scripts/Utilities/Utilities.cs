@@ -27,7 +27,7 @@ namespace QuantumRevenant.Utilities
                 return false;
             }
         }
-        public static Vector2 rotatePointRelativeToPivot(Vector2 Point, Vector2 Pivot, float Angle)
+        public static Vector2 RotatePointRelativeToPivot(Vector2 Point, Vector2 Pivot, float Angle)
         {
             Angle *= Mathf.Deg2Rad;
 
@@ -45,19 +45,19 @@ namespace QuantumRevenant.Utilities
 
             return output;
         }
-        public static Vector3 rotatePoint3DRelativeToPivotZ(Vector3 Point, Vector3 Pivot, float Angle)
+        public static Vector3 RotatePoint3DRelativeToPivotZ(Vector3 Point, Vector3 Pivot, float Angle)
         {
             Vector2 Point2D = new Vector2(Point.x, Point.y);
             Vector2 Pivot2D = new Vector2(Pivot.x, Pivot.y);
 
-            Vector2 Output2D = rotatePointRelativeToPivot(Point2D, Pivot2D, Angle);
+            Vector2 Output2D = RotatePointRelativeToPivot(Point2D, Pivot2D, Angle);
 
             Point.x = Output2D.x;
             Point.y = Output2D.y;
 
             return Point;
         }
-        public static BoxCollider2D resizeBoxCollider2D(SpriteRenderer renderer, Collider2D collider2D, Vector3 scale, float resizeFactor = 0.5f)
+        public static BoxCollider2D ResizeBoxCollider2D(SpriteRenderer renderer, Collider2D collider2D, Vector3 scale, float resizeFactor = 0.5f)
         {
             Vector3 v = renderer.bounds.size * resizeFactor;
 
@@ -71,6 +71,7 @@ namespace QuantumRevenant.Utilities
 
             return b;
         }
+        public static string GetVersion(){return Application.version;}
     }
 
 }

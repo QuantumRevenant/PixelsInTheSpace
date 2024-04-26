@@ -105,7 +105,7 @@ public class Scr_Bullet : MonoBehaviour
         else
             resizeFactor = 0.5f;
 
-        boxCollider2D = Utility.resizeBoxCollider2D(spriteRenderer, boxCollider2D, transform.localScale, resizeFactor);
+        boxCollider2D = Utility.ResizeBoxCollider2D(spriteRenderer, boxCollider2D, transform.localScale, resizeFactor);
     }
 
 
