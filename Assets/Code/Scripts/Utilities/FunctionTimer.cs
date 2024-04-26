@@ -81,13 +81,14 @@ namespace QuantumRevenant.Timer
         private string timerName;
         private GameObject gameObject;
         private bool isDisabled;
-
-        private FunctionTimer(Action action, float timer, string timerName, GameObject gameObject)
+        private bool isReusable;
+        private FunctionTimer(Action action, float timer, string timerName, GameObject gameObject, bool isReusable = false)
         {
             this.action = action;
             this.timer = timer;
             this.timerName = timerName;
             this.gameObject = gameObject;
+            this.isReusable = isReusable;
             isDisabled = false;
         }
 
@@ -100,16 +101,32 @@ namespace QuantumRevenant.Timer
             if (timer < 0)
             {
                 action();
-                DestroySelf();
+                setPause(!isReusable);
+
+                if (!isReusable)
+                    DestroySelf();
+                else
+                    timer = float.PositiveInfinity;
             }
         }
 
-        private void setPause(bool paused)
+        public void setPause(bool paused) { isDisabled = paused; }
+
+        public void changeTime(float timer) { this.timer = timer; }
+
+        public void DestroySelf()
         {
-            isDisabled = paused;
+            isDisabled = true;
+            if(isReusable)
+            {
+                Debug.Log($"Hey! estás intentando borrarme. Pero soy reutilizable. Simplemente me voy a desactivar. Verifica esto - {timerName}");
+                return;
+            }
+            UnityEngine.Object.Destroy(gameObject);
+            RemoveTimer(this);
         }
 
-        private void DestroySelf()
+        public void NoObjectionDestroySelf()
         {
             isDisabled = true;
             UnityEngine.Object.Destroy(gameObject);
@@ -133,8 +150,9 @@ namespace QuantumRevenant.Timer
             public Action action;
             public float timer;
             public Action onEnd;
-            private void Start() {
-                StartCoroutine(CoroutineTimer(timer,action));
+            private void Start()
+            {
+                StartCoroutine(CoroutineTimer(timer, action));
             }
             IEnumerator CoroutineTimer(float timer, Action action)
             {

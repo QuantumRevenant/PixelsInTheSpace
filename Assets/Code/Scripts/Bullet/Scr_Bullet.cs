@@ -5,12 +5,13 @@ using UnityEngine;
 using QuantumRevenant.Utilities;
 using QuantumRevenant.GeneralNS;
 using QuantumRevenant.PixelsinTheSpace;
+using QuantumRevenant.Timer;
 using System;
 [RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(BoxCollider2D)), RequireComponent(typeof(SpriteRenderer))]
 public class Scr_Bullet : MonoBehaviour
 {
     [SerializeField] private ScO_Bullet bulletData;
-    [SerializeField] private float timerActive = float.PositiveInfinity;
+    private FunctionTimer timerActive;
     /*[HideInInspector]*/
     public float inheritedAngle = 0;
     private int pierceCounter = 0;
@@ -31,6 +32,8 @@ public class Scr_Bullet : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider2D = GetComponent<BoxCollider2D>();
+        timerActive=FunctionTimer.Create(death,float.PositiveInfinity,"BulletDeath_PermanentTimer");
+        timerActive.setPause(true);
     }
     void Start() { UpdateProperties(); }
     void FixedUpdate()
