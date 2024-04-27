@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 using QuantumRevenant.Utilities;
 using QuantumRevenant.GeneralNS;
 using QuantumRevenant.PixelsinTheSpace;
 using QuantumRevenant.Timer;
-using System;
+
 [RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(BoxCollider2D)), RequireComponent(typeof(SpriteRenderer))]
 public class Scr_Bullet : MonoBehaviour
 {
@@ -22,6 +19,7 @@ public class Scr_Bullet : MonoBehaviour
         {
             bulletData = value;
             UpdateProperties();
+            timerActive.setPause(false);
         }
     }
 
@@ -32,18 +30,17 @@ public class Scr_Bullet : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider2D = GetComponent<BoxCollider2D>();
-        timerActive=FunctionTimer.Create(death,float.PositiveInfinity,"BulletDeath_PermanentTimer");
+        timerActive = FunctionTimer.Create(Death, float.PositiveInfinity, "BulletDeath_PermanentTimer");
         timerActive.setPause(true);
     }
     void Start() { UpdateProperties(); }
     void FixedUpdate()
     {
-        timerDeactivate();
         if (BulletData != null)
             Movement();
     }
     private void OnEnable() { }
-    private void OnDisable() { resetProperties(); }
+    private void OnDisable() { ResetProperties(); }
 
 
     #region BulletProperties
@@ -53,53 +50,55 @@ public class Scr_Bullet : MonoBehaviour
         if (BulletData == null)
             return;
 
-        setProperties(
+        SetProperties(
             bulletData.Sprite,
             bulletData.Color,
             bulletData.Angle + inheritedAngle,
             new Vector3(bulletData.Scale, bulletData.Scale, bulletData.Scale),
             bulletData.LifeTime, bulletData.PierceCounter);
+        timerActive.setPause(false);
     }
 
     [ContextMenu("resetProperties")]
-    public void resetProperties()
+    public void ResetProperties()
     {
-        if (isReset())
+        if (IsReset())
             return;
 
         bulletData = null;
-        cleanProperties();
+        CleanProperties();
     }
 
     [ContextMenu("cleanProperties")]
-    private void cleanProperties()
+    private void CleanProperties()
     {
-        if (isClean())
+        if (IsClean())
             return;
         inheritedAngle = 0;
-        setProperties(
+        SetProperties(
             null,
             new Color(),
             0,
             new Vector3(1, 1, 1),
             float.PositiveInfinity, Tags.NeutralTeam);
     }
-    private void setProperties(Sprite sprite, Color color, float angle, Vector3 scale, float timer, int cPierce = 0)
+    private void SetProperties(Sprite sprite, Color color, float angle, Vector3 scale, float timer, int cPierce = 0)
     {
-        setProperties(sprite, color, angle, scale, timer, gameObject.tag);
+        SetProperties(sprite, color, angle, scale, timer, gameObject.tag, cPierce);
     }
-    private void setProperties(Sprite sprite, Color color, float angle, Vector3 scale, float timer, string stag, int cPierce = 0)
+    private void SetProperties(Sprite sprite, Color color, float angle, Vector3 scale, float timer, string stag, int cPierce = 0)
     {
         spriteRenderer.sprite = sprite;
         spriteRenderer.color = color;
         transform.eulerAngles = new Vector3(0, 0, angle);
         transform.localScale = scale;
-        timerActive = timer;
-        gameObject.tag = tag;
-        resizeBulletCollider2D();
+        timerActive.changeTime(timer);
+        gameObject.tag = stag;
+        pierceCounter = cPierce;
+        ResizeBulletCollider2D();
     }
 
-    public void resizeBulletCollider2D()
+    public void ResizeBulletCollider2D()
     {
         float resizeFactor;
 
@@ -113,35 +112,26 @@ public class Scr_Bullet : MonoBehaviour
 
 
     [ContextMenu("isReset")]
-    private bool isReset() { return isClean() && BulletData == null; }
+    private bool IsReset() { return IsClean() && BulletData == null; }
 
     [ContextMenu("isClean")]
-    private bool isClean()
+    private bool IsClean()
     {
         return spriteRenderer.sprite == null
         && spriteRenderer.color == new Color()
         && transform.rotation == Quaternion.Euler(0, 0, 0)
         && transform.localScale == new Vector3(1, 1, 1)
-        && timerActive == float.PositiveInfinity && inheritedAngle == 0;
+        && timerActive.getTimer() == float.PositiveInfinity && inheritedAngle == 0;
     }
     #endregion
 
-    private void timerDeactivate()
-    {
-        timerActive -= Time.fixedDeltaTime;
-        if (timerActive <= 0)
-        {
-            death();
-        }
-    }
-
     private void OnDrawGizmos()
     {
-        float fixedReductor=100f; // With this reducer, when the Explosion Radius is 1, it is the standard size of the spherical bullet
+        float fixedReductor = 100f; // With this reducer, when the Explosion Radius is 1, it is the standard size of the spherical bullet
 
         float radius = 0;
         if (bulletData != null)
-            radius = bulletData.AoeRadius*bulletData.Scale/fixedReductor;
+            radius = bulletData.AoeRadius * bulletData.Scale / fixedReductor;
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, radius);
@@ -160,7 +150,7 @@ public class Scr_Bullet : MonoBehaviour
         angle += angularSpeed * Time.fixedDeltaTime;
         transform.localRotation = Quaternion.Euler(0f, 0f, angle);
     }
-    private void doDamage(Scr_Entity entity, Damage damage)
+    private void DoDamage(Scr_Entity entity, Damage damage)
     {
         PostMortemBulletAction postMortem = bulletData.PostMortem;
 
@@ -168,14 +158,15 @@ public class Scr_Bullet : MonoBehaviour
         if (postMortem.HasFlag(PostMortemBulletAction.Alter))
             Debug.Log("Im Affecting");
     }
-    private void death()
+    private void Death()
     {
+        Debug.Log("Morí", this);
         PostMortemBulletAction postMortem = bulletData.PostMortem;
 
         if (postMortem.HasFlag(PostMortemBulletAction.Explode))
-            explode();
+            Explode();
         if (postMortem.HasFlag(PostMortemBulletAction.Summon))
-            summon();
+            Summon();
 
         if (pierceCounter > 0)
             pierceCounter--;
@@ -183,7 +174,7 @@ public class Scr_Bullet : MonoBehaviour
             gameObject.SetActive(false);
 
     }
-    private void explode()
+    private void Explode()
     {
         Collider2D[] inAoeArea = Physics2D.OverlapCircleAll(transform.position, bulletData.AoeRadius);
 
@@ -191,12 +182,12 @@ public class Scr_Bullet : MonoBehaviour
         {
             if (collision.TryGetComponent(out Scr_Entity entity))
             {
-                doDamage(entity, new Damage(bulletData.Damage, DamageTypes.Neutral));
+                DoDamage(entity, new Damage(bulletData.Damage, DamageTypes.Neutral));
             }
         }
     }
 
-    private void summon()
+    private void Summon()
     {
         int summonQuantity = bulletData.SubprojectileQuantity > 0 ? bulletData.SubprojectileQuantity : bulletData.AvailableSubprojectiles;
 
@@ -233,7 +224,7 @@ public class Scr_Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.tag == tag || !Tags.isTeamTag(collision.tag))
+        if (CompareTag(collision.tag) || !Tags.isTeamTag(collision.tag))
             return;
 
         if (collision.TryGetComponent(out Scr_Entity entity))
@@ -241,11 +232,11 @@ public class Scr_Bullet : MonoBehaviour
             PostMortemBulletAction postMortem = bulletData.PostMortem;
 
             if (!postMortem.HasFlag(PostMortemBulletAction.Explode))
-                doDamage(entity, new Damage(bulletData.Damage, DamageTypes.Neutral));
+                DoDamage(entity, new Damage(bulletData.Damage, DamageTypes.Neutral));
 
-            death();
+            Death();
         }
     }
 
-    
+
 }

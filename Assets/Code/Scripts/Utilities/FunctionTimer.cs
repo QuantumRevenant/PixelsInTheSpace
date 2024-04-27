@@ -113,11 +113,12 @@ namespace QuantumRevenant.Timer
         public void setPause(bool paused) { isDisabled = paused; }
 
         public void changeTime(float timer) { this.timer = timer; }
+        public float getTimer() { return timer; }
 
         public void DestroySelf()
         {
             isDisabled = true;
-            if(isReusable)
+            if (isReusable)
             {
                 Debug.Log($"Hey! estás intentando borrarme. Pero soy reutilizable. Simplemente me voy a desactivar. Verifica esto - {timerName}");
                 return;
