@@ -231,7 +231,9 @@ public class Scr_Bullet : MonoBehaviour
             angleArc += bulletData.AngularOffset;
 
 
-            float subprojectileDamage = bulletData.InheritDamage ? damage / summonQuantity : bulletData.SubprojectileDamage;
+            float subprojectileDamage = bulletData.InheritDamage ?
+                                                    (bulletData.InheritAllDamage ? damage : damage / summonQuantity)
+                                                    : bulletData.SubprojectileDamage;
             DamageTypes subprojectileType = bulletData.InheritType ? type : bulletData.SubprojectileType;
 
             Scr_BulletPool.Instance.spawnBullet(gameObject.transform.position, lateralOffset, bulletData.Subprojectile[x], transform.eulerAngles.z + angleArc, gameObject.tag, subprojectileDamage, subprojectileType);

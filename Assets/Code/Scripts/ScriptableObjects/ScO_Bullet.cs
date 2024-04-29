@@ -45,12 +45,15 @@ public class ScO_Bullet : ScriptableObject
     [ConditionalField(true, nameof(isSummoner))]
     [SerializeField] private bool inheritDamage;
 
-    private bool inheritTypeBool() => isSummoner() && !inheritType;
-    private bool inheritDamageBool() => isSummoner() && !inheritDamage;
+    private bool inheritTypeBool() => isSummoner() && inheritType;
+    private bool notInheritTypeBool() => isSummoner() && !inheritType;
+    private bool notInheritDamageBool() => isSummoner() && !inheritDamage;
 
     [ConditionalField(true, nameof(inheritTypeBool))]
+    [SerializeField] private bool inheritAllDamage;
+    [ConditionalField(true, nameof(notInheritTypeBool))]
     [SerializeField] private DamageTypes subprojectileType;
-    [ConditionalField(true, nameof(inheritDamageBool))]
+    [ConditionalField(true, nameof(notInheritDamageBool))]
     [SerializeField] private float subprojectileDamage;
 
     public PostMortemBulletAction PostMortem { get => postMortem; set => postMortem = value; }
@@ -73,6 +76,7 @@ public class ScO_Bullet : ScriptableObject
     public int PierceCounter { get => pierceCounter; set => pierceCounter = value; }
     public bool InheritDamage { get => inheritDamage; set => inheritDamage = value; }
     public bool InheritType { get => inheritType; set => inheritType = value; }
+    public bool InheritAllDamage { get => inheritAllDamage; set => inheritAllDamage = value; }
     public DamageTypes SubprojectileType { get => subprojectileType; set => subprojectileType = value; }
     public float SubprojectileDamage { get => subprojectileDamage; set => subprojectileDamage = value; }
 }
