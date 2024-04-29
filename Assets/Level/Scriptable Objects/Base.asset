@@ -19,8 +19,7 @@ MonoBehaviour:
   angle: 0
   scale: 1
   lifeTime: Infinity
-  damage: 0
-  postMortem: 0
+  postMortem: 1
   aoeRadius: 0
   pierceCounter: 0
   stats: 
@@ -30,3 +29,7 @@ MonoBehaviour:
   firingArc: 0
   subprojectileQuantity: 0
   angularOffset: 0
+  inheritType: 1
+  inheritDamage: 1
+  subprojectileType: 0
+  subprojectileDamage: 0

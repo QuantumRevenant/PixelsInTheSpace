@@ -233,10 +233,6 @@ GameObject:
   m_Component:
   - component: {fileID: 381469930}
   - component: {fileID: 381469929}
-  - component: {fileID: 381469936}
-  - component: {fileID: 381469933}
-  - component: {fileID: 381469932}
-  - component: {fileID: 381469928}
   - component: {fileID: 381469931}
   - component: {fileID: 381469934}
   - component: {fileID: 381469935}
@@ -247,22 +243,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!114 &381469928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 381469927}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5712b510dcc0fcb4a8abb0260fe007bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  multiplicatorSpeed: 0
-  multiplicatorScale: 0
-  playerInput: {fileID: 0}
-  playerData: {fileID: 11400000, guid: a1938200f8a019043aa933fbfe3190c8, type: 2}
 --- !u!212 &381469929
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -371,7 +351,7 @@ MonoBehaviour:
     m_ActionName: Player/Trigger[/Mouse/rightButton,/Keyboard/x]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 381469936}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Player_Scr, Assembly-CSharp
         m_MethodName: InventoryScrollPosition
         m_Mode: 0
@@ -387,7 +367,7 @@ MonoBehaviour:
     m_ActionName: Player/Hotbar Scroll[/Mouse/scroll/y,/Keyboard/leftShift,/Keyboard/leftCtrl]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 381469936}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Player_Scr, Assembly-CSharp
         m_MethodName: InventorySelectPosition
         m_Mode: 0
@@ -418,62 +398,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &381469932
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 381469927}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e38c3f16bbfbe5844add1c535c76922a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  reloadTimer: 0
-  shootType: 0
-  Laser: {fileID: 0}
-  multiplicatorReload: 1
-  multiplicatorDamage: 1
-  multiplicatorBulletSpeed: 1
-  multiplicatorBulletScale: 1
-  SimpleBullet: {fileID: 1947319807814442615, guid: 58fd124a85dc0e444876956641d812c2, type: 3}
-  shootData: {fileID: 11400000, guid: cb7caad9fe157a9458473ef2d53c86b0, type: 2}
-  playerInput: {fileID: 0}
-  playerData: {fileID: 11400000, guid: a1938200f8a019043aa933fbfe3190c8, type: 2}
---- !u!114 &381469933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 381469927}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8885a48c9e343b34e9d474395d017231, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerLife: 5
-  isInvulnerable: 0
-  isShielded: 0
-  trigger: 0
-  invulnerableTimer: 0
-  multiplicatorSpeed: 1
-  multiplicatorScale: 1
-  multiplicatorDamage: 1
-  multiplicatorReload: 1
-  multiplicatorBulletSpeed: 1
-  multiplicatorBulletScale: 1
-  bulletVector: {x: 0, y: 1}
-  playerData: {fileID: 11400000, guid: a1938200f8a019043aa933fbfe3190c8, type: 2}
-  inventoryPosition: 1
-  inventorySize: 2
-  inventory: 
-  isAvailableScrollInv: 1
-  finalSize: 0
-  playerInput: {fileID: 0}
-  shootingType: 3
-  Shield: {fileID: 0}
 --- !u!61 &381469934
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -521,38 +445,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &381469936
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 381469927}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5836bda5f618c1d4b90f5b28b826b3b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _healthPoints: 5
-  _invulnerableTimer: 0
-  _isInvulnerable: 0
-  _isShielded: 0
-  _shield: {fileID: 0}
-  _reloadTimer: 0
-  _laserTimer: 500
-  _laserLifeTime: 5
-  _shootingType: 0
-  _laser: {fileID: 0}
-  score: 0
-  _inventoryPosition: 1
-  _inventorySize: 5
-  _inventory: 
-  _canScroll: 1
-  SimpleBullet: {fileID: 1947319807814442615, guid: 58fd124a85dc0e444876956641d812c2, type: 3}
-  shootData: {fileID: 11400000, guid: cb7caad9fe157a9458473ef2d53c86b0, type: 2}
-  playerData: {fileID: 11400000, guid: a1938200f8a019043aa933fbfe3190c8, type: 2}
-  rb: {fileID: 0}
-  playerInput: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -996,9 +888,6 @@ GameObject:
   - component: {fileID: 1285122919}
   - component: {fileID: 1285122918}
   - component: {fileID: 1285122917}
-  - component: {fileID: 1285122923}
-  - component: {fileID: 1285122921}
-  - component: {fileID: 1285122922}
   - component: {fileID: 1285122920}
   - component: {fileID: 1285122924}
   m_Layer: 0
@@ -1121,74 +1010,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.125, y: 0.125}
   m_EdgeRadius: 0
---- !u!114 &1285122921
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1285122916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb1ad6edac4722142a3b8fbb2ba9e147, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  multiplicatorSpeed: 0
-  multiplicatorScale: 0
-  boundOffset: {x: 0, y: 2}
-  finalOffset: {x: 0, y: 0}
-  boundDirection: {x: 1, y: 1}
-  enemyData: {fileID: 0}
---- !u!114 &1285122922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1285122916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5616ba9b21fd38e47815a449e83e944d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  modifiedReloadTime: 0.1
-  reloadTimer: 0
-  ReloadOffsetPercent: 0
-  reloadOffset: 0
-  bulletVector: {x: 0, y: 0}
-  direction: 0
-  multiplicatorReload: 0
-  multiplicatorDamage: 0
-  multiplicatorBulletSpeed: 0
-  multiplicatorBulletScale: 0
-  SimpleBullet: {fileID: 1947319807814442615, guid: 58fd124a85dc0e444876956641d812c2, type: 3}
-  enemyData: {fileID: 0}
---- !u!114 &1285122923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1285122916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd2ff4aa4712f1541ac9484b20a9573e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyLife: 100
-  onLaser: 0
-  isShooting: 1
-  damageLaser: 0
-  trigger: 0
-  multiplicatorSpeed: 1
-  multiplicatorScale: 1
-  multiplicatorDamage: 1
-  multiplicatorReload: 1
-  multiplicatorBulletSpeed: 1
-  multiplicatorBulletScale: 1
-  bulletVector: {x: 0, y: 1}
-  finalSize: 0
-  enemyData: {fileID: 11400000, guid: 27d7ccaa0a81c8b47b10384b541cb06b, type: 2}
 --- !u!50 &1285122924
 Rigidbody2D:
   serializedVersion: 4
@@ -1219,7 +1040,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1311551888}
-  - component: {fileID: 1311551887}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -1227,18 +1047,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1311551887
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1311551886}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c14dd5b918074dc4f8bf9b12749082c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1311551888
 Transform:
   m_ObjectHideFlags: 0
@@ -1473,7 +1281,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1810975058
 Transform:
   m_ObjectHideFlags: 0
@@ -1595,13 +1403,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1810975056}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 24e785db43ab4d048aee221323d443f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bulletData: {fileID: 0}
-  timerActive: Infinity
   inheritedAngle: 0
 --- !u!1 &1990447210
 GameObject:
@@ -1698,7 +1505,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletData: {fileID: 11400000, guid: bfbcaad84e635fa41aae715b9b747584, type: 2}
-  timerActive: Infinity
   inheritedAngle: 0
 --- !u!212 &1990447216
 SpriteRenderer:

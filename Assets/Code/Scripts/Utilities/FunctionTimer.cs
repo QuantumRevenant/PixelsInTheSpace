@@ -19,11 +19,11 @@ namespace QuantumRevenant.Timer
             activeTimerList = new List<FunctionTimer>();
         }
 
-        public static FunctionTimer Create(Action action, float timer, string timerName = null)
+        public static FunctionTimer Create(Action action, float timer, string timerName = null,bool isReusable=false)
         {
             InitIfNeeded();
             GameObject gameObject = new GameObject("FunctionTimer", typeof(MonoBehaviourHood));
-            FunctionTimer functionTimer = new FunctionTimer(action, timer, timerName, gameObject);
+            FunctionTimer functionTimer = new FunctionTimer(action, timer, timerName, gameObject,isReusable);
             gameObject.GetComponent<MonoBehaviourHood>().onUpdate = functionTimer.Update;
             activeTimerList.Add(functionTimer);
             return functionTimer;
@@ -82,7 +82,7 @@ namespace QuantumRevenant.Timer
         private GameObject gameObject;
         private bool isDisabled;
         private bool isReusable;
-        private FunctionTimer(Action action, float timer, string timerName, GameObject gameObject, bool isReusable = false)
+        private FunctionTimer(Action action, float timer, string timerName, GameObject gameObject, bool isReusable)
         {
             this.action = action;
             this.timer = timer;

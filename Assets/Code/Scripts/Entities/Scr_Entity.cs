@@ -28,8 +28,8 @@ public class Scr_Entity : MonoBehaviour
     private float waitTime;
     private bool isWaiting = false;
     [Header("Damage")]
-    [SerializeField]private ScO_ShotAtributtes shotAtributtes;
-    [SerializeField]private GameObject firePoint;
+    [SerializeField] private ScO_ShotAtributtes shotAtributtes;
+    [SerializeField] private GameObject firePoint;
     private float reloadTime;
     [Header("Gizmos")]
     private GizmosShoot gizmosShoot;
@@ -41,7 +41,8 @@ public class Scr_Entity : MonoBehaviour
         float internalRadius;
     }
 
-    private void FixedUpdate() {
+    private void FixedUpdate()
+    {
         Think();
     }
 
@@ -87,12 +88,14 @@ public class Scr_Entity : MonoBehaviour
     }
     public void hurt(Damage damage)
     {
+        float noNeutralResistance = 0.5f;
+
         if (isResisted(damage.type)) { return; }
 
         if (resistances == DamageTypes.Neutral)
             hurt(damage.value);
         else
-            hurt(damage.value * 2);
+            hurt(damage.value / noNeutralResistance);
 
     }
     protected virtual void death() { }
@@ -221,22 +224,22 @@ public class Scr_Entity : MonoBehaviour
         for (int i = 0; i < shotAtributtes.ProjectileQuantity; i++)
         {
             float angleArc = 0;
-            float lateralOffset=0;
+            float lateralOffset = 0;
 
             if (shotAtributtes.ProjectileQuantity != 1)
             {
-                float limit=0;
-                float percentage=0;
+                float limit = 0;
+                float percentage = 0;
 
-                if(Utility.NormalizeAngle(shotAtributtes.FiringArc)==360)
-                    limit=180f*(shotAtributtes.ProjectileQuantity-1)/shotAtributtes.ProjectileQuantity;
+                if (Utility.NormalizeAngle(shotAtributtes.FiringArc) == 360)
+                    limit = 180f * (shotAtributtes.ProjectileQuantity - 1) / shotAtributtes.ProjectileQuantity;
                 else
-                    limit =shotAtributtes.FiringArc / 2;
+                    limit = shotAtributtes.FiringArc / 2;
 
                 percentage = (float)i / (shotAtributtes.ProjectileQuantity - 1);
                 angleArc = Mathf.Lerp(limit, -limit, percentage);
 
-                
+
                 limit = shotAtributtes.Spacing / 2;
                 percentage = (float)i / (shotAtributtes.ProjectileQuantity - 1);
                 lateralOffset = Mathf.Lerp(limit, -limit, percentage);
@@ -247,7 +250,7 @@ public class Scr_Entity : MonoBehaviour
 
             if (firePointPos != gameObjectPos)
                 firePointPos = Utility.RotatePoint3DRelativeToPivotZ(firePointPos, gameObjectPos, angleArc + angleOffset);
-            Scr_BulletPool.Instance.spawnBullet(firePointPos, lateralOffset, bullet, angleArc + angleOffset+transform.eulerAngles.z,gameObject.tag);
+            Scr_BulletPool.Instance.spawnBullet(firePointPos, lateralOffset, bullet, angleArc + angleOffset + transform.eulerAngles.z, gameObject.tag, 0, DamageTypes.Neutral);
         }
     }
     #endregion

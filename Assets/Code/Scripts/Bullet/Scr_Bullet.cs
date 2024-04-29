@@ -11,6 +11,8 @@ public class Scr_Bullet : MonoBehaviour
     private FunctionTimer timerActive;
     /*[HideInInspector]*/
     public float inheritedAngle = 0;
+    private DamageTypes type = DamageTypes.Neutral;
+    private float damage;
     private int pierceCounter = 0;
     public ScO_Bullet BulletData
     {
@@ -22,6 +24,18 @@ public class Scr_Bullet : MonoBehaviour
             timerActive.setPause(false);
         }
     }
+    public DamageTypes Type
+    {
+        get { return type; }
+        set { type = value; }
+    }
+    public float Damage
+    {
+        get { return damage; }
+        set { damage = value; }
+    }
+
+
 
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D boxCollider2D;
@@ -30,7 +44,7 @@ public class Scr_Bullet : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider2D = GetComponent<BoxCollider2D>();
-        timerActive = FunctionTimer.Create(Death, float.PositiveInfinity, "BulletDeath_PermanentTimer");
+        timerActive = FunctionTimer.Create(Death, float.PositiveInfinity, "BulletDeath_PermanentTimer", true);
         timerActive.setPause(true);
     }
     void Start() { UpdateProperties(); }
@@ -41,7 +55,7 @@ public class Scr_Bullet : MonoBehaviour
     }
     private void OnEnable() { }
     private void OnDisable() { ResetProperties(); }
-
+    private void OnDestroy() { timerActive.NoObjectionDestroySelf(); }
 
     #region BulletProperties
     [ContextMenu("updateProperties")]
@@ -150,11 +164,11 @@ public class Scr_Bullet : MonoBehaviour
         angle += angularSpeed * Time.fixedDeltaTime;
         transform.localRotation = Quaternion.Euler(0f, 0f, angle);
     }
-    private void DoDamage(Scr_Entity entity, Damage damage)
+    private void DoDamage(Scr_Entity entity)
     {
         PostMortemBulletAction postMortem = bulletData.PostMortem;
 
-        entity.hurt(damage);
+        entity.hurt(new Damage(damage, type));
         if (postMortem.HasFlag(PostMortemBulletAction.Alter))
             Debug.Log("Im Affecting");
     }
@@ -181,9 +195,7 @@ public class Scr_Bullet : MonoBehaviour
         foreach (Collider2D collision in inAoeArea)
         {
             if (collision.TryGetComponent(out Scr_Entity entity))
-            {
-                DoDamage(entity, new Damage(bulletData.Damage, DamageTypes.Neutral));
-            }
+                DoDamage(entity);
         }
     }
 
@@ -218,7 +230,11 @@ public class Scr_Bullet : MonoBehaviour
 
             angleArc += bulletData.AngularOffset;
 
-            Scr_BulletPool.Instance.spawnBullet(gameObject.transform.position, lateralOffset, bulletData.Subprojectile[x], transform.eulerAngles.z + angleArc, gameObject.tag);
+
+            float subprojectileDamage = bulletData.InheritDamage ? damage / summonQuantity : bulletData.SubprojectileDamage;
+            DamageTypes subprojectileType = bulletData.InheritType ? type : bulletData.SubprojectileType;
+
+            Scr_BulletPool.Instance.spawnBullet(gameObject.transform.position, lateralOffset, bulletData.Subprojectile[x], transform.eulerAngles.z + angleArc, gameObject.tag, subprojectileDamage, subprojectileType);
         }
     }
 
@@ -232,7 +248,7 @@ public class Scr_Bullet : MonoBehaviour
             PostMortemBulletAction postMortem = bulletData.PostMortem;
 
             if (!postMortem.HasFlag(PostMortemBulletAction.Explode))
-                DoDamage(entity, new Damage(bulletData.Damage, DamageTypes.Neutral));
+                DoDamage(entity);
 
             Death();
         }

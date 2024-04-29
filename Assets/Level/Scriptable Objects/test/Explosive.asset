@@ -12,14 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aabbfc67eac948e4b83380d47496dd15, type: 3}
   m_Name: Explosive
   m_EditorClassIdentifier: 
-  sprite: {fileID: 0}
+  sprite: {fileID: -7803065417098437583, guid: 9c0ef779ebdd4dc4cbf5fca17abaaf01, type: 3}
   color: {r: 1, g: 1, b: 1, a: 1}
   speed: 0
   angularSpeed: 0
   angle: 0
   scale: 1
   lifeTime: Infinity
-  damage: 0
   postMortem: 0
   aoeRadius: 1
   pierceCounter: 0
@@ -30,3 +29,7 @@ MonoBehaviour:
   firingArc: 0
   subprojectileQuantity: 0
   angularOffset: 0
+  inheritType: 0
+  inheritDamage: 0
+  subprojectileType: 0
+  subprojectileDamage: 0

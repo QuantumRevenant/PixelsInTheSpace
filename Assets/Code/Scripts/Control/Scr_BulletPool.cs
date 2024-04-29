@@ -1,24 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using QuantumRevenant.GeneralNS;
+using QuantumRevenant.PixelsinTheSpace;
 using QuantumRevenant.Utilities;
 using UnityEngine;
 
 public class Scr_BulletPool : MonoBehaviour
 {
-    [SerializeField]private GameObject bulletPrefab;
+    [SerializeField] private GameObject bulletPrefab;
     private int initialPoolSize = 10;
     private List<GameObject> bullets;
 
     private static Scr_BulletPool instance;
-    public static Scr_BulletPool Instance { get => instance;}
-    
+    public static Scr_BulletPool Instance { get => instance; }
+
     private void Awake()
     {
-        if(instance==null)
+        if (instance == null)
         {
-            instance=this;
-        }else
+            instance = this;
+        }
+        else
         {
             Destroy(gameObject);
         }
@@ -26,13 +28,10 @@ public class Scr_BulletPool : MonoBehaviour
     void Start()
     {
         bullets = new List<GameObject>();
-        if(bulletPrefab==null)
+        if (bulletPrefab == null)
             return;
         for (int i = 0; i < initialPoolSize; i++)
-        {
             createNewBullet();
-        }
-
     }
 
     private GameObject createNewBullet()
@@ -45,9 +44,9 @@ public class Scr_BulletPool : MonoBehaviour
     }
     public GameObject getBullet()
     {
-        for(int i=0;i<bullets.Count;i++)
+        for (int i = 0; i < bullets.Count; i++)
         {
-            if(!bullets[i].activeInHierarchy)
+            if (!bullets[i].activeInHierarchy)
             {
                 return bullets[i];
             }
@@ -55,26 +54,26 @@ public class Scr_BulletPool : MonoBehaviour
         return createNewBullet();
     }
 
-    public void spawnBullet(Vector3 firePoint, float offset, ScO_Bullet bulletData, float angle,string tag)
+    public void spawnBullet(Vector3 firePoint, float offset, ScO_Bullet bulletData, float angle, string tag, float damage, DamageTypes types)
     {
         angle = Utility.NormalizeAngle(angle);
         GameObject bullet = getBullet();
-        Scr_Bullet bulletScr=bullet.GetComponent<Scr_Bullet>();
-        
-        bulletScr.inheritedAngle=angle;
+        Scr_Bullet bulletScr = bullet.GetComponent<Scr_Bullet>();
+
+        bulletScr.inheritedAngle = angle;
+        bulletScr.Damage = damage;
+        bulletScr.Type = types;
+
         bullet.transform.position = firePoint;
         bullet.transform.Translate(Vector2.left * offset, Space.Self);
 
         bullet.GetComponent<Scr_Bullet>().BulletData = bulletData;
 
-        if(Utility.DoesTagExist(tag))
+        if (Utility.DoesTagExist(tag))
             bullet.tag = gameObject.tag;
         else
-            bullet.tag=Tags.NeutralTeam;
+            bullet.tag = Tags.NeutralTeam;
 
         bullet.SetActive(true);
-        Debug.Log($"Angle from bullet after activate: {bullet.transform.eulerAngles.z}");
-        Debug.Log($"Angle from bullet expected after: {bulletData.Angle} + {angle} == {bulletData.Angle+angle}");
-
     }
 }
