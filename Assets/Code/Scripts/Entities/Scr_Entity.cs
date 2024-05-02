@@ -5,6 +5,7 @@ using QuantumRevenant.Utilities;
 using QuantumRevenant.PixelsinTheSpace;
 using QuantumRevenant.PixelsinTheSpace.Multiplier;
 using UnityEditor;
+using QuantumRevenant.CustomEditors;
 public class Scr_Entity : MonoBehaviour
 {
     [Header("General")]
@@ -36,9 +37,11 @@ public class Scr_Entity : MonoBehaviour
     [SerializeField] private StandardMultiplier multipliers = StandardMultiplier.OneMultiplier();
 
     [Header("Data")]
+    [ExposedScriptableObject]
     [SerializeField] private ScO_Entity entityData;
     private readonly StandardMultiplier neutralChangeStats = StandardMultiplier.CreateMultiplier(1, 1, 1, 1, 2);
     [Header("Gizmos")]
+    [ExposedScriptableObject]
     [SerializeField] private ScO_Gizmos gizmosData;
     public DamageTypes TypeResistance { get { return typeResistance; } set { typeResistance = value; VerifyResistance(); } }
 
@@ -226,6 +229,7 @@ public class Scr_Entity : MonoBehaviour
 
     #region Damage
     [ContextMenu("Shoot")]
+    [MyBox.ButtonMethod]
     private void SpawnBullet()
     {
         ScO_Bullet bullet = shotAtributte.Bullet;

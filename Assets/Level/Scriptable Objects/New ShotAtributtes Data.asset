@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: New ShotAtributtes Data
   m_EditorClassIdentifier: 
   idName: '"Base"'
-  firingArc: 359
+  firingArc: 180
   projectileQuantity: 12
   angularOffset: 0
   angularOffsetSpeed: 0
