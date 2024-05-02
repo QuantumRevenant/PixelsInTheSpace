@@ -12,6 +12,7 @@ public class ScO_Bullet : ScriptableObject
     [SerializeField][Range(0, 360)] private float angle;
     [SerializeField] private float scale;
     [SerializeField] private float lifeTime;
+    [SerializeField] private ScO_Gizmos gizmosData;
 
     [Header("Post Mortem")]
     [SerializeField] private PostMortemBulletAction postMortem;
@@ -79,4 +80,5 @@ public class ScO_Bullet : ScriptableObject
     public bool InheritAllDamage { get => inheritAllDamage; set => inheritAllDamage = value; }
     public DamageTypes SubprojectileType { get => subprojectileType; set => subprojectileType = value; }
     public float SubprojectileDamage { get => subprojectileDamage; set => subprojectileDamage = value; }
+    public ScO_Gizmos GizmosData { get => gizmosData; set => gizmosData = value; }
 }

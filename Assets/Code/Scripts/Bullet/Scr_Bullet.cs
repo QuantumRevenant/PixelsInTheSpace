@@ -3,6 +3,7 @@ using QuantumRevenant.Utilities;
 using QuantumRevenant.GeneralNS;
 using QuantumRevenant.PixelsinTheSpace;
 using QuantumRevenant.Timer;
+using UnityEditor;
 
 [RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(BoxCollider2D)), RequireComponent(typeof(SpriteRenderer))]
 public class Scr_Bullet : MonoBehaviour
@@ -55,7 +56,7 @@ public class Scr_Bullet : MonoBehaviour
     }
     private void OnEnable() { }
     private void OnDisable() { ResetProperties(); }
-    private void OnDestroy() { timerActive.NoObjectionDestroySelf(); }
+    private void OnDestroy() { if (!gameObject.scene.isLoaded) return; timerActive?.NoObjectionDestroySelf(); }
 
     #region BulletProperties
     [ContextMenu("updateProperties")]
@@ -141,14 +142,49 @@ public class Scr_Bullet : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        float fixedReductor = 100f; // With this reducer, when the Explosion Radius is 1, it is the standard size of the spherical bullet
+        if (bulletData == null || bulletData.GizmosData == null)
+            return;
+        if(bulletData.PostMortem.HasFlag(PostMortemBulletAction.Explode))
+            DrawExplosionAreaGizmos();
+        
+        if(bulletData.PostMortem.HasFlag(PostMortemBulletAction.Summon))
+            DrawSummonAreaGizmos();
 
-        float radius = 0;
-        if (bulletData != null)
-            radius = bulletData.AoeRadius * bulletData.Scale / fixedReductor;
+    }
+    private void DrawExplosionAreaGizmos()
+    {
+        float radius = bulletData.AoeRadius * bulletData.Scale / bulletData.GizmosData.FixedReductor;
 
-        Gizmos.color = Color.yellow;
+        Gizmos.color = bulletData.GizmosData.ThirdColor;
         Gizmos.DrawWireSphere(transform.position, radius);
+    }
+    private void DrawSummonAreaGizmos()
+    {
+        float angleOffset = bulletData.AngularOffset;
+        angleOffset = Utility.NormalizeAngle(angleOffset);
+        angleOffset += transform.eulerAngles.z;
+
+        Vector3 origen = transform.position;
+        Vector3 puntoCentral = origen + Quaternion.Euler(0, 0, angleOffset) * Vector3.up * bulletData.GizmosData.Radius;
+
+        Gizmos.color = bulletData.GizmosData.SecondColor;
+        Handles.color = bulletData.GizmosData.SecondColor;
+
+        Gizmos.DrawLine(origen, puntoCentral);
+
+        // // Asegúrate de que el ángulo esté en el rango [0, 360]
+        if (Utility.NormalizeAngle(bulletData.FiringArc) == 360)
+        {
+            Handles.DrawWireDisc(origen, Vector3.forward, bulletData.GizmosData.Radius);
+            return;
+        }
+
+        Vector3 puntoA = origen + Quaternion.Euler(0, 0, -bulletData.FiringArc / 2 + angleOffset) * Vector3.up * bulletData.GizmosData.Radius;
+        Vector3 puntoB = origen + Quaternion.Euler(0, 0, bulletData.FiringArc / 2 + angleOffset) * Vector3.up * bulletData.GizmosData.Radius;
+
+        Gizmos.DrawLine(origen, puntoA);
+        Gizmos.DrawLine(origen, puntoB);
+        Handles.DrawWireArc(origen, Vector3.forward, puntoA - origen, bulletData.FiringArc, bulletData.GizmosData.Radius);
     }
 
     private void Movement()
@@ -168,13 +204,12 @@ public class Scr_Bullet : MonoBehaviour
     {
         PostMortemBulletAction postMortem = bulletData.PostMortem;
 
-        entity.hurt(new Damage(damage, type));
+        entity.Hurt(new Damage(damage, type));
         if (postMortem.HasFlag(PostMortemBulletAction.Alter))
             Debug.Log("Im Affecting");
     }
     private void Death()
     {
-        Debug.Log("Morí", this);
         PostMortemBulletAction postMortem = bulletData.PostMortem;
 
         if (postMortem.HasFlag(PostMortemBulletAction.Explode))
@@ -231,9 +266,7 @@ public class Scr_Bullet : MonoBehaviour
             angleArc += bulletData.AngularOffset;
 
 
-            float subprojectileDamage = bulletData.InheritDamage ?
-                                                    (bulletData.InheritAllDamage ? damage : damage / summonQuantity)
-                                                    : bulletData.SubprojectileDamage;
+            float subprojectileDamage = bulletData.InheritDamage ? damage / summonQuantity : bulletData.SubprojectileDamage;
             DamageTypes subprojectileType = bulletData.InheritType ? type : bulletData.SubprojectileType;
 
             Scr_BulletPool.Instance.spawnBullet(gameObject.transform.position, lateralOffset, bulletData.Subprojectile[x], transform.eulerAngles.z + angleArc, gameObject.tag, subprojectileDamage, subprojectileType);
@@ -255,6 +288,4 @@ public class Scr_Bullet : MonoBehaviour
             Death();
         }
     }
-
-
 }

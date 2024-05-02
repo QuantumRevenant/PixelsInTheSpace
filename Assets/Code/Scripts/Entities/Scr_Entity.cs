@@ -3,42 +3,50 @@ using System.Collections.Generic;
 using UnityEngine;
 using QuantumRevenant.Utilities;
 using QuantumRevenant.PixelsinTheSpace;
-
+using QuantumRevenant.PixelsinTheSpace.Multiplier;
+using UnityEditor;
 public class Scr_Entity : MonoBehaviour
 {
     [Header("General")]
-    private DamageTypes resistances;
+    [SerializeField] private DamageTypes typeResistance;
+    private DamageTypes previousResistance;
     private float generalTimer;
+
     [Header("Armor")]
-    private int maxArmor;
-    private int armor;
+    [SerializeField] private int armor;
+
     [Header("Health")]
-    private float maxHP;
-    private float actualHP;
+    [SerializeField] private float health;
+
     [Header("Invulnerability")]
     private bool isInvulnerable = false;
-    private float invulnerabilityTime;
+
     [Header("Movement")]
+    [SerializeField] private Transform[] waypoints;
     private EntityStatus entityStatus;
-    private Vector2 speedMovement;
-    private float speedMultiplier;
-    private Vector2 boundaries;
     private int currentWaypoint = 0;
-    private Transform[] waypoints;
-    private float waitTime;
     private bool isWaiting = false;
+
     [Header("Damage")]
-    [SerializeField] private ScO_ShotAtributtes shotAtributtes;
     [SerializeField] private GameObject firePoint;
-    private float reloadTime;
+    [SerializeField] private ScO_ShotAtributtes shotAtributte;
+    [SerializeField] private List<ScO_ShotAtributtes> availableShotAtributtes;
+
+    [Header("Multipliers")]
+    [SerializeField] private StandardMultiplier multipliers = StandardMultiplier.OneMultiplier();
+
+    [Header("Data")]
+    [SerializeField] private ScO_Entity entityData;
+    private readonly StandardMultiplier neutralChangeStats = StandardMultiplier.CreateMultiplier(1, 1, 1, 1, 2);
     [Header("Gizmos")]
-    private GizmosShoot gizmosShoot;
-    private struct GizmosShoot
+    [SerializeField] private ScO_Gizmos gizmosData;
+    public DamageTypes TypeResistance { get { return typeResistance; } set { typeResistance = value; VerifyResistance(); } }
+
+
+    #region General
+    public virtual void Think()
     {
-        float angle;
-        float offset;
-        float radius;
-        float internalRadius;
+        generalTimer += Time.fixedDeltaTime;
     }
 
     private void FixedUpdate()
@@ -46,98 +54,101 @@ public class Scr_Entity : MonoBehaviour
         Think();
     }
 
-    #region General
-    public virtual void Think()
+    private void Awake()
     {
-        generalTimer += Time.fixedDeltaTime;
+        if (shotAtributte != null && !availableShotAtributtes.Find(shotAtt => shotAtt == shotAtributte))
+            availableShotAtributtes.Add(shotAtributte);
+
+        if (shotAtributte == null && availableShotAtributtes.Count != 0)
+            shotAtributte = availableShotAtributtes[0];
     }
     #endregion
 
     #region Armor
-    private void addArmor(int value = 1)
+    private void AddArmor(int value = 1)
     {
         armor += value;
-        armor = Mathf.Clamp(armor, 0, maxArmor);
-    }
-    private void reduceArmor(int value = 1)
-    {
-        armor -= value;
-        armor = Mathf.Clamp(armor, 0, maxArmor);
+        armor = Mathf.Clamp(armor, 0, entityData.MaxArmor);
     }
     #endregion
 
     #region Health
-    public void heal(float value)
+    public void VerifyResistance()
     {
-        actualHP += value;
-        actualHP = Mathf.Clamp(actualHP, 0, maxHP);
+        if (previousResistance == typeResistance)
+            return;
+
+        if (previousResistance == DamageTypes.Neutral)
+            multipliers /= neutralChangeStats;
+        else if (typeResistance == DamageTypes.Neutral)
+            multipliers *= neutralChangeStats;
+
+        previousResistance = typeResistance;
     }
-    private void hurt(float value)
+    public void Heal(float value)
+    {
+        health += value;
+        health = Mathf.Clamp(health, 0, entityData.MaxHealth);
+    }
+    private void Hurt(float value)
     {
         if (isInvulnerable) { return; }
-        if (armor > 0)
-        {
-            reduceArmor();
-            return;
-        }
+        if (armor > 0) { AddArmor(-1); return; }
 
-        actualHP -= value;
-        actualHP = Mathf.Clamp(actualHP, 0, maxHP);
-        if (actualHP <= 0)
-            death();
+        health -= value;
+        health = Mathf.Clamp(health, 0, entityData.MaxHealth);
+        if (health <= 0)
+            Death();
     }
-    public void hurt(Damage damage)
+    public void Hurt(Damage damage)
     {
-        float noNeutralResistance = 0.5f;
+        if (IsResisted(damage.type)) { return; }
 
-        if (isResisted(damage.type)) { return; }
+        VerifyResistance();
 
-        if (resistances == DamageTypes.Neutral)
-            hurt(damage.value);
-        else
-            hurt(damage.value / noNeutralResistance);
-
+        Hurt(damage.value / multipliers.resistance);
     }
-    protected virtual void death() { }
-    private bool isResisted(DamageTypes type)
+    protected virtual void Death() { }
+    private bool IsResisted(DamageTypes type)
     {
-        return resistances.HasFlag(type) && type != DamageTypes.Neutral;
+        return typeResistance.HasFlag(type) && type != DamageTypes.Neutral;
     }
     #endregion
 
     #region Invulnerability
-    private void setInvulnerable(bool value) { isInvulnerable = value; }
-    private void switchInvulerable() { isInvulnerable = !isInvulnerable; }
+    private void SetInvulnerable(bool value) { isInvulnerable = value; }
     private void ActivateInvulnerability(float duration)
     {
+        if (duration == 0)
+            return;
         if (!isInvulnerable)
             StartCoroutine(TemporalInvulnerability(duration));
     }
     private void ActivateInvulnerability()
     {
-        ActivateInvulnerability(invulnerabilityTime);
+        ActivateInvulnerability(entityData.InvulnerabilityTime);
     }
-    protected virtual void invulnerableAction() { }
+    protected virtual void InvulnerableAction() { }
     protected virtual IEnumerator TemporalInvulnerability(float duration)
     {
-        setInvulnerable(true);
-        invulnerableAction();
+        SetInvulnerable(true);
+        InvulnerableAction();
         yield return new WaitForSeconds(duration);
-        setInvulnerable(false);
+        SetInvulnerable(false);
     }
     #endregion
 
     #region Movement
-    protected void moveWaypoint(bool random = false)
+    protected void MoveWaypoint(bool random = false)
     {
-        moveWaypoint(random, waitTime);
+        MoveWaypoint(random, entityData.WaitTimeWaypoints);
     }
-    protected void moveWaypoint(bool random, float time)
+    protected void MoveWaypoint(bool random, float time)
     {
         if (transform.position != waypoints[currentWaypoint].position)
         {
             Vector2 direction = (waypoints[currentWaypoint].position - transform.position).normalized;
-            transform.position = Vector2.MoveTowards(transform.position, waypoints[currentWaypoint].position, (speedMovement * direction).magnitude * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, waypoints[currentWaypoint].position, (entityData.SpeedMovement * direction).magnitude * Time.fixedDeltaTime);
         }
         else if (!isWaiting)
         {
@@ -169,29 +180,29 @@ public class Scr_Entity : MonoBehaviour
     }
     protected virtual void Move(Vector2 direction)
     {
-        Move(direction, speedMovement, speedMultiplier);
+        Move(direction, entityData.SpeedMovement, multipliers.speed);
     }
     protected virtual void Move(Vector2 direction, Vector2 speed, float multiplier)
     {
-        Vector2 vector2D = direction.normalized * speed * multiplier * Time.deltaTime;
+        Vector2 vector2D = direction.normalized * speed * multiplier * Time.fixedDeltaTime;
         Vector3 vector3D = new Vector3(vector2D.x, vector2D.y);
         transform.Translate(vector3D);
     }
-    protected virtual void limitPosition()
+    protected virtual void LimitPosition()
     {
-        limitPosition(boundaries);
+        LimitPosition(entityData.Boundaries);
     }
-    protected virtual void limitPosition(Vector2 limits)
+    protected virtual void LimitPosition(Vector2 limits)
     {
-        limitPosition(-limits, limits);
+        LimitPosition(-limits, limits);
     }
-    protected virtual void limitPosition(Vector2 downLeft, Vector2 upRight)
+    protected virtual void LimitPosition(Vector2 downLeft, Vector2 upRight)
     {
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, downLeft.x, upRight.x), Mathf.Clamp(transform.position.y, downLeft.y, upRight.y));
     }
-    private void changeEntityStatus()
+    private void ChangeEntityStatus()
     {
-        if (!isOffLimits())
+        if (!IsOffLimits())
         {
             entityStatus = EntityStatus.PlayArea;
             return;
@@ -199,15 +210,15 @@ public class Scr_Entity : MonoBehaviour
         if (entityStatus == EntityStatus.PlayArea)
             entityStatus = EntityStatus.Exiting;
     }
-    private bool isOffLimits()
+    private bool IsOffLimits()
     {
-        return isOffLimits(boundaries);
+        return IsOffLimits(entityData.Boundaries);
     }
-    private bool isOffLimits(Vector2 limits)
+    private bool IsOffLimits(Vector2 limits)
     {
-        return isOffLimits(-limits, limits);
+        return IsOffLimits(-limits, limits);
     }
-    private bool isOffLimits(Vector2 downLeft, Vector2 upRight)
+    private bool IsOffLimits(Vector2 downLeft, Vector2 upRight)
     {
         return transform.position.x < downLeft.x || transform.position.x > upRight.x || transform.position.y > upRight.y || transform.position.y < downLeft.y;
     }
@@ -215,71 +226,80 @@ public class Scr_Entity : MonoBehaviour
 
     #region Damage
     [ContextMenu("Shoot")]
-    private void spawnBullet()
+    private void SpawnBullet()
     {
-        ScO_Bullet bullet = shotAtributtes.Bullet;
+        ScO_Bullet bullet = shotAtributte.Bullet;
         Vector3 firePointPos = firePoint == null ? gameObject.transform.position : firePoint.transform.position;
         Vector3 gameObjectPos = gameObject.transform.position;
 
-        for (int i = 0; i < shotAtributtes.ProjectileQuantity; i++)
+        for (int i = 0; i < shotAtributte.ProjectileQuantity; i++)
         {
             float angleArc = 0;
             float lateralOffset = 0;
 
-            if (shotAtributtes.ProjectileQuantity != 1)
+            if (shotAtributte.ProjectileQuantity != 1)
             {
-                float limit = 0;
-                float percentage = 0;
+                float limit;
+                float percentage;
 
-                if (Utility.NormalizeAngle(shotAtributtes.FiringArc) == 360)
-                    limit = 180f * (shotAtributtes.ProjectileQuantity - 1) / shotAtributtes.ProjectileQuantity;
+                if (Utility.NormalizeAngle(shotAtributte.FiringArc) == 360)
+                    limit = 180f * (shotAtributte.ProjectileQuantity - 1) / shotAtributte.ProjectileQuantity;
                 else
-                    limit = shotAtributtes.FiringArc / 2;
+                    limit = shotAtributte.FiringArc / 2;
 
-                percentage = (float)i / (shotAtributtes.ProjectileQuantity - 1);
+                percentage = (float)i / (shotAtributte.ProjectileQuantity - 1);
                 angleArc = Mathf.Lerp(limit, -limit, percentage);
 
 
-                limit = shotAtributtes.Spacing / 2;
-                percentage = (float)i / (shotAtributtes.ProjectileQuantity - 1);
+                limit = shotAtributte.Spacing / 2;
+                percentage = (float)i / (shotAtributte.ProjectileQuantity - 1);
                 lateralOffset = Mathf.Lerp(limit, -limit, percentage);
             }
 
-            float angleOffset = shotAtributtes.AngularOffset + (shotAtributtes.AngularOffsetSpeed * generalTimer);
+            float angleOffset = shotAtributte.AngularOffset + (shotAtributte.AngularOffsetSpeed * generalTimer);
             angleOffset = Utility.NormalizeAngle(angleOffset);
 
             if (firePointPos != gameObjectPos)
                 firePointPos = Utility.RotatePoint3DRelativeToPivotZ(firePointPos, gameObjectPos, angleArc + angleOffset);
-            Scr_BulletPool.Instance.spawnBullet(firePointPos, lateralOffset, bullet, angleArc + angleOffset + transform.eulerAngles.z, gameObject.tag, 0, DamageTypes.Neutral);
+
+            Scr_BulletPool.Instance.spawnBullet(firePointPos, lateralOffset, bullet, angleArc + angleOffset + transform.eulerAngles.z, gameObject.tag, shotAtributte.Damage, shotAtributte.Type);
         }
     }
     #endregion
-
+    #region Gizmos
     private void OnDrawGizmos()
     {
-        // // Asegúrate de que el ángulo esté en el rango [0, 360]
-        // angulo = Mathf.Clamp(angulo, 0f, 360f);
-
-        // // Calcula los puntos que forman el sector circular
-        // Vector3 origen = transform.position;
-        // Vector3 puntoA = origen + Quaternion.Euler(0, 0, -angulo / 2) * Vector3.right * radio;
-        // Vector3 puntoB = origen + Quaternion.Euler(0, 0, angulo / 2) * Vector3.right * radio;
-
-        // // Dibuja el arco del sector
-        // Gizmos.color = Color.green; // Puedes cambiar el color
-        // Gizmos.DrawLine(origen, puntoA);
-        // Gizmos.DrawLine(origen, puntoB);
-        // Gizmos.DrawWireArc(origen, Vector3.forward, puntoA - origen, angulo, radio);
-
-        // // Dibuja los radios
-        // Gizmos.color = Color.red; // Puedes cambiar el color
-        // Gizmos.DrawLine(origen, puntoA);
-        // Gizmos.DrawLine(origen, puntoB);
+        if (shotAtributte != null && gizmosData != null)
+            DrawGizmosFiringArea();
     }
 
-    private void DrawGizmosFiringArea(float angle)
+    private void DrawGizmosFiringArea()
     {
-        Utility.NormalizeAngle(angle);
-    }
+        float angleOffset = shotAtributte.AngularOffset + (shotAtributte.AngularOffsetSpeed * generalTimer);
+        angleOffset = Utility.NormalizeAngle(angleOffset);
+        angleOffset += transform.eulerAngles.z;
 
+        Vector3 origen = firePoint == null ? transform.position : firePoint.transform.position;
+        Vector3 puntoCentral = origen + Quaternion.Euler(0, 0, angleOffset) * Vector3.up * gizmosData.Radius;
+
+        Gizmos.color = gizmosData.Color; // Puedes cambiar el color
+        Handles.color = gizmosData.Color;
+
+        Gizmos.DrawLine(origen, puntoCentral);
+
+        // // Asegúrate de que el ángulo esté en el rango [0, 360]
+        if (Utility.NormalizeAngle(shotAtributte.FiringArc) == 360)
+        {
+            Handles.DrawWireDisc(origen, Vector3.forward, gizmosData.Radius);
+            return;
+        }
+
+        Vector3 puntoA = origen + Quaternion.Euler(0, 0, -shotAtributte.FiringArc / 2 + angleOffset) * Vector3.up * gizmosData.Radius;
+        Vector3 puntoB = origen + Quaternion.Euler(0, 0, shotAtributte.FiringArc / 2 + angleOffset) * Vector3.up * gizmosData.Radius;
+
+        Gizmos.DrawLine(origen, puntoA);
+        Gizmos.DrawLine(origen, puntoB);
+        Handles.DrawWireArc(origen, Vector3.forward, puntoA - origen, shotAtributte.FiringArc, gizmosData.Radius);
+    }
+    #endregion
 }

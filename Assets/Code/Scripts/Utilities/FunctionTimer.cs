@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using System.Collections;
+using UnityEditor;
 
 namespace QuantumRevenant.Timer
 {
@@ -14,16 +15,15 @@ namespace QuantumRevenant.Timer
         {
             if (initGameObject != null)
                 return;
-
             initGameObject = new GameObject("FunctionTimer_InitGameObject");
             activeTimerList = new List<FunctionTimer>();
         }
 
-        public static FunctionTimer Create(Action action, float timer, string timerName = null,bool isReusable=false)
+        public static FunctionTimer Create(Action action, float timer, string timerName = null, bool isReusable = false)
         {
             InitIfNeeded();
             GameObject gameObject = new GameObject("FunctionTimer", typeof(MonoBehaviourHood));
-            FunctionTimer functionTimer = new FunctionTimer(action, timer, timerName, gameObject,isReusable);
+            FunctionTimer functionTimer = new FunctionTimer(action, timer, timerName, gameObject, isReusable);
             gameObject.GetComponent<MonoBehaviourHood>().onUpdate = functionTimer.Update;
             activeTimerList.Add(functionTimer);
             return functionTimer;
@@ -166,18 +166,15 @@ namespace QuantumRevenant.Timer
         private float timer;
         private string timerName;
         private GameObject gameObject;
-        private bool isDisabled;
         private CoroutinesTimer(Action action, float timer, string timerName, GameObject gameObject)
         {
             this.action = action;
             this.timer = timer;
             this.timerName = timerName;
             this.gameObject = gameObject;
-            isDisabled = false;
         }
         private void DestroySelf()
         {
-            isDisabled = true;
             UnityEngine.Object.Destroy(gameObject);
         }
     }

@@ -12,11 +12,15 @@ namespace QuantumRevenant.PixelsinTheSpace
 namespace QuantumRevenant.PixelsinTheSpace.Multiplier
 {
     [Serializable]
-    public class StandarMultiplier
+    public class StandardMultiplier
     {
-        private float damage, speed, scale, reload, resistance;
-        public static StandarMultiplier EmptyMultiplier() { return new StandarMultiplier(0, 0, 0, 0, 0); }
-        public StandarMultiplier(float damage = 1, float speed = 1, float scale = 1, float reload = 1, float resistance = 1)
+        public float damage, speed, scale, reload, resistance;
+        public static StandardMultiplier ZeroMultiplier() { return new StandardMultiplier(0, 0, 0, 0, 0); }
+        public static StandardMultiplier OneMultiplier() { return new StandardMultiplier(1, 1, 1, 1, 1); }
+        public static StandardMultiplier CreateMultiplier(float damage = 1, float speed = 1, float scale = 1, float reload = 1, float resistance = 1)
+        { return new StandardMultiplier(damage, speed, scale, reload, resistance); }
+
+        public StandardMultiplier(float damage = 1, float speed = 1, float scale = 1, float reload = 1, float resistance = 1)
         {
             this.damage = damage;
             this.speed = speed;
@@ -24,14 +28,9 @@ namespace QuantumRevenant.PixelsinTheSpace.Multiplier
             this.reload = reload;
             this.resistance = resistance;
         }
-        public float Damage { get => damage; set => damage = value; }
-        public float Speed { get => speed; set => speed = value; }
-        public float Scale { get => scale; set => scale = value; }
-        public float Reload { get => reload; set => reload = value; }
-        public float Resistance { get => resistance; set => resistance = value; }
-        public StandarMultiplier ThisObj { get => this; }
-        public StandarMultiplier Clone() { return new StandarMultiplier(damage, speed, scale, reload, resistance); }
-        public StandarMultiplier SetStandarMultiplier(float damage = 1, float speed = 1, float scale = 1, float reload = 1, float resistance = 1)
+        public StandardMultiplier ThisObj { get => this; }
+        public StandardMultiplier Clone() { return new StandardMultiplier(damage, speed, scale, reload, resistance); }
+        public StandardMultiplier SetStandarMultiplier(float damage = 1, float speed = 1, float scale = 1, float reload = 1, float resistance = 1)
         {
             this.damage = damage;
             this.speed = speed;
@@ -40,40 +39,83 @@ namespace QuantumRevenant.PixelsinTheSpace.Multiplier
             this.resistance = resistance;
             return this;
         }
-        public StandarMultiplier AddMultiplier(float damage = 0, float speed = 0, float scale = 0, float reload = 0, float resistance = 0)
+        #region Addition
+        public StandardMultiplier AddMultiplier(float damage = 0, float speed = 0, float scale = 0, float reload = 0, float resistance = 0)
         {
             return SetStandarMultiplier(this.damage + damage, this.speed + speed, this.scale + scale, this.reload + reload, this.resistance + resistance);
         }
-        public StandarMultiplier AddMultiplier(StandarMultiplier m) { return AddMultiplier(m.damage, m.speed, m.scale, m.reload, m.resistance); }
-        public static StandarMultiplier AddMultiplier(StandarMultiplier a, StandarMultiplier b) { return a.Clone().AddMultiplier(b); }
-        public StandarMultiplier SubstractMultiplier(float damage = 0, float speed = 0, float scale = 0, float reload = 0, float resistance = 0)
+        public StandardMultiplier AddMultiplier(StandardMultiplier m) { return AddMultiplier(m.damage, m.speed, m.scale, m.reload, m.resistance); }
+        public static StandardMultiplier AddMultiplier(StandardMultiplier a, StandardMultiplier b) { return a.Clone().AddMultiplier(b); }
+        #endregion
+        #region Substraction
+        public StandardMultiplier SubstractMultiplier(float damage = 0, float speed = 0, float scale = 0, float reload = 0, float resistance = 0)
         {
             return SetStandarMultiplier(this.damage - damage, this.speed - speed, this.scale - scale, this.reload - reload, this.resistance - resistance);
         }
-        public StandarMultiplier SubstractMultiplier(StandarMultiplier m) { return SubstractMultiplier(m.damage, m.speed, m.scale, m.reload, m.resistance); }
-        public static StandarMultiplier SubstractMultiplier(StandarMultiplier a, StandarMultiplier b) { return a.Clone().SubstractMultiplier(b); }
+        public StandardMultiplier SubstractMultiplier(StandardMultiplier m) { return SubstractMultiplier(m.damage, m.speed, m.scale, m.reload, m.resistance); }
+        public static StandardMultiplier SubstractMultiplier(StandardMultiplier a, StandardMultiplier b) { return a.Clone().SubstractMultiplier(b); }
+        #endregion
 
-        public void AddTimedMultiplier(StandarMultiplier multiplier, float time)
+        #region Multiplication
+        public StandardMultiplier MultiplyMultiplier(float damage = 1, float speed = 1, float scale = 1, float reload = 1, float resistance = 1)
+        {
+            return SetStandarMultiplier(this.damage * damage, this.speed * speed, this.scale * scale, this.reload * reload, this.resistance * resistance);
+        }
+        public StandardMultiplier MultiplyMultiplier(float val)
+        {
+            return SetStandarMultiplier(damage * val, speed * val, scale * val, reload * val, resistance * val);
+
+        }
+        public StandardMultiplier MultiplyMultiplier(StandardMultiplier m) { return MultiplyMultiplier(m.damage, m.speed, m.scale, m.reload, m.resistance); }
+        public static StandardMultiplier MultiplyMultiplier(StandardMultiplier a, StandardMultiplier b) { return a.Clone().MultiplyMultiplier(b); }
+        public static StandardMultiplier MultiplyMultiplier(StandardMultiplier a, float val) { return a.Clone().MultiplyMultiplier(val); }
+        #endregion
+
+        #region Division
+        public StandardMultiplier DivideMultiplier(float damage = 1, float speed = 1, float scale = 1, float reload = 1, float resistance = 1)
+        {
+            if (damage * speed * scale * reload * resistance == 0)
+                UnityEngine.Debug.Log($"Error, enviaste un valor 0 a dividir, se reemplazará con 1");
+
+            return SetStandarMultiplier(this.damage / damage == 0 ? 1 : damage, this.speed / speed == 0 ? 1 : speed, this.scale / scale == 0 ? 1 : scale, this.reload / reload == 0 ? 1 : reload, this.resistance / resistance == 0 ? 1 : resistance);
+        }
+        public StandardMultiplier DivideMultiplier(float val)
+        {
+            return DivideMultiplier(val, val, val, val, val);
+
+        }
+        public StandardMultiplier DivideMultiplier(StandardMultiplier m) { return DivideMultiplier(m.damage, m.speed, m.scale, m.reload, m.resistance); }
+        public static StandardMultiplier DivideMultiplier(StandardMultiplier a, StandardMultiplier b) { return a.Clone().DivideMultiplier(b); }
+        public static StandardMultiplier DivideMultiplier(StandardMultiplier a, float val) { return a.Clone().DivideMultiplier(val); }
+        #endregion
+        #region Timed
+        public void AddTimedMultiplier(StandardMultiplier multiplier, float time)
         {
             AddMultiplier(multiplier);
             FunctionTimer.Create(() => SubstractMultiplier(multiplier), time, "Multiplier Timer - Temporal Buff");
         }
 
-        public void SubstractTimedMultiplier(StandarMultiplier multiplier, float time)
+        public void SubstractTimedMultiplier(StandardMultiplier multiplier, float time)
         {
             SubstractMultiplier(multiplier);
             FunctionTimer.Create(() => AddMultiplier(multiplier), time, "Multiplier Timer - Temporal Debuff");
         }
+        #endregion
 
+        public static StandardMultiplier operator +(StandardMultiplier a, StandardMultiplier b) { return AddMultiplier(a, b); }
+        public static StandardMultiplier operator -(StandardMultiplier a, StandardMultiplier b) { return SubstractMultiplier(a, b); }
 
+        public static StandardMultiplier operator *(StandardMultiplier a, StandardMultiplier b) { return MultiplyMultiplier(a, b); }
+        public static StandardMultiplier operator *(StandardMultiplier a, float b) { return MultiplyMultiplier(a, b); }
+        public static StandardMultiplier operator *(float b, StandardMultiplier a) { return MultiplyMultiplier(a, b); }
+        public static StandardMultiplier operator *(StandardMultiplier a, int b) { return MultiplyMultiplier(a, b); }
+        public static StandardMultiplier operator *(int b, StandardMultiplier a) { return MultiplyMultiplier(a, b); }
 
-        public static StandarMultiplier operator +(StandarMultiplier a, StandarMultiplier b)
-        {
-            return AddMultiplier(a, b);
-        }
-        public static StandarMultiplier operator -(StandarMultiplier a, StandarMultiplier b)
-        {
-            return SubstractMultiplier(a, b);
-        }
+        public static StandardMultiplier operator /(StandardMultiplier a, StandardMultiplier b) { return DivideMultiplier(a, b); }
+        public static StandardMultiplier operator /(StandardMultiplier a, float b) { return DivideMultiplier(a, b); }
+        public static StandardMultiplier operator /(float b, StandardMultiplier a) { return DivideMultiplier(a, b); }
+        public static StandardMultiplier operator /(StandardMultiplier a, int b) { return DivideMultiplier(a, b); }
+        public static StandardMultiplier operator /(int b, StandardMultiplier a) { return DivideMultiplier(a, b); }
+
     }
 }

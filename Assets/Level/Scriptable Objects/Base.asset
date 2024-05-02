@@ -14,22 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 7431529995326980795, guid: 9c0ef779ebdd4dc4cbf5fca17abaaf01, type: 3}
   color: {r: 1, g: 1, b: 1, a: 1}
-  speed: 0
+  speed: 0.05
   angularSpeed: 0
   angle: 0
   scale: 1
-  lifeTime: Infinity
-  postMortem: 1
-  aoeRadius: 0
+  lifeTime: 10
+  gizmosData: {fileID: 11400000, guid: 25dbd8b6ea1106e48ae97d97fc28b396, type: 2}
+  postMortem: 2
+  aoeRadius: 5
   pierceCounter: 0
   stats: 
   subprojectile:
     Value: []
   spacing: 0
-  firingArc: 0
-  subprojectileQuantity: 0
-  angularOffset: 0
+  firingArc: 240
+  subprojectileQuantity: 3
+  angularOffset: 180.3
   inheritType: 1
   inheritDamage: 1
+  inheritAllDamage: 0
   subprojectileType: 0
   subprojectileDamage: 0
