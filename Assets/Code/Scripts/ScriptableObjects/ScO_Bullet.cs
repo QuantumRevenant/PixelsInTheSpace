@@ -1,5 +1,6 @@
 using UnityEngine;
 using QuantumRevenant.PixelsinTheSpace;
+using QuantumRevenant.CustomEditors;
 using MyBox;
 
 [CreateAssetMenu(fileName = "New Bullet Data", menuName = "Scriptable Objects/Bullet_Data")]
@@ -12,6 +13,7 @@ public class ScO_Bullet : ScriptableObject
     [SerializeField][Range(0, 360)] private float angle;
     [SerializeField] private float scale;
     [SerializeField] private float lifeTime;
+    [ExposedScriptableObject]
     [SerializeField] private ScO_Gizmos gizmosData;
 
     [Header("Post Mortem")]

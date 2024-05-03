@@ -1,3 +1,4 @@
+using QuantumRevenant.CustomEditors;
 using QuantumRevenant.PixelsinTheSpace;
 using UnityEngine;
 [CreateAssetMenu(fileName = "New ShotAtributtes Data", menuName = "Scriptable Objects/ShotAtributtes_Data")]
@@ -8,6 +9,7 @@ public class ScO_ShotAtributtes : ScriptableObject
     [SerializeField] private int projectileQuantity;
     [SerializeField] private float angularOffset;
     [SerializeField] private float angularOffsetSpeed;
+    [ExposedScriptableObject]
     [SerializeField] private ScO_Bullet bullet;
     [SerializeField] private float damage;
     [SerializeField] private DamageTypes type;
