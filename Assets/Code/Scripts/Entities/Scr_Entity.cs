@@ -30,6 +30,7 @@ public class Scr_Entity : MonoBehaviour
 
     [Header("Damage")]
     [SerializeField] private GameObject firePoint;
+    [ExposedScriptableObject]
     [SerializeField] private ScO_ShotAtributtes shotAtributte;
     [SerializeField] private List<ScO_ShotAtributtes> availableShotAtributtes;
 
@@ -233,11 +234,11 @@ public class Scr_Entity : MonoBehaviour
     private void SpawnBullet()
     {
         ScO_Bullet bullet = shotAtributte.Bullet;
-        Vector3 firePointPos = firePoint == null ? gameObject.transform.position : firePoint.transform.position;
         Vector3 gameObjectPos = gameObject.transform.position;
 
         for (int i = 0; i < shotAtributte.ProjectileQuantity; i++)
         {
+            Vector3 firePointPos = firePoint == null ? gameObject.transform.position : firePoint.transform.position;
             float angleArc = 0;
             float lateralOffset = 0;
 
@@ -264,7 +265,7 @@ public class Scr_Entity : MonoBehaviour
             angleOffset = Utility.NormalizeAngle(angleOffset);
 
             if (firePointPos != gameObjectPos)
-                firePointPos = Utility.RotatePoint3DRelativeToPivotZ(firePointPos, gameObjectPos, angleArc + angleOffset);
+                firePointPos = Utility.RotatePointRelativeToPivot(firePointPos, gameObjectPos, angleOffset);
 
             Scr_BulletPool.Instance.spawnBullet(firePointPos, lateralOffset, bullet, angleArc + angleOffset + transform.eulerAngles.z, gameObject.tag, shotAtributte.Damage, shotAtributte.Type);
         }
@@ -284,6 +285,10 @@ public class Scr_Entity : MonoBehaviour
         angleOffset += transform.eulerAngles.z;
 
         Vector3 origen = firePoint == null ? transform.position : firePoint.transform.position;
+
+        if (origen != transform.position)
+            origen = Utility.RotatePointRelativeToPivot(origen, transform.position, angleOffset);
+
         Vector3 puntoCentral = origen + Quaternion.Euler(0, 0, angleOffset) * Vector3.up * gizmosData.Radius;
 
         Gizmos.color = gizmosData.Color; // Puedes cambiar el color

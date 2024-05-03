@@ -1,5 +1,3 @@
-using System.Drawing;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -27,36 +25,20 @@ namespace QuantumRevenant.Utilities
                 return false;
             }
         }
-        public static Vector2 RotatePointRelativeToPivot(Vector2 Point, Vector2 Pivot, float Angle)
+        public static Vector2 RotatePointRelativeToPivot(Vector2 Point, Vector2 Pivot, float EulerAngle)
         {
-            Angle *= Mathf.Deg2Rad;
-
-            float s = Mathf.Sin(Angle);
-            float c = Mathf.Cos(Angle);
-
-            Point -= Pivot;
-
-            Vector2 output;
-
-            output.x = Point.x * c - Point.y * s;
-            output.y = Point.x * s + Point.y * c;
-
-            output += Pivot;
-
-            return output;
+            Quaternion angle = Quaternion.Euler(new Vector3(0, 0, EulerAngle));
+            return RotatePointRelativeToPivot(Point, Pivot, angle);
         }
-        public static Vector3 RotatePoint3DRelativeToPivotZ(Vector3 Point, Vector3 Pivot, float Angle)
+
+        public static Vector3 RotatePointRelativeToPivot(Vector3 Point, Vector3 Pivot, Quaternion Rotation)
         {
-            Vector2 Point2D = new Vector2(Point.x, Point.y);
-            Vector2 Pivot2D = new Vector2(Pivot.x, Pivot.y);
+            Vector3 OriginalVector = Point - Pivot;
+            Vector3 Offset = Rotation * OriginalVector;
 
-            Vector2 Output2D = RotatePointRelativeToPivot(Point2D, Pivot2D, Angle);
-
-            Point.x = Output2D.x;
-            Point.y = Output2D.y;
-
-            return Point;
+            return Offset + Pivot;
         }
+
         public static BoxCollider2D ResizeBoxCollider2D(SpriteRenderer renderer, Collider2D collider2D, Vector3 scale, float resizeFactor = 0.5f)
         {
             Vector3 v = renderer.bounds.size * resizeFactor;
@@ -71,7 +53,7 @@ namespace QuantumRevenant.Utilities
 
             return b;
         }
-        public static string GetVersion(){return Application.version;}
+        public static string GetVersion() { return Application.version; }
     }
 
 }

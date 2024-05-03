@@ -157,7 +157,7 @@ MonoBehaviour:
   armor: 0
   health: 0
   waypoints: []
-  firePoint: {fileID: 0}
+  firePoint: {fileID: 1362807580}
   shotAtributte: {fileID: 11400000, guid: 09eba6734b08ea94498ef986f5f9c4c6, type: 2}
   availableShotAtributtes: []
   multipliers:
@@ -228,7 +228,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 365298386}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.482, y: -0.453, z: 0}
+  m_LocalPosition: {x: -0.446, y: -0.33, z: 0}
   m_LocalScale: {x: 0.301, y: 0.301, z: 0.301}
   m_ConstrainProportionsScale: 0
   m_Children:
