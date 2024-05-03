@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: New ShotAtributtes Data
   m_EditorClassIdentifier: 
   idName: '"Base"'
-  firingArc: 65
-  projectileQuantity: -134
-  angularOffset: 358.37
+  firingArc: 45
+  projectileQuantity: 1
+  angularOffset: 0
   angularOffsetSpeed: 0
   bullet: {fileID: 11400000, guid: 7c42465239e7c24459641fdb96338305, type: 2}
   damage: 5

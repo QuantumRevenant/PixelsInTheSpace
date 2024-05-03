@@ -267,6 +267,7 @@ public class Scr_Entity : MonoBehaviour
             if (firePointPos != gameObjectPos)
                 firePointPos = Utility.RotatePointRelativeToPivot(firePointPos, gameObjectPos, angleOffset);
 
+            angleOffset += firePoint == null ? 0 : firePoint.transform.localRotation.eulerAngles.z;
             Scr_BulletPool.Instance.spawnBullet(firePointPos, lateralOffset, bullet, angleArc + angleOffset + transform.eulerAngles.z, gameObject.tag, shotAtributte.Damage, shotAtributte.Type);
         }
     }
@@ -282,12 +283,12 @@ public class Scr_Entity : MonoBehaviour
     {
         float angleOffset = shotAtributte.AngularOffset + (shotAtributte.AngularOffsetSpeed * generalTimer);
         angleOffset = Utility.NormalizeAngle(angleOffset);
-        angleOffset += transform.eulerAngles.z;
 
         Vector3 origen = firePoint == null ? transform.position : firePoint.transform.position;
 
         if (origen != transform.position)
             origen = Utility.RotatePointRelativeToPivot(origen, transform.position, angleOffset);
+        angleOffset += firePoint == null ? 0 : firePoint.transform.rotation.eulerAngles.z;
 
         Vector3 puntoCentral = origen + Quaternion.Euler(0, 0, angleOffset) * Vector3.up * gizmosData.Radius;
 

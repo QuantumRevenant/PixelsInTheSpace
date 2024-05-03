@@ -8,7 +8,7 @@ using UnityEditor;
 [RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(BoxCollider2D)), RequireComponent(typeof(SpriteRenderer))]
 public class Scr_Bullet : MonoBehaviour
 {
-    [SerializeField] private ScO_Bullet bulletData;
+    private ScO_Bullet bulletData;
     private FunctionTimer timerActive;
     /*[HideInInspector]*/
     public float inheritedAngle = 0;
