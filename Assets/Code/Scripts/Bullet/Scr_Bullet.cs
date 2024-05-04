@@ -126,10 +126,7 @@ public class Scr_Bullet : MonoBehaviour
     }
 
 
-    [ContextMenu("isReset")]
     private bool IsReset() { return IsClean() && BulletData == null; }
-
-    [ContextMenu("isClean")]
     private bool IsClean()
     {
         return spriteRenderer.sprite == null

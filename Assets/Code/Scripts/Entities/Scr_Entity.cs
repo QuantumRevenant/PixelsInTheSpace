@@ -233,6 +233,8 @@ public class Scr_Entity : MonoBehaviour
     [MyBox.ButtonMethod]
     private void SpawnBullet()
     {
+        if(!EditorApplication.isPlaying)
+            return;
         ScO_Bullet bullet = shotAtributte.Bullet;
         Vector3 gameObjectPos = gameObject.transform.position;
 
