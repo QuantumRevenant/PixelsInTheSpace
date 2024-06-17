@@ -146,5 +146,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24e785db43ab4d048aee221323d443f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bulletData: {fileID: 11400000, guid: bfbcaad84e635fa41aae715b9b747584, type: 2}
+  bulletData: {fileID: 0}
   inheritedAngle: 0
+  type: 0
+  damage: 0
+  pierceCounter: 0

@@ -4,17 +4,22 @@ using QuantumRevenant.GeneralNS;
 using QuantumRevenant.PixelsinTheSpace;
 using QuantumRevenant.Timer;
 using UnityEditor;
+using MyBox;
 
 [RequireComponent(typeof(Rigidbody2D)), RequireComponent(typeof(BoxCollider2D)), RequireComponent(typeof(SpriteRenderer))]
 public class Scr_Bullet : MonoBehaviour
 {
-    private ScO_Bullet bulletData;
+    [InitializationField]
+    [SerializeField] private ScO_Bullet bulletData;
     private FunctionTimer timerActive;
-    /*[HideInInspector]*/
+    [HideInInspector]
     public float inheritedAngle = 0;
-    private DamageTypes type = DamageTypes.Neutral;
-    private float damage;
-    private int pierceCounter = 0;
+    [ReadOnly]
+    [SerializeField] private DamageTypes type = DamageTypes.Neutral;
+    [ReadOnly]
+    [SerializeField] private float damage;
+    [ReadOnly]
+    [SerializeField] private int pierceCounter = 0;
     public ScO_Bullet BulletData
     {
         get { return bulletData; }
@@ -141,10 +146,10 @@ public class Scr_Bullet : MonoBehaviour
     {
         if (bulletData == null || bulletData.GizmosData == null)
             return;
-        if(bulletData.PostMortem.HasFlag(PostMortemBulletAction.Explode))
+        if (bulletData.PostMortem.HasFlag(PostMortemBulletAction.Explode))
             DrawExplosionAreaGizmos();
-        
-        if(bulletData.PostMortem.HasFlag(PostMortemBulletAction.Summon))
+
+        if (bulletData.PostMortem.HasFlag(PostMortemBulletAction.Summon))
             DrawSummonAreaGizmos();
 
     }
