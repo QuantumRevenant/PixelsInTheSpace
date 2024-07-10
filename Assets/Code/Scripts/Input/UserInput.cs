@@ -39,7 +39,6 @@ public class UserInput : MonoBehaviour
     private void Update()
     {
         UpdateInputs();
-        Debug.Log(MoveInput);
     }
 
     private void setupInputActions()
