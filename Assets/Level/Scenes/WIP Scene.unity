@@ -914,19 +914,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7872833554115548972, guid: 83361e6a0c665dc4cb920bb7025d53c0, type: 3}
       propertyPath: bindingIndex
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7872833554115548972, guid: 83361e6a0c665dc4cb920bb7025d53c0, type: 3}
       propertyPath: selectedBinding
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7872833554115548972, guid: 83361e6a0c665dc4cb920bb7025d53c0, type: 3}
       propertyPath: inputBinding.m_Id
-      value: 43a574f2-cb06-4890-b0ea-d940931692b8
+      value: 606f83b5-c9b1-490a-b09a-715417b03856
       objectReference: {fileID: 0}
     - target: {fileID: 7872833554115548972, guid: 83361e6a0c665dc4cb920bb7025d53c0, type: 3}
       propertyPath: inputBinding.m_Path
-      value: <Gamepad>/buttonSouth
+      value: <Keyboard>/k
       objectReference: {fileID: 0}
     - target: {fileID: 7872833554115548972, guid: 83361e6a0c665dc4cb920bb7025d53c0, type: 3}
       propertyPath: displayStringOptions
@@ -939,6 +939,10 @@ PrefabInstance:
     - target: {fileID: 7872833554115548972, guid: 83361e6a0c665dc4cb920bb7025d53c0, type: 3}
       propertyPath: inputBinding.m_Action
       value: Shoot
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872833554115548972, guid: 83361e6a0c665dc4cb920bb7025d53c0, type: 3}
+      propertyPath: inputBinding.m_Groups
+      value: Keyboard
       objectReference: {fileID: 0}
     - target: {fileID: 8928723415460899719, guid: 83361e6a0c665dc4cb920bb7025d53c0, type: 3}
       propertyPath: m_AnchorMax.y

@@ -27,18 +27,30 @@ public class ReBindUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI rebindText;
     [SerializeField] private Button resetButton;
 
-    private void OnEnable() {
-        rebindButton.onClick.AddListener(()=>DoRebind());
-        resetButton.onClick.AddListener(()=>ResetBinding());
+    private void OnEnable()
+    {
+        rebindButton.onClick.AddListener(() => DoRebind());
+        resetButton.onClick.AddListener(() => ResetBinding());
 
-        if(inputActionReference!=null)
+        if (inputActionReference != null)
         {
+            InputManager.LoadBindingOverride(actionName);
+            GetBindingInfo();
             UpdateUI();
         }
+
+        InputManager.rebindComplete += UpdateUI;
+        InputManager.rebindCanceled += UpdateUI;
+    }
+
+    private void OnDisable()
+    {
+        InputManager.rebindComplete -= UpdateUI;
+        InputManager.rebindCanceled -= UpdateUI;
     }
     private void OnValidate()
     {
-        if(inputActionReference==null)
+        if (inputActionReference == null)
             return;
         GetBindingInfo();
         UpdateUI();
@@ -65,7 +77,7 @@ public class ReBindUI : MonoBehaviour
         {
             if (Application.isPlaying)
             {
-                //grab info from Input Manager
+                rebindText.text = InputManager.GetBindingName(actionName, bindingIndex);
             }
             else
                 rebindText.text = inputActionReference.action.GetBindingDisplayString(bindingIndex);
@@ -74,11 +86,12 @@ public class ReBindUI : MonoBehaviour
 
     private void DoRebind()
     {
-        InputManager.StartRebind(actionName,bindingIndex,rebindText);
+        InputManager.StartRebind(actionName, bindingIndex, rebindText,excludeMouse);
     }
 
     private void ResetBinding()
     {
-
+        InputManager.ResetBinding(actionName,bindingIndex);
+        UpdateUI();
     }
 }
