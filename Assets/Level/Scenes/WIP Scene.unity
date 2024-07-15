@@ -910,7 +910,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7872833554115548972, guid: 83361e6a0c665dc4cb920bb7025d53c0, type: 3}
       propertyPath: actionName
-      value: Shoot
+      value: Movement
       objectReference: {fileID: 0}
     - target: {fileID: 7872833554115548972, guid: 83361e6a0c665dc4cb920bb7025d53c0, type: 3}
       propertyPath: bindingIndex
@@ -922,11 +922,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7872833554115548972, guid: 83361e6a0c665dc4cb920bb7025d53c0, type: 3}
       propertyPath: inputBinding.m_Id
-      value: 606f83b5-c9b1-490a-b09a-715417b03856
+      value: dcd60e8f-52d0-42b0-a0d7-a7efaadd5bee
+      objectReference: {fileID: 0}
+    - target: {fileID: 7872833554115548972, guid: 83361e6a0c665dc4cb920bb7025d53c0, type: 3}
+      propertyPath: inputBinding.m_Name
+      value: 2D Vector
       objectReference: {fileID: 0}
     - target: {fileID: 7872833554115548972, guid: 83361e6a0c665dc4cb920bb7025d53c0, type: 3}
       propertyPath: inputBinding.m_Path
-      value: <Keyboard>/k
+      value: 2DVector
       objectReference: {fileID: 0}
     - target: {fileID: 7872833554115548972, guid: 83361e6a0c665dc4cb920bb7025d53c0, type: 3}
       propertyPath: displayStringOptions
@@ -935,14 +939,18 @@ PrefabInstance:
     - target: {fileID: 7872833554115548972, guid: 83361e6a0c665dc4cb920bb7025d53c0, type: 3}
       propertyPath: inputActionReference
       value: 
-      objectReference: {fileID: 3537106622574662314, guid: 8696a90ce1c5f6542b1e5b4d4c0a696b, type: 3}
+      objectReference: {fileID: -3889678243900533366, guid: 8696a90ce1c5f6542b1e5b4d4c0a696b, type: 3}
+    - target: {fileID: 7872833554115548972, guid: 83361e6a0c665dc4cb920bb7025d53c0, type: 3}
+      propertyPath: inputBinding.m_Flags
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7872833554115548972, guid: 83361e6a0c665dc4cb920bb7025d53c0, type: 3}
       propertyPath: inputBinding.m_Action
-      value: Shoot
+      value: Movement
       objectReference: {fileID: 0}
     - target: {fileID: 7872833554115548972, guid: 83361e6a0c665dc4cb920bb7025d53c0, type: 3}
       propertyPath: inputBinding.m_Groups
-      value: Keyboard
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8928723415460899719, guid: 83361e6a0c665dc4cb920bb7025d53c0, type: 3}
       propertyPath: m_AnchorMax.y
