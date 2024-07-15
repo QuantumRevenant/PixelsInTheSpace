@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     private InputAction movement;
 
     private void OnEnable() {
+        InputManager.ToggleActionMap(InputManager.inputActions.Player);
         movement=InputManager.inputActions.Player.Movement;
 
         InputManager.inputActions.Player.Shoot.performed+=DoShoot; 
@@ -15,7 +16,6 @@ public class PlayerController : MonoBehaviour
 
 
         InputManager.inputActions.Player.MenuOpenClose.performed+=exitPlayer;
-
     }
 
     private void OnDisable() {
