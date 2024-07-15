@@ -39,8 +39,8 @@ public class InputManager : MonoBehaviour
       if (action.bindings[bindingIndex].isComposite)
       {
          var firstPartIndex = bindingIndex + 1;
-         if (firstPartIndex < action.bindings.Count && action.bindings[firstPartIndex].isComposite)
-            DoRebind(action, bindingIndex, statusText, true, excludeMouse);
+         if (firstPartIndex < action.bindings.Count && action.bindings[firstPartIndex].isPartOfComposite)
+            DoRebind(action, firstPartIndex, statusText, true, excludeMouse);
       }
       else
          DoRebind(action, bindingIndex, statusText, false, excludeMouse);
@@ -65,7 +65,7 @@ public class InputManager : MonoBehaviour
          if (allCompositeParts)
          {
             var nextBindingIndex = bindingIndex + 1;
-            if (nextBindingIndex < actionToRebind.bindings.Count && actionToRebind.bindings[nextBindingIndex].isComposite)
+            if (nextBindingIndex < actionToRebind.bindings.Count && actionToRebind.bindings[nextBindingIndex].isPartOfComposite)
             {
                DoRebind(actionToRebind, nextBindingIndex, statusText, allCompositeParts, excludeMouse);
             }
@@ -110,6 +110,9 @@ public class InputManager : MonoBehaviour
 
    public static void LoadBindingOverride(string actionName)
    {
+      if(actionName==null)
+         return;
+
       if (inputActions == null)
          inputActions = new PlayerInputActions();
 
@@ -134,11 +137,11 @@ public class InputManager : MonoBehaviour
 
       if (action.bindings[bindingIndex].isComposite)
       {
-         for (int i = bindingIndex; i < action.bindings.Count && action.bindings[i].isComposite; i++)
+         for (int i = bindingIndex+1; i < action.bindings.Count && action.bindings[i].isPartOfComposite; i++) //Estás Reseteando todos los binding Composite, Cuidado
             action.RemoveBindingOverride(i);
       }else
             action.RemoveBindingOverride(bindingIndex);
-            
+
       SaveBindingOverride(action);
    }
 }
