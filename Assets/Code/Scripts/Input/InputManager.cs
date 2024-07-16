@@ -57,6 +57,12 @@ public class InputManager : MonoBehaviour
 
       var rebind = actionToRebind.PerformInteractiveRebinding(bindingIndex);
 
+      void CleanUp()
+      {
+         rebind.Dispose();
+         rebind = null;
+      }
+
       rebind.OnComplete(operation =>
       {
          actionToRebind.Enable();
@@ -70,6 +76,16 @@ public class InputManager : MonoBehaviour
                DoRebind(actionToRebind, nextBindingIndex, statusText, allCompositeParts, excludeMouse);
             }
          }
+
+         if (CheckDuplicateBindings(actionToRebind, bindingIndex, allCompositeParts)) //If you try to duplicate an assignment, ignore the request and restart the process
+         {
+            actionToRebind.RemoveBindingOverride(bindingIndex);
+            CleanUp();
+            DoRebind(actionToRebind, bindingIndex, statusText, allCompositeParts, excludeMouse);
+            return;
+         }
+
+
          SaveBindingOverride(actionToRebind);
          rebindComplete?.Invoke();
       });
@@ -91,6 +107,36 @@ public class InputManager : MonoBehaviour
       rebind.Start(); //actually starts the rebinding process
    }
 
+   private static bool CheckDuplicateBindings(InputAction action, int bindingIndex, bool allCompositeParts = false)
+   {
+      InputBinding newBinding = action.bindings[bindingIndex];
+
+      foreach (InputBinding binding in action.actionMap.bindings)
+      {
+         if (binding.action == newBinding.action)
+            continue;
+         if (binding.effectivePath == newBinding.effectivePath)
+         {
+            Debug.Log("Duplicate binding found: " + newBinding.effectivePath);
+            return true;
+         }
+      }
+
+      if (allCompositeParts)
+      {
+         for (int i = 1; i < bindingIndex; i++)
+         {
+            if (action.bindings[i].effectivePath == newBinding.overridePath)
+            {
+               Debug.Log("Duplicate binding found: " + newBinding.effectivePath);
+               return true;
+            }
+         }
+      }
+
+      return false;
+   }
+
    public static string GetBindingName(string actionName, int bindingIndex)
    {
       if (inputActions == null)
@@ -110,7 +156,7 @@ public class InputManager : MonoBehaviour
 
    public static void LoadBindingOverride(string actionName)
    {
-      if(actionName==null)
+      if (actionName == null)
          return;
 
       if (inputActions == null)
@@ -137,11 +183,38 @@ public class InputManager : MonoBehaviour
 
       if (action.bindings[bindingIndex].isComposite)
       {
-         for (int i = bindingIndex+1; i < action.bindings.Count && action.bindings[i].isPartOfComposite; i++) //Estás Reseteando todos los binding Composite, Cuidado
-            action.RemoveBindingOverride(i);
-      }else
-            action.RemoveBindingOverride(bindingIndex);
+         for (int i = bindingIndex + 1; i < action.bindings.Count && action.bindings[i].isPartOfComposite; i++)
+            ResetBinding(action, i);
+      }
+      else
+         ResetBinding(action, bindingIndex);
+      
+      rebindComplete.Invoke();
+      SaveBindingOverride(action);
+   }
 
+   public static void ResetBinding(InputAction action, int bindingIndex)
+   {
+      InputBinding newBinding = action.bindings[bindingIndex];
+      string oldOverridePath = newBinding.overridePath;
+
+      action.RemoveBindingOverride(bindingIndex);
+
+      foreach (InputAction otherAction in action.actionMap)
+      {
+         if (otherAction == action)
+            continue;
+
+         for (int i = 0; i < otherAction.bindings.Count; i++)
+         {
+            InputBinding binding = otherAction.bindings[i];
+            if (binding.overridePath == newBinding.path)
+            {
+               otherAction.ApplyBindingOverride(i, oldOverridePath);
+               SaveBindingOverride(otherAction);
+            }
+         }
+      }
       SaveBindingOverride(action);
    }
 }

@@ -47,6 +47,6 @@ public class PlayerController : MonoBehaviour
     
 
     private void FixedUpdate() {
-        Debug.Log("Movement Values: "+movement.ReadValue<Vector2>());
+        // Debug.Log("Movement Values: "+movement.ReadValue<Vector2>());
     }
 }
