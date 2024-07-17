@@ -14,8 +14,9 @@ public class PlayerController : MonoBehaviour
         InputManager.inputActions.Player.PowerDropRelease.performed+=DoOne;    
         InputManager.inputActions.Player.PowerDropRelease.canceled+=DoTwo;   
 
-
         InputManager.inputActions.Player.MenuOpenClose.performed+=exitPlayer;
+
+        InputManager.rebindDuplicate+=DuplicateBinding;
     }
 
     private void OnDisable() {
@@ -26,6 +27,8 @@ public class PlayerController : MonoBehaviour
         InputManager.inputActions.Player.PowerDropRelease.canceled-=DoTwo;  
 
         InputManager.inputActions.Player.MenuOpenClose.performed-=exitPlayer;
+
+        InputManager.rebindDuplicate-=DuplicateBinding;
     }
 
     private void exitPlayer(InputAction.CallbackContext obj)
@@ -48,5 +51,11 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate() {
         // Debug.Log("Movement Values: "+movement.ReadValue<Vector2>());
+    }
+
+    
+    private void DuplicateBinding(string binding)
+    {
+        Debug.Log("Duplicate binding found: " + binding);
     }
 }

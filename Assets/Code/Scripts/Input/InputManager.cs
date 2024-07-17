@@ -11,6 +11,7 @@ public class InputManager : MonoBehaviour
    public static event Action rebindComplete;
    public static event Action rebindCanceled;
    public static event Action<InputAction, int> rebindStarted;
+   public static event Action<string> rebindDuplicate;
 
    private void Awake()
    {
@@ -68,6 +69,15 @@ public class InputManager : MonoBehaviour
          actionToRebind.Enable();
          operation.Dispose();
 
+         if (CheckDuplicateBindings(actionToRebind, bindingIndex, allCompositeParts)) //If you try to duplicate an assignment, ignore the request and restart the process
+         {
+            // rebind.Cancel();
+            // return;
+            BlockDuplicateActions(actionToRebind, bindingIndex, statusText, allCompositeParts, excludeMouse, CleanUp);
+            return;
+            // ToggleDuplicateActions(actionToRebind,bindingIndex);
+         }
+
          if (allCompositeParts)
          {
             var nextBindingIndex = bindingIndex + 1;
@@ -77,15 +87,6 @@ public class InputManager : MonoBehaviour
             }
          }
 
-         if (CheckDuplicateBindings(actionToRebind, bindingIndex, allCompositeParts)) //If you try to duplicate an assignment, ignore the request and restart the process
-         {
-            actionToRebind.RemoveBindingOverride(bindingIndex);
-            CleanUp();
-            DoRebind(actionToRebind, bindingIndex, statusText, allCompositeParts, excludeMouse);
-            return;
-         }
-
-
          SaveBindingOverride(actionToRebind);
          rebindComplete?.Invoke();
       });
@@ -94,7 +95,7 @@ public class InputManager : MonoBehaviour
       {
          actionToRebind.Enable();
          operation.Dispose();
-
+         LoadBindingOverride(actionToRebind.name);
          rebindCanceled?.Invoke();
       });
 
@@ -110,14 +111,57 @@ public class InputManager : MonoBehaviour
    private static bool CheckDuplicateBindings(InputAction action, int bindingIndex, bool allCompositeParts = false)
    {
       InputBinding newBinding = action.bindings[bindingIndex];
+      Debug.Log(bindingIndex);
 
-      foreach (InputBinding binding in action.actionMap.bindings)
+      // foreach (InputBinding binding in action.actionMap.bindings)
+      // {
+      //    if (binding.action == newBinding.action)
+      //       continue;
+      //    if (binding.effectivePath == newBinding.effectivePath)
+      //    {
+      //       rebindDuplicate.Invoke(newBinding.effectivePath);
+      //       return true;
+      //    }
+      // }
+
+      // if (allCompositeParts)
+      // {
+      //    for (int i = 1; i < bindingIndex; i++)
+      //    {
+      //       if (action.bindings[i].effectivePath == newBinding.overridePath)
+      //       {
+      //          rebindDuplicate.Invoke(newBinding.effectivePath);
+      //          return true;
+      //       }
+      //    }
+      // }
+
+      // return false;
+      var allBindings = action.actionMap.bindings;
+
+      for (int i = 0; i < allBindings.Count; i++)
       {
+         Debug.Log(i);
+
+         var binding=allBindings[i];
+
          if (binding.action == newBinding.action)
-            continue;
-         if (binding.effectivePath == newBinding.effectivePath)
          {
-            Debug.Log("Duplicate binding found: " + newBinding.effectivePath);
+            if (binding.isPartOfComposite && i != bindingIndex)
+            {
+               if (binding.effectivePath == newBinding.effectivePath)
+               {
+                  rebindDuplicate.Invoke(newBinding.effectivePath);
+                  return true;
+               }
+            }
+            else
+               continue;
+         }
+
+         if (allBindings[i].effectivePath == newBinding.effectivePath)
+         {
+            rebindDuplicate.Invoke(newBinding.effectivePath);
             return true;
          }
       }
@@ -128,7 +172,56 @@ public class InputManager : MonoBehaviour
          {
             if (action.bindings[i].effectivePath == newBinding.overridePath)
             {
-               Debug.Log("Duplicate binding found: " + newBinding.effectivePath);
+               rebindDuplicate.Invoke(newBinding.effectivePath);
+               return true;
+            }
+         }
+      }
+
+      return false;
+
+
+      int currentIndex = -1;
+
+      foreach (InputBinding binding in action.actionMap.bindings)
+      {
+         currentIndex++;
+         Debug.Log("IF 1");
+
+         if (binding.action == newBinding.action)
+         {
+            Debug.Log("IF 1A");
+            if (binding.isComposite || currentIndex == bindingIndex)
+            {
+               continue;
+            }
+            else
+            {
+               Debug.Log("IF 1B");
+               if (binding.effectivePath == newBinding.effectivePath)
+               {
+                  rebindDuplicate.Invoke(newBinding.effectivePath);
+                  return true;
+               }
+            }
+         }
+         Debug.Log("IF 2");
+
+         if (binding.effectivePath == newBinding.effectivePath)
+         {
+            rebindDuplicate.Invoke(newBinding.effectivePath);
+            return true;
+         }
+
+      }
+      Debug.Log("IF 3");
+      if (allCompositeParts)
+      {
+         for (int i = 1; i < bindingIndex; i++)
+         {
+            if (action.bindings[i].effectivePath == newBinding.overridePath)
+            {
+               rebindDuplicate.Invoke(newBinding.effectivePath);
                return true;
             }
          }
@@ -188,17 +281,24 @@ public class InputManager : MonoBehaviour
       }
       else
          ResetBinding(action, bindingIndex);
-      
+
       rebindComplete.Invoke();
       SaveBindingOverride(action);
    }
 
    public static void ResetBinding(InputAction action, int bindingIndex)
    {
-      InputBinding newBinding = action.bindings[bindingIndex];
-      string oldOverridePath = newBinding.overridePath;
+      ToggleDuplicateActions(action, bindingIndex);
 
       action.RemoveBindingOverride(bindingIndex);
+
+      SaveBindingOverride(action);
+   }
+
+   public static void ToggleDuplicateActions(InputAction action, int bindingIndex)
+   {
+      InputBinding newBinding = action.bindings[bindingIndex];
+      string oldOverridePath = newBinding.overridePath;
 
       foreach (InputAction otherAction in action.actionMap)
       {
@@ -215,6 +315,25 @@ public class InputManager : MonoBehaviour
             }
          }
       }
-      SaveBindingOverride(action);
+   }
+
+   public static void BlockDuplicateActions(InputAction action, int bindingIndex, TextMeshProUGUI statusText, bool allCompositeParts, bool excludeMouse, Action cleanup)
+   {
+      action.RemoveBindingOverride(bindingIndex);
+      cleanup.Invoke();
+      DoRebind(action, bindingIndex, statusText, allCompositeParts, excludeMouse);
+   }
+
+   public static void ResetAllBindings()
+   {
+      foreach (InputActionMap map in InputManager.inputActions.asset.actionMaps)
+         map.RemoveAllBindingOverrides();
+   }
+
+   public static void ResetControlSchemeBinding(string targetControlScheme)
+   {
+      foreach (InputActionMap map in InputManager.inputActions.asset.actionMaps)
+         foreach (InputAction action in map.actions)
+            action.RemoveBindingOverride(InputBinding.MaskByGroup(targetControlScheme));
    }
 }
