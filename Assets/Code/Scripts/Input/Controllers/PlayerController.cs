@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
 
         InputManager.inputActions.Player.MenuOpenClose.performed+=exitPlayer;
 
-        InputManager.rebindDuplicate+=DuplicateBinding;
+        InputManager.rebindDuplicateGeneralAlert+=DuplicateBinding;
     }
 
     private void OnDisable() {
@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
 
         InputManager.inputActions.Player.MenuOpenClose.performed-=exitPlayer;
 
-        InputManager.rebindDuplicate-=DuplicateBinding;
+        InputManager.rebindDuplicateGeneralAlert-=DuplicateBinding;
     }
 
     private void exitPlayer(InputAction.CallbackContext obj)
