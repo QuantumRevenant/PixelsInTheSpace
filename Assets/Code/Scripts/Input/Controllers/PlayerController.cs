@@ -6,34 +6,34 @@ public class PlayerController : MonoBehaviour
     private InputAction movement;
 
     private void OnEnable() {
-        InputManager.ToggleActionMap(InputManager.inputActions.Player);
-        movement=InputManager.inputActions.Player.Movement;
+        InputManager.ToggleActionMap(InputManager.inputActions.PlayerActions);
+        movement=InputManager.inputActions.PlayerActions.Movement;
 
-        InputManager.inputActions.Player.Shoot.performed+=DoShoot; 
+        InputManager.inputActions.PlayerActions.Shoot.performed+=DoShoot; 
 
-        InputManager.inputActions.Player.PowerDropRelease.performed+=DoOne;    
-        InputManager.inputActions.Player.PowerDropRelease.canceled+=DoTwo;   
+        InputManager.inputActions.PlayerActions.PowerDropRelease.performed+=DoOne;    
+        InputManager.inputActions.PlayerActions.PowerDropRelease.canceled+=DoTwo;   
 
-        InputManager.inputActions.Player.MenuOpenClose.performed+=exitPlayer;
+        InputManager.inputActions.PlayerActions.MenuOpenClose.performed+=exitPlayer;
 
-        InputManager.rebindDuplicateGeneralAlert+=DuplicateBinding;
+        InputManager.rebindDuplicated+=DuplicateBinding;
     }
 
     private void OnDisable() {
         
-        InputManager.inputActions.Player.Shoot.performed-=DoShoot; 
+        InputManager.inputActions.PlayerActions.Shoot.performed-=DoShoot; 
 
-        InputManager.inputActions.Player.PowerDropRelease.performed-=DoOne;    
-        InputManager.inputActions.Player.PowerDropRelease.canceled-=DoTwo;  
+        InputManager.inputActions.PlayerActions.PowerDropRelease.performed-=DoOne;    
+        InputManager.inputActions.PlayerActions.PowerDropRelease.canceled-=DoTwo;  
 
-        InputManager.inputActions.Player.MenuOpenClose.performed-=exitPlayer;
+        InputManager.inputActions.PlayerActions.MenuOpenClose.performed-=exitPlayer;
 
-        InputManager.rebindDuplicateGeneralAlert-=DuplicateBinding;
+        InputManager.rebindDuplicated-=DuplicateBinding;
     }
 
     private void exitPlayer(InputAction.CallbackContext obj)
     {
-        InputManager.ToggleActionMap(InputManager.inputActions.UI);
+        InputManager.ToggleActionMap(InputManager.inputActions.UIActions);
     }
     private void DoShoot(InputAction.CallbackContext obj)
     {

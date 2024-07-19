@@ -4,21 +4,21 @@ using UnityEngine.InputSystem;
 public class UIController : MonoBehaviour
 {
     private void OnEnable() {
-        InputManager.inputActions.UI.Trigger.performed+=DoOne;
+        InputManager.inputActions.UIActions.Trigger.performed+=DoOne;
 
-        InputManager.inputActions.UI.MenuOpenClose.performed+=exitUI;
+        InputManager.inputActions.UIActions.MenuOpenClose.performed+=exitUI;
 
     }
 
     private void OnDisable() {
-        InputManager.inputActions.UI.Trigger.performed-=DoOne; 
+        InputManager.inputActions.UIActions.Trigger.performed-=DoOne; 
 
-        InputManager.inputActions.UI.MenuOpenClose.performed-=exitUI;
+        InputManager.inputActions.UIActions.MenuOpenClose.performed-=exitUI;
     }
 
     private void exitUI(InputAction.CallbackContext obj)
     {
-        InputManager.ToggleActionMap(InputManager.inputActions.UI);
+        InputManager.ToggleActionMap(InputManager.inputActions.UIActions);
     }
 
     private void DoOne(InputAction.CallbackContext obj)

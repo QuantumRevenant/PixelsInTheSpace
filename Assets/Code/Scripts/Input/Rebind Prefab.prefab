@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Key
+  m_text: RT
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -258,6 +258,17 @@ MonoBehaviour:
   excludeMouse: 1
   selectedBinding: 0
   displayStringOptions: 0
+  inputBinding:
+    m_Name: 
+    m_Id: 143bb1cd-cc10-4eca-a2f0-a3664166fe91
+    m_Path: <Gamepad>/rightTrigger
+    m_Interactions: 
+    m_Processors: 
+    m_Groups: ;Gamepad
+    m_Action: Fire
+    m_Flags: 0
+  bindingIndex: 0
+  actionName: Fire
   actionText: {fileID: 3595691561671727771}
   rebindButton: {fileID: 7422692016767424572}
   rebindText: {fileID: 539181828537878977}
@@ -585,7 +596,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Action
+  m_text: Fire
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

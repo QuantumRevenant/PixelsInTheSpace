@@ -24,9 +24,27 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     ""name"": ""PlayerInputActions"",
     ""maps"": [
         {
-            ""name"": ""Player"",
+            ""name"": ""PlayerActions"",
             ""id"": ""4ec1e714-2674-4675-82ff-dd40e2973482"",
             ""actions"": [
+                {
+                    ""name"": ""Movement"",
+                    ""type"": ""Value"",
+                    ""id"": ""48ea9928-c064-43b7-9e03-5898b2e6daa9"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""TypeSelection"",
+                    ""type"": ""Button"",
+                    ""id"": ""5e6309b2-6985-47ce-9992-5568cfa1da6d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
                 {
                     ""name"": ""Dash"",
                     ""type"": ""Button"",
@@ -35,6 +53,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InstantDash"",
+                    ""type"": ""Value"",
+                    ""id"": ""35c1a4a2-664c-419c-ab1b-015cdf529f9a"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Shoot"",
@@ -71,62 +98,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Movement"",
-                    ""type"": ""Value"",
-                    ""id"": ""48ea9928-c064-43b7-9e03-5898b2e6daa9"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""bc2cc1bd-68a7-46ba-8ebb-b32f00ab2e19"",
-                    ""path"": ""<Keyboard>/j"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""Dash"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f9545d60-8fab-4e2a-8eee-fad3241a845c"",
-                    ""path"": ""<Gamepad>/buttonWest"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Dash"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""606f83b5-c9b1-490a-b09a-715417b03856"",
-                    ""path"": ""<Keyboard>/k"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard"",
-                    ""action"": ""Shoot"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""43a574f2-cb06-4890-b0ea-d940931692b8"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Gamepad"",
-                    ""action"": ""Shoot"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""e9c2440f-48bb-4b81-97e2-6a86d64ed615"",
@@ -142,6 +116,17 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""df1585e1-cd75-4de1-a35a-9cafb38bd33c"",
                     ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PowerActivate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""82c4ffad-3eda-47c9-828e-2ec8cab3e079"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
@@ -168,6 +153,39 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
                     ""action"": ""PowerDropRelease"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""222e82e1-3a78-4771-a967-bf0167c4d053"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""PowerDropRelease"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""968a4c6f-65eb-4b65-9fb4-2cbd61be3388"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""MenuOpenClose"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6376fdf1-9d57-48e0-b0f8-86ae8c3d8d42"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""MenuOpenClose"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -250,30 +268,118 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""968a4c6f-65eb-4b65-9fb4-2cbd61be3388"",
-                    ""path"": ""<Keyboard>/escape"",
+                    ""id"": ""606f83b5-c9b1-490a-b09a-715417b03856"",
+                    ""path"": ""<Keyboard>/k"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""MenuOpenClose"",
+                    ""action"": ""Shoot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""6376fdf1-9d57-48e0-b0f8-86ae8c3d8d42"",
-                    ""path"": ""<Gamepad>/start"",
+                    ""id"": ""43a574f2-cb06-4890-b0ea-d940931692b8"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""MenuOpenClose"",
+                    ""action"": ""Shoot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""97fab78f-8daf-408c-ad23-2a372504693e"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""TypeSelection"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""13f10980-79fa-41d4-b134-f3b0f96bd982"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""TypeSelection"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""fc673a8c-dac6-4cd4-90cc-d69764e287ff"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""TypeSelection"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bc2cc1bd-68a7-46ba-8ebb-b32f00ab2e19"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f9545d60-8fab-4e2a-8eee-fad3241a845c"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f99837a3-64ae-4a10-ba9a-2081ee4b3ef7"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b1515fcb-5569-493e-90f6-d3c8290d719c"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f15cd2e7-126d-4258-b0cf-0575ac095852"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""InstantDash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
             ]
         },
         {
-            ""name"": ""UI"",
+            ""name"": ""UIActions"",
             ""id"": ""f54774e3-0d76-4e8e-8b27-85f1fcd72ffe"",
             ""actions"": [
                 {
@@ -362,18 +468,20 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         }
     ]
 }");
-        // Player
-        m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
-        m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
-        m_Player_PowerActivate = m_Player.FindAction("PowerActivate", throwIfNotFound: true);
-        m_Player_PowerDropRelease = m_Player.FindAction("PowerDropRelease", throwIfNotFound: true);
-        m_Player_MenuOpenClose = m_Player.FindAction("MenuOpenClose", throwIfNotFound: true);
-        m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
-        // UI
-        m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
-        m_UI_MenuOpenClose = m_UI.FindAction("MenuOpenClose", throwIfNotFound: true);
-        m_UI_Trigger = m_UI.FindAction("Trigger", throwIfNotFound: true);
+        // PlayerActions
+        m_PlayerActions = asset.FindActionMap("PlayerActions", throwIfNotFound: true);
+        m_PlayerActions_Movement = m_PlayerActions.FindAction("Movement", throwIfNotFound: true);
+        m_PlayerActions_TypeSelection = m_PlayerActions.FindAction("TypeSelection", throwIfNotFound: true);
+        m_PlayerActions_Dash = m_PlayerActions.FindAction("Dash", throwIfNotFound: true);
+        m_PlayerActions_InstantDash = m_PlayerActions.FindAction("InstantDash", throwIfNotFound: true);
+        m_PlayerActions_Shoot = m_PlayerActions.FindAction("Shoot", throwIfNotFound: true);
+        m_PlayerActions_PowerActivate = m_PlayerActions.FindAction("PowerActivate", throwIfNotFound: true);
+        m_PlayerActions_PowerDropRelease = m_PlayerActions.FindAction("PowerDropRelease", throwIfNotFound: true);
+        m_PlayerActions_MenuOpenClose = m_PlayerActions.FindAction("MenuOpenClose", throwIfNotFound: true);
+        // UIActions
+        m_UIActions = asset.FindActionMap("UIActions", throwIfNotFound: true);
+        m_UIActions_MenuOpenClose = m_UIActions.FindAction("MenuOpenClose", throwIfNotFound: true);
+        m_UIActions_Trigger = m_UIActions.FindAction("Trigger", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -430,59 +538,78 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Player
-    private readonly InputActionMap m_Player;
-    private IPlayerActions m_PlayerActionsCallbackInterface;
-    private readonly InputAction m_Player_Dash;
-    private readonly InputAction m_Player_Shoot;
-    private readonly InputAction m_Player_PowerActivate;
-    private readonly InputAction m_Player_PowerDropRelease;
-    private readonly InputAction m_Player_MenuOpenClose;
-    private readonly InputAction m_Player_Movement;
-    public struct PlayerActions
+    // PlayerActions
+    private readonly InputActionMap m_PlayerActions;
+    private IPlayerActionsActions m_PlayerActionsActionsCallbackInterface;
+    private readonly InputAction m_PlayerActions_Movement;
+    private readonly InputAction m_PlayerActions_TypeSelection;
+    private readonly InputAction m_PlayerActions_Dash;
+    private readonly InputAction m_PlayerActions_InstantDash;
+    private readonly InputAction m_PlayerActions_Shoot;
+    private readonly InputAction m_PlayerActions_PowerActivate;
+    private readonly InputAction m_PlayerActions_PowerDropRelease;
+    private readonly InputAction m_PlayerActions_MenuOpenClose;
+    public struct PlayerActionsActions
     {
         private @PlayerInputActions m_Wrapper;
-        public PlayerActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Dash => m_Wrapper.m_Player_Dash;
-        public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
-        public InputAction @PowerActivate => m_Wrapper.m_Player_PowerActivate;
-        public InputAction @PowerDropRelease => m_Wrapper.m_Player_PowerDropRelease;
-        public InputAction @MenuOpenClose => m_Wrapper.m_Player_MenuOpenClose;
-        public InputAction @Movement => m_Wrapper.m_Player_Movement;
-        public InputActionMap Get() { return m_Wrapper.m_Player; }
+        public PlayerActionsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Movement => m_Wrapper.m_PlayerActions_Movement;
+        public InputAction @TypeSelection => m_Wrapper.m_PlayerActions_TypeSelection;
+        public InputAction @Dash => m_Wrapper.m_PlayerActions_Dash;
+        public InputAction @InstantDash => m_Wrapper.m_PlayerActions_InstantDash;
+        public InputAction @Shoot => m_Wrapper.m_PlayerActions_Shoot;
+        public InputAction @PowerActivate => m_Wrapper.m_PlayerActions_PowerActivate;
+        public InputAction @PowerDropRelease => m_Wrapper.m_PlayerActions_PowerDropRelease;
+        public InputAction @MenuOpenClose => m_Wrapper.m_PlayerActions_MenuOpenClose;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
-        public void SetCallbacks(IPlayerActions instance)
+        public static implicit operator InputActionMap(PlayerActionsActions set) { return set.Get(); }
+        public void SetCallbacks(IPlayerActionsActions instance)
         {
-            if (m_Wrapper.m_PlayerActionsCallbackInterface != null)
+            if (m_Wrapper.m_PlayerActionsActionsCallbackInterface != null)
             {
-                @Dash.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
-                @Dash.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
-                @Dash.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDash;
-                @Shoot.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
-                @Shoot.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
-                @Shoot.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShoot;
-                @PowerActivate.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPowerActivate;
-                @PowerActivate.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPowerActivate;
-                @PowerActivate.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPowerActivate;
-                @PowerDropRelease.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPowerDropRelease;
-                @PowerDropRelease.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPowerDropRelease;
-                @PowerDropRelease.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPowerDropRelease;
-                @MenuOpenClose.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenuOpenClose;
-                @MenuOpenClose.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenuOpenClose;
-                @MenuOpenClose.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMenuOpenClose;
-                @Movement.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
-                @Movement.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
-                @Movement.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMovement;
+                @Movement.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnMovement;
+                @Movement.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnMovement;
+                @Movement.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnMovement;
+                @TypeSelection.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnTypeSelection;
+                @TypeSelection.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnTypeSelection;
+                @TypeSelection.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnTypeSelection;
+                @Dash.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnDash;
+                @Dash.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnDash;
+                @Dash.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnDash;
+                @InstantDash.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnInstantDash;
+                @InstantDash.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnInstantDash;
+                @InstantDash.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnInstantDash;
+                @Shoot.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnShoot;
+                @Shoot.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnShoot;
+                @Shoot.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnShoot;
+                @PowerActivate.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPowerActivate;
+                @PowerActivate.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPowerActivate;
+                @PowerActivate.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPowerActivate;
+                @PowerDropRelease.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPowerDropRelease;
+                @PowerDropRelease.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPowerDropRelease;
+                @PowerDropRelease.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnPowerDropRelease;
+                @MenuOpenClose.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnMenuOpenClose;
+                @MenuOpenClose.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnMenuOpenClose;
+                @MenuOpenClose.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnMenuOpenClose;
             }
-            m_Wrapper.m_PlayerActionsCallbackInterface = instance;
+            m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
             if (instance != null)
             {
+                @Movement.started += instance.OnMovement;
+                @Movement.performed += instance.OnMovement;
+                @Movement.canceled += instance.OnMovement;
+                @TypeSelection.started += instance.OnTypeSelection;
+                @TypeSelection.performed += instance.OnTypeSelection;
+                @TypeSelection.canceled += instance.OnTypeSelection;
                 @Dash.started += instance.OnDash;
                 @Dash.performed += instance.OnDash;
                 @Dash.canceled += instance.OnDash;
+                @InstantDash.started += instance.OnInstantDash;
+                @InstantDash.performed += instance.OnInstantDash;
+                @InstantDash.canceled += instance.OnInstantDash;
                 @Shoot.started += instance.OnShoot;
                 @Shoot.performed += instance.OnShoot;
                 @Shoot.canceled += instance.OnShoot;
@@ -495,42 +622,39 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @MenuOpenClose.started += instance.OnMenuOpenClose;
                 @MenuOpenClose.performed += instance.OnMenuOpenClose;
                 @MenuOpenClose.canceled += instance.OnMenuOpenClose;
-                @Movement.started += instance.OnMovement;
-                @Movement.performed += instance.OnMovement;
-                @Movement.canceled += instance.OnMovement;
             }
         }
     }
-    public PlayerActions @Player => new PlayerActions(this);
+    public PlayerActionsActions @PlayerActions => new PlayerActionsActions(this);
 
-    // UI
-    private readonly InputActionMap m_UI;
-    private IUIActions m_UIActionsCallbackInterface;
-    private readonly InputAction m_UI_MenuOpenClose;
-    private readonly InputAction m_UI_Trigger;
-    public struct UIActions
+    // UIActions
+    private readonly InputActionMap m_UIActions;
+    private IUIActionsActions m_UIActionsActionsCallbackInterface;
+    private readonly InputAction m_UIActions_MenuOpenClose;
+    private readonly InputAction m_UIActions_Trigger;
+    public struct UIActionsActions
     {
         private @PlayerInputActions m_Wrapper;
-        public UIActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @MenuOpenClose => m_Wrapper.m_UI_MenuOpenClose;
-        public InputAction @Trigger => m_Wrapper.m_UI_Trigger;
-        public InputActionMap Get() { return m_Wrapper.m_UI; }
+        public UIActionsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @MenuOpenClose => m_Wrapper.m_UIActions_MenuOpenClose;
+        public InputAction @Trigger => m_Wrapper.m_UIActions_Trigger;
+        public InputActionMap Get() { return m_Wrapper.m_UIActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(UIActions set) { return set.Get(); }
-        public void SetCallbacks(IUIActions instance)
+        public static implicit operator InputActionMap(UIActionsActions set) { return set.Get(); }
+        public void SetCallbacks(IUIActionsActions instance)
         {
-            if (m_Wrapper.m_UIActionsCallbackInterface != null)
+            if (m_Wrapper.m_UIActionsActionsCallbackInterface != null)
             {
-                @MenuOpenClose.started -= m_Wrapper.m_UIActionsCallbackInterface.OnMenuOpenClose;
-                @MenuOpenClose.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnMenuOpenClose;
-                @MenuOpenClose.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnMenuOpenClose;
-                @Trigger.started -= m_Wrapper.m_UIActionsCallbackInterface.OnTrigger;
-                @Trigger.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnTrigger;
-                @Trigger.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnTrigger;
+                @MenuOpenClose.started -= m_Wrapper.m_UIActionsActionsCallbackInterface.OnMenuOpenClose;
+                @MenuOpenClose.performed -= m_Wrapper.m_UIActionsActionsCallbackInterface.OnMenuOpenClose;
+                @MenuOpenClose.canceled -= m_Wrapper.m_UIActionsActionsCallbackInterface.OnMenuOpenClose;
+                @Trigger.started -= m_Wrapper.m_UIActionsActionsCallbackInterface.OnTrigger;
+                @Trigger.performed -= m_Wrapper.m_UIActionsActionsCallbackInterface.OnTrigger;
+                @Trigger.canceled -= m_Wrapper.m_UIActionsActionsCallbackInterface.OnTrigger;
             }
-            m_Wrapper.m_UIActionsCallbackInterface = instance;
+            m_Wrapper.m_UIActionsActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @MenuOpenClose.started += instance.OnMenuOpenClose;
@@ -542,7 +666,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
             }
         }
     }
-    public UIActions @UI => new UIActions(this);
+    public UIActionsActions @UIActions => new UIActionsActions(this);
     private int m_KeyboardSchemeIndex = -1;
     public InputControlScheme KeyboardScheme
     {
@@ -561,16 +685,18 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
             return asset.controlSchemes[m_GamepadSchemeIndex];
         }
     }
-    public interface IPlayerActions
+    public interface IPlayerActionsActions
     {
+        void OnMovement(InputAction.CallbackContext context);
+        void OnTypeSelection(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnInstantDash(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnPowerActivate(InputAction.CallbackContext context);
         void OnPowerDropRelease(InputAction.CallbackContext context);
         void OnMenuOpenClose(InputAction.CallbackContext context);
-        void OnMovement(InputAction.CallbackContext context);
     }
-    public interface IUIActions
+    public interface IUIActionsActions
     {
         void OnMenuOpenClose(InputAction.CallbackContext context);
         void OnTrigger(InputAction.CallbackContext context);

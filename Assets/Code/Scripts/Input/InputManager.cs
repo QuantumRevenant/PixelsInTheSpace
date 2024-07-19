@@ -14,8 +14,6 @@ public class InputManager : MonoBehaviour
    public static event Action rebindCanceled;
    public static event Action<InputAction, int> rebindStarted;
    public static event Action<string> rebindDuplicated;
-   public static event Action<string> rebindDuplicateGeneralAlert;
-
    private void Awake()
    {
       inputActions ??= new PlayerInputActions();
@@ -153,7 +151,7 @@ public class InputManager : MonoBehaviour
             {
                if (binding.effectivePath == newBinding.effectivePath)
                {
-                  rebindDuplicateGeneralAlert?.Invoke(newBinding.effectivePath);
+                  rebindDuplicated?.Invoke(newBinding.effectivePath);
                   return true;
                }
             }
@@ -163,7 +161,7 @@ public class InputManager : MonoBehaviour
 
          if (binding.effectivePath == newBinding.effectivePath)
          {
-            rebindDuplicateGeneralAlert?.Invoke(newBinding.effectivePath);
+            rebindDuplicated?.Invoke(newBinding.effectivePath);
             return true;
          }
       }
@@ -174,7 +172,7 @@ public class InputManager : MonoBehaviour
          {
             if (action.bindings[i].effectivePath == newBinding.overridePath)
             {
-               rebindDuplicateGeneralAlert?.Invoke(newBinding.effectivePath);
+               rebindDuplicated?.Invoke(newBinding.effectivePath);
                return true;
             }
          }
