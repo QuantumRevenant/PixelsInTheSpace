@@ -1,6 +1,4 @@
 using System;
-using System.Linq;
-using MyBox;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,7 +6,8 @@ using UnityEngine.InputSystem;
 public class InputManager : MonoBehaviour
 {
    public static PlayerInputActions inputActions;
-   public static bool duplicateBindingsAllowed=false;
+   public static bool duplicateBindingsAllowed = false;
+   public static bool autoSave = true;
    public static event Action<InputActionMap> actionMapChange;
 
    public static event Action rebindComplete;
@@ -19,29 +18,36 @@ public class InputManager : MonoBehaviour
 
    private void Awake()
    {
-      if (inputActions == null)
-         inputActions = new PlayerInputActions();
+      inputActions ??= new PlayerInputActions();
    }
 
-   [ContextMenu("Test Bindings")]
-   public void testBindings()
-   {
-      string actionName = "Movement";
-      InputAction action = inputActions.asset.FindAction(actionName);
-
-      for (int i = 0; i < action.actionMap.bindings.Count(); i++)
-      {
-         var binding = action.actionMap.bindings[i];
-         Debug.Log($"Index: {binding.id} - path: {binding.path} - OverridePath: {binding.overridePath} - Effective Path: {binding.effectivePath}");
-      }
-   }
    [ContextMenu("Toogle duplicateBindingsAllowed")]
-   public void toogleDuplicateBindingsAllowed()
+   public void ToogleDuplicateBindingsAllowed()
    {
-      duplicateBindingsAllowed=!duplicateBindingsAllowed;
+      duplicateBindingsAllowed = !duplicateBindingsAllowed;
       Debug.Log($"duplicateBindingsAllowed: {duplicateBindingsAllowed}");
    }
 
+   [ContextMenu("Toogle autoSave")]
+   public void ToogleAutoSave()
+   {
+      autoSave = !autoSave;
+      Debug.Log($"duplicateBindingsAllowed: {autoSave}");
+   }
+
+   [ContextMenu("Save All")]
+   public void SaveAllBindings()
+   {
+      foreach (InputAction action in inputActions)
+         SaveBindingOverride(action);
+
+   }
+
+   public static void ResetAllBindings()
+   {
+      foreach (InputActionMap map in InputManager.inputActions.asset.actionMaps)
+         map.RemoveAllBindingOverrides();
+   }
    public static void ToggleActionMap(InputActionMap actionMap)
    {
       if (actionMap.enabled)
@@ -81,38 +87,21 @@ public class InputManager : MonoBehaviour
       string oldOverridePath = actionToRebind.bindings[bindingIndex].effectivePath;
       var rebind = actionToRebind.PerformInteractiveRebinding(bindingIndex);
 
-      void CleanUp()
-      {
-         rebind.Dispose();
-         rebind = null;
-      }
-
       rebind.OnComplete(operation =>
       {
          actionToRebind.Enable();
          operation.Dispose();
 
-         if (CheckDuplicateBindings(actionToRebind, bindingIndex, allCompositeParts))
-         {
-            // rebind.Cancel();
-            // return;
-            // RetryDuplicateActions(actionToRebind, bindingIndex, statusText, allCompositeParts, excludeMouse, CleanUp);
-            // return;
-            if (!duplicateBindingsAllowed)
-               ToggleDuplicateActions(actionToRebind, bindingIndex, actionToRebind.bindings[bindingIndex].overridePath, oldOverridePath);
-
-         }
+         if (CheckDuplicateBindings(actionToRebind, bindingIndex, allCompositeParts) && !duplicateBindingsAllowed)
+            ToggleDuplicateActions(actionToRebind, bindingIndex, actionToRebind.bindings[bindingIndex].overridePath, oldOverridePath);
 
          if (allCompositeParts)
-         {
-            var nextBindingIndex = bindingIndex + 1;
-            if (nextBindingIndex < actionToRebind.bindings.Count && actionToRebind.bindings[nextBindingIndex].isPartOfComposite)
-            {
-               DoRebind(actionToRebind, nextBindingIndex, statusText, allCompositeParts, excludeMouse);
-            }
-         }
+            if (bindingIndex + 1 < actionToRebind.bindings.Count && actionToRebind.bindings[bindingIndex + 1].isPartOfComposite)
+               DoRebind(actionToRebind, bindingIndex + 1, statusText, allCompositeParts, excludeMouse);
 
-         SaveBindingOverride(actionToRebind);
+         if (autoSave)
+            SaveBindingOverride(actionToRebind);
+
          rebindComplete?.Invoke();
       });
 
@@ -138,21 +127,16 @@ public class InputManager : MonoBehaviour
       if (actionName == null)
          return true;
 
-      if (inputActions == null)
-         inputActions = new PlayerInputActions();
+      inputActions ??= new PlayerInputActions();
 
       InputAction action = inputActions.asset.FindAction(actionName);
 
-      bool output=false;
-       if (action.bindings[bindingIndex].isComposite)
-      {
-         var firstPartIndex = bindingIndex + 1;
-         if (firstPartIndex < action.bindings.Count && action.bindings[firstPartIndex].isPartOfComposite)
-            output|=CheckDuplicateBindings(action, firstPartIndex, true);
-      }
-      else
-         output|=CheckDuplicateBindings(action, bindingIndex, true);
-      
+      bool output = false;
+      if (!action.bindings[bindingIndex].isComposite)
+         output |= CheckDuplicateBindings(action, bindingIndex, true);
+      else if (bindingIndex + 1 < action.bindings.Count && action.bindings[bindingIndex + 1].isPartOfComposite)
+         output |= CheckDuplicateBindings(action, bindingIndex + 1, true);
+
       return output;
    }
 
@@ -169,7 +153,7 @@ public class InputManager : MonoBehaviour
             {
                if (binding.effectivePath == newBinding.effectivePath)
                {
-                  rebindDuplicateGeneralAlert.Invoke(newBinding.effectivePath);
+                  rebindDuplicateGeneralAlert?.Invoke(newBinding.effectivePath);
                   return true;
                }
             }
@@ -179,7 +163,7 @@ public class InputManager : MonoBehaviour
 
          if (binding.effectivePath == newBinding.effectivePath)
          {
-            rebindDuplicateGeneralAlert.Invoke(newBinding.effectivePath);
+            rebindDuplicateGeneralAlert?.Invoke(newBinding.effectivePath);
             return true;
          }
       }
@@ -190,7 +174,7 @@ public class InputManager : MonoBehaviour
          {
             if (action.bindings[i].effectivePath == newBinding.overridePath)
             {
-               rebindDuplicateGeneralAlert.Invoke(newBinding.effectivePath);
+               rebindDuplicateGeneralAlert?.Invoke(newBinding.effectivePath);
                return true;
             }
          }
@@ -201,8 +185,7 @@ public class InputManager : MonoBehaviour
 
    public static string GetBindingName(string actionName, int bindingIndex)
    {
-      if (inputActions == null)
-         inputActions = new PlayerInputActions();
+      inputActions ??= new PlayerInputActions();
 
       InputAction action = inputActions.asset.FindAction(actionName);
       return action.GetBindingDisplayString(bindingIndex);
@@ -221,8 +204,7 @@ public class InputManager : MonoBehaviour
       if (actionName == null)
          return;
 
-      if (inputActions == null)
-         inputActions = new PlayerInputActions();
+      inputActions ??= new PlayerInputActions();
 
       InputAction action = inputActions.asset.FindAction(actionName);
 
@@ -251,8 +233,10 @@ public class InputManager : MonoBehaviour
       else
          ResetBinding(action, bindingIndex);
 
-      rebindComplete.Invoke();
-      SaveBindingOverride(action);
+      if (autoSave)
+         SaveBindingOverride(action);
+
+      rebindComplete?.Invoke();
    }
 
    public static void ResetBinding(InputAction action, int bindingIndex)
@@ -261,7 +245,8 @@ public class InputManager : MonoBehaviour
 
       action.RemoveBindingOverride(bindingIndex);
 
-      SaveBindingOverride(action);
+      if (autoSave)
+         SaveBindingOverride(action);
    }
 
    public static void ToggleDuplicateActions(InputAction action, int bindingIndex, string path, string oldOverridePath)
@@ -276,7 +261,8 @@ public class InputManager : MonoBehaviour
             if (binding.effectivePath == path && binding.id != newBinding.id)
             {
                otherAction.ApplyBindingOverride(i, oldOverridePath);
-               SaveBindingOverride(otherAction);
+               if (autoSave)
+                  SaveBindingOverride(otherAction);
             }
          }
       }
@@ -285,14 +271,8 @@ public class InputManager : MonoBehaviour
    public static void RetryDuplicateActions(InputAction action, int bindingIndex, TextMeshProUGUI statusText, bool allCompositeParts, bool excludeMouse, Action cleanup)
    {
       action.RemoveBindingOverride(bindingIndex);
-      cleanup.Invoke();
+      cleanup?.Invoke();
       DoRebind(action, bindingIndex, statusText, allCompositeParts, excludeMouse);
-   }
-
-   public static void ResetAllBindings()
-   {
-      foreach (InputActionMap map in InputManager.inputActions.asset.actionMaps)
-         map.RemoveAllBindingOverrides();
    }
 
    public static void ResetControlSchemeBinding(string targetControlScheme)
