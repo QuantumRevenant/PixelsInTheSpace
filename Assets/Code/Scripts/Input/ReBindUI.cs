@@ -77,14 +77,14 @@ public class ReBindUI : MonoBehaviour
         {
             if (Application.isPlaying)
             {
-                rebindText.text = InputManager.GetBindingName(actionName, bindingIndex);
+                rebindText.text = InputManager.GetBindingName(actionName, bindingIndex,displayStringOptions);
                 if(InputManager.CheckDuplicateBindings(actionName,bindingIndex))
                     rebindText.color=Color.red;
                 else
                     rebindText.color=new Color32(50,50,50,255);
             }
             else
-                rebindText.text = inputActionReference.action.GetBindingDisplayString(bindingIndex);
+                rebindText.text = inputActionReference.action.GetBindingDisplayString(bindingIndex,displayStringOptions);
         }
     }
 

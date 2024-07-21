@@ -34,18 +34,29 @@ public class InputManager : MonoBehaviour
    }
 
    [ContextMenu("Save All")]
-   public void SaveAllBindings()
+   public void SaveAllBindingsLocal()
+   {
+      SaveAllBindings();
+   }
+   public static void SaveAllBindings()
    {
       foreach (InputAction action in inputActions)
          SaveBindingOverride(action);
 
    }
 
+   [ContextMenu("Reset All")]
+   public void ResetAllBindingsLocal()
+   {
+      ResetAllBindings();
+   }
    public static void ResetAllBindings()
    {
-      foreach (InputActionMap map in InputManager.inputActions.asset.actionMaps)
+      foreach (InputActionMap map in inputActions.asset.actionMaps)
          map.RemoveAllBindingOverrides();
    }
+
+
    public static void ToggleActionMap(InputActionMap actionMap)
    {
       if (actionMap.enabled)
@@ -181,12 +192,15 @@ public class InputManager : MonoBehaviour
       return false;
    }
 
-   public static string GetBindingName(string actionName, int bindingIndex)
+   public static string GetBindingName(string actionName, int bindingIndex, InputBinding.DisplayStringOptions displayStringOptions)
    {
       inputActions ??= new PlayerInputActions();
 
       InputAction action = inputActions.asset.FindAction(actionName);
-      return action.GetBindingDisplayString(bindingIndex);
+      InputBinding binding = action.bindings[bindingIndex];
+      if (!binding.isComposite)
+         return action.bindings[bindingIndex].ToDisplayString(displayStringOptions);
+      return action.GetBindingDisplayString(bindingIndex,displayStringOptions);
    }
 
    private static void SaveBindingOverride(InputAction action)
@@ -272,7 +286,7 @@ public class InputManager : MonoBehaviour
       cleanup?.Invoke();
       DoRebind(action, bindingIndex, statusText, allCompositeParts, excludeMouse);
    }
-
+   
    public static void ResetControlSchemeBinding(string targetControlScheme)
    {
       foreach (InputActionMap map in InputManager.inputActions.asset.actionMaps)
