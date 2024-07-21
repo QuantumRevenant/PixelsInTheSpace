@@ -53,7 +53,8 @@
     },
     "conventionalCommits.scopes": [
         "General",
-        "Utilities"
+        "Utilities",
+        "InputSystem"
     ],
     "dotnet.preferCSharpExtension": true,
     "dotnet.defaultSolution": "PixelsInTheSpace.sln"
